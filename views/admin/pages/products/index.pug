@@ -1,0 +1,87 @@
+extends ../../layouts/default.pug 
+
+block main
+    h1 Danh sách sản phẩm
+    .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Bộ lọc và tìm kiếm
+                .boLoc.px-3.py-3.d-flex.justify-between 
+                    .d-flex.items-center.gap-x-3
+                        each item in button 
+                            button(class = `buttonDefault border-none ${item.class}` active = `${item.status}`) #{item.content}
+                    form(class = "d-flex items-center form__timKiem rounded" id = "form-search")
+                        input(type = "text" name = "keyword" class = "border-none outline-none")
+                        button(class = "border-none bg-white")
+                            i(class="fa-solid fa-magnifying-glass")
+
+    div(class = "dsSanPham container-fluid")
+        .container 
+            p Danh sách
+            form(
+                action = `/admin/products/change-multi?_method=PATCH`
+                method = "POST"
+                id = "form-change-multi")
+                select(name = "type")
+                    option(value = "active") Hoạt Động
+                    option(value = "inactive") Dừng Hoạt Động
+                input(
+                    class = "d-none"
+                    name = "ids"
+                    value =""
+                )
+                button(type = "submit") Áp Dụng
+                
+            
+        table(class = "container-fluid" checkbox-multi)
+                thead
+                    tr.text-align-center
+                        th 
+                            input(type = "checkbox" id = "changeStatusAll")
+                        th STT 
+                        th Hình ảnh
+                        th Tiêu đề
+                        th Gía
+                        th Trạng thái
+                        th Hành động
+                tbody 
+                    each item,index in products
+                        tr.text-align-center
+                            td
+                                input(type = "checkbox" name = "id" value = `${item.id}`)
+                            td #{index+1}
+                            td(style = "width: 100px;height:100px")
+                                img(src = `${item.thumbnail}` style = "width: 100px;height:100px")
+                            td #{item.title}
+                            td #{item.price}$
+                            td
+                                button(
+                                    class = `border-none font-bold rounded text-white font-14.px-3 ${item.active=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                    button-status = item.active=="active" ? "inactive" : "active"
+                                    id-element = item.id
+                                    ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
+                            td 
+                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3 Sửa
+                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3 Xoá
+    
+    
+    nav 
+        ul(class = "pagination")
+            - if(currentPage>1)
+                li(class = "page-item")
+                    button(class = "page-link" button-pagination = currentPage-1) Trang trước
+            - for (let i = 1;i<=totalPage;i++)
+                li(class = `page-item ${currentPage==i ? "active" : ""}`)
+                    button(class = "page-link" button-pagination = i) #{i}
+            
+            - if(currentPage<totalPage)
+                li(class = "page-item")
+                    button(class = "page-link" button-pagination = currentPage+1) Kế tiếp
+
+
+    form(
+        id = "form-changeStatus"
+        method = "POST"
+        action = ""
+    )
+
+                    
