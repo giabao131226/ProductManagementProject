@@ -128,3 +128,32 @@ if (formChangeMulti) {
     })
 }
 // End Change Multi
+
+// Delete Product
+const buttonDeleteProduct = document.querySelectorAll("[button-delete-product]")
+if(buttonDeleteProduct.length > 0){
+    buttonDeleteProduct.forEach((item) => {
+        item.addEventListener("click",() => {
+            const id = item.getAttribute("id-element")
+            
+            const formDeleteProduct = document.querySelector("#delete-product")
+            if(formDeleteProduct){
+                formDeleteProduct.action = `${formDeleteProduct.getAttribute("data-path")}/${id}?_method=DELETE`
+                formDeleteProduct.submit()
+            }
+        })
+    })
+}
+// End Delete Product
+
+// Restore Product
+const buttonRestoreProduct = document.querySelector("[restore-button]")
+if(buttonRestoreProduct){
+    buttonRestoreProduct.addEventListener("click",() => {
+        const id = buttonRestoreProduct.getAttribute("id-element")
+        const formRestore = document.querySelector("[restore-product]")
+
+        formRestore.action = `${formRestore.getAttribute("data-path")}/${id}?_method=PATCH`
+        formRestore.submit()
+    })
+}

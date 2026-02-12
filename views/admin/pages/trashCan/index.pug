@@ -1,0 +1,42 @@
+extends ../../layouts/default.pug 
+
+block main
+    div(class = "d-flex items-center")
+        button(class = "border-none font-bold ") < Trở lại
+
+    table 
+        thead 
+            tr
+                th STT 
+                th Hình ảnh 
+                th Tiêu đề
+                th Gía
+                th Trạng thái
+                th Hành động
+        tbody
+            each item,index in products 
+                tr
+                    td #{index+1}
+                    td 
+                        img(src = `${item.thumbnail}`)
+                    td #{item.title}
+                    td #{item.price}$
+                    td 
+                        button(
+                            class = `border-none font-bold rounded text-white font-14.px-3 ${item.active=="active" ? "bg-green-200" : "bg-red-600"}` 
+                            button-status = item.active=="active" ? "inactive" : "active"
+                            id-element = item.id
+                            ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
+                    td
+                        div(class = "d-flex items-center")
+                            button(id-element = `${item.id}` restore-button) Khôi Phục
+                            button Xoá
+    
+    form(
+        method = "POST"
+        action = ""
+        data-path = "trash-can/restore-product"
+        restore-product
+    )
+
+

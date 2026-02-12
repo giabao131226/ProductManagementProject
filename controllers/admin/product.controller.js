@@ -24,7 +24,7 @@ module.exports.index = async (req, res) => {
         }
     ]
 
-    const query = {}
+    const query = {"delete": false}
 
     filterStatus(req.query,listButton,query)
     search(req.query,query)
@@ -68,10 +68,45 @@ module.exports.changeMulti = async (req,res) => {
     const ids = req.body.ids.split(",")
     const type = req.body.type;
 
-    console.log(req.body.ids,req.body.type)
+    if(type == "delete"){
+        const result = await Product.updateMany({_id : {$in : ids}},{"delete": true})
+    }else{
+        const result = await Product.updateMany({_id: {$in: ids}},{"active": type})
+    }
+    
+    const backUrl = req.get("Referer") || "/admin/products";
 
-    const result = await Product.updateMany({_id: {$in: ids}},{"active": type})
-    console.log(result)
+    res.redirect(backUrl)
+}
+
+// [DELETE] /admin/products/delete-product
+module.exports.deleteProduct = async (req,res) => {
+    const id = req.params.id;
+    
+    const result  = await Product.updateOne({_id: id},{"delete": true})
+
+    const backUrl = req.get("Referer") || "/admin/products";
+
+    res.redirect(backUrl)
+}
+
+// [GET] /admin/products/trash-can
+module.exports.trashCan = async (req,res) => {
+
+    const products = await Product.find({"delete":true})
+
+    res.render("admin/pages/trashCan/index",{
+        products: products
+    })
+}
+
+// [GET] /admin/products/trash-can/restore-product/:id
+
+module.exports.restoreProduct = async (req,res) => {
+    const id = req.params.id
+
+    await Product.updateOne({_id : id},{delete: false})
+
     const backUrl = req.get("Referer") || "/admin/products";
 
     res.redirect(backUrl)

@@ -16,20 +16,24 @@ block main
 
     div(class = "dsSanPham container-fluid")
         .container 
-            p Danh sách
-            form(
-                action = `/admin/products/change-multi?_method=PATCH`
-                method = "POST"
-                id = "form-change-multi")
-                select(name = "type")
-                    option(value = "active") Hoạt Động
-                    option(value = "inactive") Dừng Hoạt Động
-                input(
-                    class = "d-none"
-                    name = "ids"
-                    value =""
-                )
-                button(type = "submit") Áp Dụng
+            h3 Danh sách
+            div(class = "d-flex")
+                form(
+                    action = `/admin/products/change-multi?_method=PATCH`
+                    method = "POST"
+                    id = "form-change-multi")
+                    select(name = "type")
+                        option(disabled selected) --Chọn Thao Tác--
+                        option(value = "active") Hoạt Động
+                        option(value = "inactive") Dừng Hoạt Động
+                        option(value = "delete") Xoá
+                    input(
+                        class = "d-none"
+                        name = "ids"
+                        value =""
+                    )
+                    button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
+                a(href = "products/trashCan") Thùng Rác
                 
             
         table(class = "container-fluid" checkbox-multi)
@@ -61,7 +65,7 @@ block main
                                     ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
                             td 
                                 button.bg-yellow.border-none.font-bold.rounded.font-14.px-3 Sửa
-                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3 Xoá
+                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
     
     
     nav 
@@ -82,6 +86,13 @@ block main
         id = "form-changeStatus"
         method = "POST"
         action = ""
+    )
+
+    form(
+        id = "delete-product"
+        method = "POST"
+        action = ""
+        data-path = `/admin/products/delete-product`
     )
 
                     
