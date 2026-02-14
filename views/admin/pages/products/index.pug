@@ -26,7 +26,8 @@ block main
                         option(disabled selected) --Chọn Thao Tác--
                         option(value = "active") Hoạt Động
                         option(value = "inactive") Dừng Hoạt Động
-                        option(value = "delete") Xoá
+                        option(value = "delete") Xoá Tất Cả
+                        option(value = "change-position") Thay đổi vị trí
                     input(
                         class = "d-none"
                         name = "ids"
@@ -45,6 +46,7 @@ block main
                         th Hình ảnh
                         th Tiêu đề
                         th Gía
+                        th Vị trí
                         th Trạng thái
                         th Hành động
                 tbody 
@@ -57,6 +59,8 @@ block main
                                 img(src = `${item.thumbnail}` style = "width: 100px;height:100px")
                             td #{item.title}
                             td #{item.price}$
+                            td 
+                                input(type = "number" name = "position" value = `${item.position}`)
                             td
                                 button(
                                     class = `border-none font-bold rounded text-white font-14.px-3 ${item.active=="active" ? "bg-green-200" : "bg-red-600"}` 
@@ -86,6 +90,13 @@ block main
         id = "form-changeStatus"
         method = "POST"
         action = ""
+    )
+
+    form(
+        id = "change-position"
+        method = "POST"
+        action = ""
+        data-path = `/admin/products/change-position`
     )
 
     form(

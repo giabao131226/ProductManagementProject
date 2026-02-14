@@ -40,7 +40,11 @@ module.exports.index = async (req, res) => {
     objectPagination.totalPage = totalPage
     //End Pagination
 
-    const products = await Product.find(query).limit(objectPagination.limitItems).skip((objectPagination.currentPage-1)*4)
+    const products = await Product
+        .find(query)
+        .sort({"position" : "desc"})
+        .limit(objectPagination.limitItems)
+        .skip((objectPagination.currentPage-1)*4)
     
     res.render("admin/pages/products/index",{
         pageTitle: "Trang Sản Phẩm",
@@ -68,10 +72,22 @@ module.exports.changeMulti = async (req,res) => {
     const ids = req.body.ids.split(",")
     const type = req.body.type;
 
-    if(type == "delete"){
-        const result = await Product.updateMany({_id : {$in : ids}},{"delete": true})
-    }else{
-        const result = await Product.updateMany({_id: {$in: ids}},{"active": type})
+    console.log(type)
+
+    switch (type){
+        case "delete":
+            await Product.updateMany({_id : {$in : ids}},{"delete": true})
+            break;
+        case "change-position":
+            for(const item of ids){
+                let [id,position] = item.split("-")
+                position = parseInt(position)
+                await Product.updateOne({_id : id},{"position": position})
+            }
+            break;
+        default:
+            await Product.updateMany({_id: {$in: ids}},{"active": type})
+            break;
     }
     
     const backUrl = req.get("Referer") || "/admin/products";
