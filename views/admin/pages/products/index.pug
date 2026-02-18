@@ -1,6 +1,11 @@
 extends ../../layouts/default.pug 
 
+include ../../mixins/alert
+
 block main
+    
+    +Alert(messages,"5000")
+
     h1 Danh sách sản phẩm
     .container-fluid.px-3
         .productTool.container.px-0.rounded

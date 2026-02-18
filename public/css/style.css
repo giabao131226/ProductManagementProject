@@ -86,6 +86,7 @@
 .m-top-2{
     margin-top: 8px;
 }
+
 /* CSS custom */
 .sider{
     width: 15vw;
@@ -121,8 +122,6 @@ td{
     border-left: 1px solid black;
     font-size: 16px;
 }
-.dsSanPham{
-}
 .productTool{
     border: 1px solid #ddd
 }
@@ -150,4 +149,9 @@ td{
 /* ADMIN PRODUCT CSS */
 .form__timKiem{
     border: 1px solid black;
+}
+
+/*  */
+.alert-hidden{
+    display: none !important;
 }

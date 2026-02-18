@@ -62,6 +62,8 @@ module.exports.changeStatus = async (req,res) => {
 
     await Product.updateOne({_id: id},{active: status})
 
+    req.flash('success','Cập nhật trạng thái sản phẩm thành công!!')
+
     const backUrl = req.get("Referer") || "/admin/products";
     
     res.redirect(backUrl)
@@ -72,11 +74,10 @@ module.exports.changeMulti = async (req,res) => {
     const ids = req.body.ids.split(",")
     const type = req.body.type;
 
-    console.log(type)
-
     switch (type){
         case "delete":
             await Product.updateMany({_id : {$in : ids}},{"delete": true})
+            req.flash('success','Bạn đã xoá sản phẩm thành công,sản phẩm sẽ được chuyển vào thùng rác!!')
             break;
         case "change-position":
             for(const item of ids){
@@ -84,6 +85,7 @@ module.exports.changeMulti = async (req,res) => {
                 position = parseInt(position)
                 await Product.updateOne({_id : id},{"position": position})
             }
+            req.flash('success','Cập nhật vị trí thành công!!')
             break;
         default:
             await Product.updateMany({_id: {$in: ids}},{"active": type})
@@ -100,6 +102,8 @@ module.exports.deleteProduct = async (req,res) => {
     const id = req.params.id;
     
     const result  = await Product.updateOne({_id: id},{"delete": true})
+
+    req.flash('success','Bạn đã xoá sản phẩm thành công,sản phẩm sẽ được chuyển vào thùng rác!!')
 
     const backUrl = req.get("Referer") || "/admin/products";
 
@@ -122,6 +126,8 @@ module.exports.restoreProduct = async (req,res) => {
     const id = req.params.id
 
     await Product.updateOne({_id : id},{delete: false})
+
+    req.flash('success','Sản Phẩm Đã Được Khôi Phục!!')
 
     const backUrl = req.get("Referer") || "/admin/products";
 

@@ -1,6 +1,10 @@
 extends ../../layouts/default.pug 
 
+include ../../mixins/alert
+
 block main
+    +Alert(messages,"5000")
+
     div(class = "d-flex items-center")
         button(class = "border-none font-bold ") < Trở lại
 

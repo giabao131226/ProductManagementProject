@@ -1,3 +1,7 @@
+
+const cookieParser = require("cookie-parser")
+const session = require("express-session")
+const flash = require('express-flash')
 const express = require("express");
 const bodyParser = require('body-parser')
 const methodOverride = require("method-override")
@@ -17,6 +21,19 @@ app.use(bodyParser.urlencoded())
 
 app.set("views","./views");
 app.set("view engine","pug");
+
+// Flash
+app.use(cookieParser('i love dog and cat'));
+
+app.use(session({
+    secret: 'i love dog and cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 6000 }
+}));
+
+app.use(flash());
+// End Flash
 
 app.use(express.static("public"))
 

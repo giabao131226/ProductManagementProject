@@ -14,13 +14,11 @@ const handleClick = (e) => {
 }
 
 const listButton = document.querySelectorAll(".buttonDefault")
-
 listButton.forEach((item) => {
     item.addEventListener("click", handleClick)
 })
 // Search
 const formSearch = document.querySelector("#form-search")
-
 if (formSearch) {
     formSearch.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -58,7 +56,6 @@ buttonPagination.forEach((item) => {
 
 // ChangeStatus
 const changeStatus = document.querySelectorAll("[button-status]")
-
 changeStatus.forEach((item) => {
     item.addEventListener("click", (e) => {
         const status = e.target.getAttribute("button-status")
@@ -119,11 +116,10 @@ if (formChangeMulti) {
             const ids = []
             if(type === "change-position"){
                 inputsChecked.forEach((item) => {
-                    console.log(item.closest("tr"))
-                    console.log(item.closest("tr").querySelector("td input[name='position']"))
                     const position = item.closest("tr").querySelector("input[name='position']").value
                     ids.push(item.value+"-"+position)
                 })
+                console.log(ids)
             }else{
                 inputsChecked.forEach((item) => {
                     ids.push(item.value)
@@ -167,3 +163,20 @@ if(buttonRestoreProduct){
         formRestore.submit()
     })
 }
+//End Restore Product
+
+// Show Alert
+const showAlert = document.querySelector("[show-alert]")
+if(showAlert){
+    const time = JSON.parse(showAlert.getAttribute("data-time")).time
+    const buttonCloseAlert = showAlert.querySelector("[close-alert]")
+
+    buttonCloseAlert.addEventListener("click",() => {
+        showAlert.classList.add("alert-hidden")
+    })
+
+    setTimeout(() => {
+       showAlert.classList.add("alert-hidden") 
+    },parseInt(time))
+}
+// End Show Alert
