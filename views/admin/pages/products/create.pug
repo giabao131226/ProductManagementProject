@@ -1,0 +1,50 @@
+
+extends ../../layouts/default.pug
+
+block main 
+    h1 #{pageTitle}
+
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-create-product
+            method = "POST"
+            action = "/admin/products/create" required
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Tiêu đề
+                input(type = "text" name = 'title' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Mô tả
+                textarea(name = 'des')
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Gía
+                input(type = "text" name = 'price' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") % Giảm giá
+                input(type = "text" name = 'discountPercentage' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Số lượng
+                input(type = "number" name = 'quantity' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Ảnh
+                input(type = "text" name = 'thumbnail' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 fonr-bold") Vị trí
+                input(type = "number" placeholder = "Tự động tăng" name = 'possition')
+
+            div(class = "d-flex items-center gap-x-3 col-12")
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'active' value = 'active' required) 
+                    label Hoạt Động
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'active' value = 'inactive' required)
+                    label Dừng Hoạt Động
+
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới
+
+
+
+
+
+

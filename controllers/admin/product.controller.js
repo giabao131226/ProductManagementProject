@@ -133,3 +133,29 @@ module.exports.restoreProduct = async (req,res) => {
 
     res.redirect(backUrl)
 }
+
+// [GET] /admin/products/create
+module.exports.create = async (req,res) => {
+    res.render("admin/pages/products/create",{
+        pageTitle: "Thêm mới sản phẩm"}
+    )
+}
+// [POST] /admin/products/create
+module.exports.createPost = async (req,res) => {
+    console.log(req.body)
+    if(req.body){
+        req.body.price = parseInt(req.body.price)
+        req.body.discountPercentage = parseInt(req.body.discountPercentage)
+        req.body.quantity = parseInt(req.body.quantity)
+
+        const productQuantity = await Product.countDocuments();
+        req.body.position = productQuantity;
+
+        const product = await Product.create(req.body)
+        console.log(product)
+        const backUrl = req.get("Referer") || "/admin/products";
+
+        res.redirect(backUrl)
+    }
+    
+}

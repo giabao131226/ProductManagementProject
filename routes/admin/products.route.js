@@ -9,4 +9,6 @@ router.patch("/change-multi",controller.changeMulti)
 router.delete("/delete-product/:id",controller.deleteProduct)
 router.get("/trashCan",controller.trashCan)
 router.patch("/trash-can/restore-product/:id",controller.restoreProduct)
+router.get("/create",controller.create)
+router.post("/create",controller.createPost)
 module.exports = router;

@@ -22,24 +22,27 @@ block main
     div(class = "dsSanPham container-fluid")
         .container 
             h3 Danh sách
-            div(class = "d-flex")
-                form(
+            div(class = "d-flex justify-between")
+                div(class = "d-flex")
+                    form(
                     action = `/admin/products/change-multi?_method=PATCH`
                     method = "POST"
                     id = "form-change-multi")
-                    select(name = "type")
-                        option(disabled selected) --Chọn Thao Tác--
-                        option(value = "active") Hoạt Động
-                        option(value = "inactive") Dừng Hoạt Động
-                        option(value = "delete") Xoá Tất Cả
-                        option(value = "change-position") Thay đổi vị trí
-                    input(
-                        class = "d-none"
-                        name = "ids"
-                        value =""
-                    )
-                    button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
-                a(href = "products/trashCan") Thùng Rác
+                        select(name = "type")
+                            option(disabled selected) --Chọn Thao Tác--
+                            option(value = "active") Hoạt Động
+                            option(value = "inactive") Dừng Hoạt Động
+                            option(value = "delete") Xoá Tất Cả
+                            option(value = "change-position") Thay đổi vị trí
+                        input(
+                            class = "d-none"
+                            name = "ids"
+                            value =""
+                        )
+                        button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
+                    a(href = "products/trashCan") Thùng Rác
+            
+                a(href = "/admin/products/create") Thêm mới sản phẩm
                 
             
         table(class = "container-fluid" checkbox-multi)
