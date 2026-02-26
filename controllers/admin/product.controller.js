@@ -142,20 +142,19 @@ module.exports.create = async (req,res) => {
 }
 // [POST] /admin/products/create
 module.exports.createPost = async (req,res) => {
-    console.log(req.body)
     if(req.body){
         req.body.price = parseInt(req.body.price)
         req.body.discountPercentage = parseInt(req.body.discountPercentage)
         req.body.quantity = parseInt(req.body.quantity)
-
+        req.body.delete = false;
         const productQuantity = await Product.countDocuments();
         req.body.position = productQuantity;
-
+        
+        req.body.thumbnail = `/uploads/${req.file.filename}`
         const product = await Product.create(req.body)
         console.log(product)
         const backUrl = req.get("Referer") || "/admin/products";
 
         res.redirect(backUrl)
     }
-    
 }

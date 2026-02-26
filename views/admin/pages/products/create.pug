@@ -9,8 +9,13 @@ block main
             class = "d-flex flex-column items-start px-3"
             form-create-product
             method = "POST"
-            action = "/admin/products/create" required
+            action = "/admin/products/create" 
+            enctype ="multipart/form-data"
+            required
         )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Chọn Ảnh Cho Sản Phẩm
+                input(type = "file" name = 'thumbnail' accept = 'image/*'  required)
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Tiêu đề
                 input(type = "text" name = 'title' required)
@@ -26,9 +31,6 @@ block main
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Số lượng
                 input(type = "number" name = 'quantity' required)
-            div(class = "d-flex flex-column col-12")
-                p(class = "m-0 font-bold") Ảnh
-                input(type = "text" name = 'thumbnail' required)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 fonr-bold") Vị trí
                 input(type = "number" placeholder = "Tự động tăng" name = 'possition')

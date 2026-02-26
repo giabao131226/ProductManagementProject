@@ -36,6 +36,7 @@ app.use(flash());
 // End Flash
 
 app.use(express.static("public"))
+app.use("/uploads",express.static("uploads"))
 
 route(app);
 routeAdmin(app);
