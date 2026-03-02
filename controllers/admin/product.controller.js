@@ -24,29 +24,29 @@ module.exports.index = async (req, res) => {
         }
     ]
 
-    const query = {"delete": false}
+    const query = { "delete": false }
 
-    filterStatus(req.query,listButton,query)
-    search(req.query,query)
+    filterStatus(req.query, listButton, query)
+    search(req.query, query)
 
     // Pagination
     let objectPagination = {
         currentPage: 1,
         limitItems: 4
     }
-    pagination(req.query,objectPagination,query)
+    pagination(req.query, objectPagination, query)
     const countProduct = await Product.countDocuments(query);
-    const totalPage = Math.ceil(countProduct/objectPagination.limitItems)
+    const totalPage = Math.ceil(countProduct / objectPagination.limitItems)
     objectPagination.totalPage = totalPage
     //End Pagination
 
     const products = await Product
         .find(query)
-        .sort({"position" : "desc"})
+        .sort({ "position": "desc" })
         .limit(objectPagination.limitItems)
-        .skip((objectPagination.currentPage-1)*4)
-    
-    res.render("admin/pages/products/index",{
+        .skip((objectPagination.currentPage - 1) * 4)
+
+    res.render("admin/pages/products/index", {
         pageTitle: "Trang Sản Phẩm",
         products: products,
         button: listButton,
@@ -56,54 +56,54 @@ module.exports.index = async (req, res) => {
 }
 
 // [PATCH] /admin/products/change-status/:status/:id
-module.exports.changeStatus = async (req,res) => {
+module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
 
-    await Product.updateOne({_id: id},{active: status})
+    await Product.updateOne({ _id: id }, { active: status })
 
-    req.flash('success','Cập nhật trạng thái sản phẩm thành công!!')
+    req.flash('success', 'Cập nhật trạng thái sản phẩm thành công!!')
 
     const backUrl = req.get("Referer") || "/admin/products";
-    
+
     res.redirect(backUrl)
 }
 
 // [PATCH] /admin/products/change-multi
-module.exports.changeMulti = async (req,res) => {
+module.exports.changeMulti = async (req, res) => {
     const ids = req.body.ids.split(",")
     const type = req.body.type;
 
-    switch (type){
+    switch (type) {
         case "delete":
-            await Product.updateMany({_id : {$in : ids}},{"delete": true})
-            req.flash('success','Bạn đã xoá sản phẩm thành công,sản phẩm sẽ được chuyển vào thùng rác!!')
+            await Product.updateMany({ _id: { $in: ids } }, { "delete": true })
+            req.flash('success', 'Bạn đã xoá sản phẩm thành công,sản phẩm sẽ được chuyển vào thùng rác!!')
             break;
         case "change-position":
-            for(const item of ids){
-                let [id,position] = item.split("-")
+            for (const item of ids) {
+                let [id, position] = item.split("-")
                 position = parseInt(position)
-                await Product.updateOne({_id : id},{"position": position})
+                await Product.updateOne({ _id: id }, { "position": position })
             }
-            req.flash('success','Cập nhật vị trí thành công!!')
+            req.flash('success', 'Cập nhật vị trí thành công!!')
             break;
         default:
-            await Product.updateMany({_id: {$in: ids}},{"active": type})
+            await Product.updateMany({ _id: { $in: ids } }, { "active": type })
             break;
     }
-    
+
     const backUrl = req.get("Referer") || "/admin/products";
 
     res.redirect(backUrl)
 }
 
 // [DELETE] /admin/products/delete-product
-module.exports.deleteProduct = async (req,res) => {
+module.exports.deleteProduct = async (req, res) => {
     const id = req.params.id;
-    
-    const result  = await Product.updateOne({_id: id},{"delete": true})
 
-    req.flash('success','Bạn đã xoá sản phẩm thành công,sản phẩm sẽ được chuyển vào thùng rác!!')
+    const result = await Product.updateOne({ _id: id }, { "delete": true })
+
+    req.flash('success', 'Bạn đã xoá sản phẩm thành công,sản phẩm sẽ được chuyển vào thùng rác!!')
 
     const backUrl = req.get("Referer") || "/admin/products";
 
@@ -111,23 +111,23 @@ module.exports.deleteProduct = async (req,res) => {
 }
 
 // [GET] /admin/products/trash-can
-module.exports.trashCan = async (req,res) => {
+module.exports.trashCan = async (req, res) => {
 
-    const products = await Product.find({"delete":true})
+    const products = await Product.find({ "delete": true })
 
-    res.render("admin/pages/trashCan/index",{
+    res.render("admin/pages/trashCan/index", {
         products: products
     })
 }
 
 // [GET] /admin/products/trash-can/restore-product/:id
 
-module.exports.restoreProduct = async (req,res) => {
+module.exports.restoreProduct = async (req, res) => {
     const id = req.params.id
 
-    await Product.updateOne({_id : id},{delete: false})
+    await Product.updateOne({ _id: id }, { delete: false })
 
-    req.flash('success','Sản Phẩm Đã Được Khôi Phục!!')
+    req.flash('success', 'Sản Phẩm Đã Được Khôi Phục!!')
 
     const backUrl = req.get("Referer") || "/admin/products";
 
@@ -135,26 +135,36 @@ module.exports.restoreProduct = async (req,res) => {
 }
 
 // [GET] /admin/products/create
-module.exports.create = async (req,res) => {
-    res.render("admin/pages/products/create",{
-        pageTitle: "Thêm mới sản phẩm"}
+module.exports.create = async (req, res) => {
+    res.render("admin/pages/products/create", {
+        pageTitle: "Thêm mới sản phẩm"
+    }
     )
 }
 // [POST] /admin/products/create
-module.exports.createPost = async (req,res) => {
-    if(req.body){
-        req.body.price = parseInt(req.body.price)
-        req.body.discountPercentage = parseInt(req.body.discountPercentage)
-        req.body.quantity = parseInt(req.body.quantity)
-        req.body.delete = false;
-        const productQuantity = await Product.countDocuments();
-        req.body.position = productQuantity;
-        
-        req.body.thumbnail = `/uploads/${req.file.filename}`
-        const product = await Product.create(req.body)
-        console.log(product)
-        const backUrl = req.get("Referer") || "/admin/products";
-
+module.exports.createPost = async (req, res) => {
+    const backUrl = req.get("Referer") || "/admin/products";
+    if(!req.body.title.trim()){
+        req.flash("error","Bạn Phải Nhập Đầy Đủ Thông Tin Đã");
         res.redirect(backUrl)
     }
+
+    if(req.body.price) req.body.price = parseInt(req.body.price)
+    if(req.body.discountPercentage) req.body.discountPercentage = parseInt(req.body.discountPercentage)
+    if(req.body.quantity) req.body.quantity = parseInt(req.body.quantity)
+    req.body.delete = false;
+
+    if (!req.body.position) {
+        const productQuantity = await Product.countDocuments();
+        req.body.position = productQuantity;
+    }
+
+    if (req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`
+    }
+
+    await Product.create(req.body)
+
+    req.flash("success", "Bạn đã thêm sản phẩm thành công")
+    res.redirect(backUrl)
 }

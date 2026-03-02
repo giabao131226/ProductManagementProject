@@ -8,3 +8,12 @@ mixin Alert(messages,time)
                 class = "alert alert-success d-flex justify-between")
                 span #{messages.success}
                 button(close-alert class = "bg-none border-none") x
+    
+    -if(messages.error)
+        .message.info 
+            div(
+                show-alert 
+                data-time = {time}
+                class = "alert alert-success d-flex justify-between")
+                span #{messages.error}
+                button(close-alert class = "bg-none border-none") x

@@ -1,7 +1,10 @@
 
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
-block main 
+block main
+    +Alert(messages,5000)
+
     h1 #{pageTitle}
 
     div
@@ -15,7 +18,7 @@ block main
         )
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Chọn Ảnh Cho Sản Phẩm
-                input(type = "file" name = 'thumbnail' accept = 'image/*'  required)
+                input(type = "file" name = 'thumbnail' accept = 'image/*')
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Tiêu đề
                 input(type = "text" name = 'title' required)
@@ -24,23 +27,23 @@ block main
                 textarea(name = 'des')
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Gía
-                input(type = "text" name = 'price' required)
+                input(type = "text" name = 'price')
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") % Giảm giá
-                input(type = "text" name = 'discountPercentage' required)
+                input(type = "text" name = 'discountPercentage')
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Số lượng
-                input(type = "number" name = 'quantity' required)
+                input(type = "number" name = 'quantity')
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 fonr-bold") Vị trí
                 input(type = "number" placeholder = "Tự động tăng" name = 'possition')
 
             div(class = "d-flex items-center gap-x-3 col-12")
                 div(class = " gap-x-2")
-                    input(type = 'radio' name = 'active' value = 'active' required) 
+                    input(type = 'radio' name = 'active' value = 'active') 
                     label Hoạt Động
                 div(class = " gap-x-2")
-                    input(type = 'radio' name = 'active' value = 'inactive' required)
+                    input(type = 'radio' name = 'active' value = 'inactive')
                     label Dừng Hoạt Động
 
             button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới
