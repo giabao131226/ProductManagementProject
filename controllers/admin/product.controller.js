@@ -168,3 +168,45 @@ module.exports.createPost = async (req, res) => {
     req.flash("success", "Bạn đã thêm sản phẩm thành công")
     res.redirect(backUrl)
 }
+
+// [GET] /admin/products/edit/:id
+
+module.exports.editProducts = async (req,res) => {
+    const id = req.params.id;
+    
+    const productDetail = await Product.find({_id:id})
+    res.render("admin/pages/products/edit",{
+        productDetail: productDetail[0]
+    })
+}
+
+// [PATCH] /admin/products/edit/:id
+
+module.exports.editProductPatch = async (req,res) => {
+    const backUrl = req.get("Referer") || "/admin/products/edit"
+    const id = req.params.id
+    if(!req.body.title.trim()){
+        return;
+    }
+    const oldDetail = await Product.find({_id:id})
+    const file = req.file;
+    if(file){  
+        req.body.thumbnail = `/uploads/${file.filename}`;
+    }
+    if(req.body.price) req.body.price = parseInt(req.body.price)
+    if(req.body.discountPercentage) req.body.discountPercentage = parseInt(req.body.discountPercentage)
+    if(req.body.quantity) req.body.quantity = parseInt(req.body.quantity)
+    
+    await Product.updateOne({_id: id},{
+        $set: {
+            title: `${req.body.title.trim()}`,
+            des: `${req.body.des}`,
+            thumbnail: `${file ? req.body.thumbnail : oldDetail[0].thumbnail}`,
+            price: `${req.body.price || oldDetail[0].price}`,
+            active: `${req.body.active}`
+        }
+    })
+
+    req.flash("success","Cập nhật thông tin sản phẩm thành công")
+    res.redirect(backUrl)
+}

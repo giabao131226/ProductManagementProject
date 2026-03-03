@@ -180,3 +180,13 @@ if(showAlert){
     },parseInt(time))
 }
 // End Show Alert
+
+// Edit Product
+// const formEditProduct = document.querySelector("#form-edit-product")
+// if(formEditProduct){
+//     formEditProduct.addEventListener("submit",(e) => {
+//         e.preventDefault();
+
+//     })
+// }
+// End edit Product

@@ -76,7 +76,8 @@ block main
                                     id-element = item.id
                                     ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
                             td 
-                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3 Sửa
+                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                                    a(href = `/admin/products/edit/${item.id}` class = "text-black text-decoration-none") Sửa
                                 button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
     
     
