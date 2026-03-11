@@ -79,6 +79,8 @@ block main
                                 button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
                                     a(href = `/admin/products/edit/${item.id}` class = "text-black text-decoration-none") Sửa
                                 button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
+                                button
+                                    a(href = `/admin/products/detail/${item.id}`) Xem chi tiết
     
     
     nav 

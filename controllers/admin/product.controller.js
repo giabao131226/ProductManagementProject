@@ -210,3 +210,16 @@ module.exports.editProductPatch = async (req,res) => {
     req.flash("success","Cập nhật thông tin sản phẩm thành công")
     res.redirect(backUrl)
 }
+
+
+// [GET] /admin/products/detail/:id
+
+module.exports.detailProduct = async (req,res) => {
+    const id = req.params.id;
+
+    const detailProduct =  await Product.findOne({_id: id});
+
+    res.render("admin/pages/products/detail",{
+        Product: detailProduct
+    })
+}

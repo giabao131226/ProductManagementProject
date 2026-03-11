@@ -20,5 +20,5 @@ router.post("/create",
     controller.createPost)
 router.get("/edit/:id",controller.editProducts)
 router.patch("/edit/:id",upload.single("thumbnail"),controller.editProductPatch)
-
+router.get("/detail/:id",controller.detailProduct)
 module.exports = router;

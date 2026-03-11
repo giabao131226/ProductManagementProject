@@ -8,3 +8,11 @@ module.exports.index = async (req, res) => {
         products: products
     })
 }
+
+module.exports.detailProduct = async (req,res) => {
+    const id = req.params.id
+
+    const detailProduct = await Product.findOne({_id: id})
+
+    res.render("client/pages/products/detail",{Product: detailProduct})
+}

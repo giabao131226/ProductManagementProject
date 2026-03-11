@@ -1,0 +1,22 @@
+
+*{
+    box-sizing: border-box;
+}
+.DetailProduct .vienMainImg{
+    height: 450px;
+}
+.DetailProduct .vienMainImg img{
+    height: 450px;
+    width: 100%;
+    object-fit: cover;
+}
+.DetailProduct .vienimg{
+    height: 100px;
+}
+.DetailProduct .vienimg img{
+    object-fit: cover;
+    height: 100px;
+    width: 100%;
+    cursor: pointer;
+}
+

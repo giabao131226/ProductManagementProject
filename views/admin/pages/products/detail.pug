@@ -1,0 +1,45 @@
+
+extends ../../layouts/default
+
+block main
+    link(rel = "stylesheet" href = "/css/ProductCss/detail.css")
+    div.container-fluid.text-align-start.DetailProduct
+        div.container
+            div(class = "d-flex gap-x-4")
+                div(class = "col-6 px-0 py-0")
+                    div(class = "vienMainImg col-12 px-0 py-0")
+                        img(src = "https://product.hstatic.net/200000605631/product/-unisex-nam-nu-insidemen-ihd002bz__7__ff4a3abea33141b99dd7dd0ad98039ec_d6ba099e92864133bb5a2b3dd385af50.jpg" class = "col-12 px-0 py-0")
+
+                    div(class = "col-12 px-0 py-1 d-flex items-center justify-between")
+                        div(class = "vienimg col-3 px-1 py-0")
+                            img(src = "https://product.hstatic.net/200000605631/product/-unisex-nam-nu-insidemen-ihd002bz__7__ff4a3abea33141b99dd7dd0ad98039ec_d6ba099e92864133bb5a2b3dd385af50.jpg")
+                        div(class = "vienimg col-3 px-1 py-0")
+                            img(src = "https://product.hstatic.net/200000605631/product/-unisex-nam-nu-insidemen-ihd002bz__7__ff4a3abea33141b99dd7dd0ad98039ec_d6ba099e92864133bb5a2b3dd385af50.jpg")
+                        div(class = "vienimg col-3 px-1 py-0")
+                            img(src = "https://product.hstatic.net/200000605631/product/-unisex-nam-nu-insidemen-ihd002bz__7__ff4a3abea33141b99dd7dd0ad98039ec_d6ba099e92864133bb5a2b3dd385af50.jpg")
+                        div(class = "vienimg col-3 px-1 py-0")
+                            img(src = "https://product.hstatic.net/200000605631/product/-unisex-nam-nu-insidemen-ihd002bz__7__ff4a3abea33141b99dd7dd0ad98039ec_d6ba099e92864133bb5a2b3dd385af50.jpg")
+
+                div(class = "col-6 bg-gray-200 d-flex flex-column gap-y-3")
+                    div(class = "d-flex items-center")
+                        span(style = "width: 80px") ID:
+                        span(class = "font-bold") #{Product._id} 
+
+                    div(class = "d-flex items-center justify-between")
+                        p(class = "m-0 font-bold") #{Product.title}
+                        p(class = "m-0 font-bold") $#{Product.price}
+                    
+                    div(class = "d-flex items-center")
+                        span(style = "width: 80px") Delete:
+                        span(class = "text-red font-bold") #{Product.delete ? "Đã Xoá" : "Chưa Xoá"} 
+
+                    div(class = "d-flex items-center")
+                        span(style = "width: 80px") Trạng Thái:    
+                        button(
+                            class = `border-none font-bold rounded text-white font-14.px-3 ${Product.active=="active" ? "bg-green-200" : "bg-red-600"}` 
+                            button-status = Product.active=="active" ? "inactive" : "active"
+                            
+                            ) #{Product.active=="active" ? "Hoạt Động" : "Không hoạt động"}
+
+                    
+
