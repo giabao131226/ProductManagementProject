@@ -19,7 +19,7 @@ app.use(methodOverride('_method'))
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded())
 
-app.set("views","./views");
+app.set("views",`${__dirname}/views`);
 app.set("view engine","pug");
 
 // Flash
@@ -35,8 +35,8 @@ app.use(session({
 app.use(flash());
 // End Flash
 
-app.use(express.static("public"))
-app.use("/uploads",express.static("uploads"))
+app.use(express.static(`${__dirname}/public`))
+app.use("/uploads",express.static(`${__dirname}/uploads`))
 
 route(app);
 routeAdmin(app);
