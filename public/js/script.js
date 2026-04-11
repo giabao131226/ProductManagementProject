@@ -190,3 +190,30 @@ if(showAlert){
 //     })
 // }
 // End edit Product
+
+
+// Hàm Sort
+const selectSort = document.querySelector(".select-sort")
+if(selectSort){
+    const url = new URL(window.location.href);
+    selectSort.addEventListener("change",(e) => {
+        const {name,value} = e.target;
+        let [fieldSort,valueSort] = value.split("-")
+        if(!valueSort) valueSort = "asc"
+        url.searchParams.set("key",fieldSort)
+        url.searchParams.set("sortValue",valueSort)
+        
+        window.location.href = url.href
+    })
+
+    const buttonClear = document.querySelector(".button-clear")
+    buttonClear.addEventListener("click",() => {
+        url.searchParams.delete("key")
+        url.searchParams.delete("sortValue")
+
+        window.location.href = url.href
+    })
+}
+
+
+// End Sort

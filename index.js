@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const flash = require('express-flash')
 const express = require("express");
+const path = require('path');
 const bodyParser = require('body-parser')
 const methodOverride = require("method-override")
 const route = require("./routes/client/index.route")
@@ -35,8 +36,11 @@ app.use(session({
 app.use(flash());
 // End Flash
 
+
 app.use(express.static(`${__dirname}/public`))
 app.use("/uploads",express.static(`${__dirname}/uploads`))
+/* New Route to the TinyMCE Node module */
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 route(app);
 routeAdmin(app);

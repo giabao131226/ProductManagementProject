@@ -40,9 +40,14 @@ module.exports.index = async (req, res) => {
     objectPagination.totalPage = totalPage
     //End Pagination
 
+    // Sort
+    const keySort = req.query.key || "position"
+    const valueSort = req.query.sortValue ? req.query.sortValue : "asc"
+    // End Sort
+
     const products = await Product
         .find(query)
-        .sort({ "position": "desc" })
+        .sort({ [keySort]: valueSort })
         .limit(objectPagination.limitItems)
         .skip((objectPagination.currentPage - 1) * 4)
 
@@ -51,7 +56,8 @@ module.exports.index = async (req, res) => {
         products: products,
         button: listButton,
         currentPage: objectPagination.currentPage,
-        totalPage: objectPagination.totalPage
+        totalPage: objectPagination.totalPage,
+        keyAndValueSort: keySort+"-"+valueSort
     })
 }
 
@@ -159,10 +165,6 @@ module.exports.createPost = async (req, res) => {
         req.body.position = productQuantity;
     }
 
-    if (req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`
-    }
-
     await Product.create(req.body)
 
     req.flash("success", "Bạn đã thêm sản phẩm thành công")
@@ -189,10 +191,7 @@ module.exports.editProductPatch = async (req,res) => {
         return;
     }
     const oldDetail = await Product.find({_id:id})
-    const file = req.file;
-    if(file){  
-        req.body.thumbnail = `/uploads/${file.filename}`;
-    }
+   
     if(req.body.price) req.body.price = parseInt(req.body.price)
     if(req.body.discountPercentage) req.body.discountPercentage = parseInt(req.body.discountPercentage)
     if(req.body.quantity) req.body.quantity = parseInt(req.body.quantity)

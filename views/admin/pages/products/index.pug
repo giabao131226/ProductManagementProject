@@ -18,6 +18,18 @@ block main
                         input(type = "text" name = "keyword" class = "border-none outline-none")
                         button(class = "border-none bg-white")
                             i(class="fa-solid fa-magnifying-glass")
+    .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Sắp Xếp
+            select(name="sort" class="select-sort" style = "margin: 20px 12px;")
+                option(readonly value = "") Sắp Xếp
+                option(value="position-asc" selected= keyAndValueSort === "position-asc") Vị Trí Tăng Dần
+                option(value="position-desc" selected= keyAndValueSort === "position-desc") Vị Trí Giảm Dần
+                option(value="price-asc" selected= keyAndValueSort === "price-asc") Giá Cả Tăng Dần                    
+                option(value="price-desc" selected= keyAndValueSort === "price-desc") Giá Cả Giảm Dần                    
+                option(value="title-asc" selected= keyAndValueSort === "title-asc") Tiêu Đề A-Z
+                option(value="title-desc" selected= keyAndValueSort === "title-desc") Tiêu Đề Z-A
+            button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
 
     div(class = "dsSanPham container-fluid")
         .container 
@@ -116,5 +128,7 @@ block main
         action = ""
         data-path = `/admin/products/delete-product`
     )
+
+
 
                     
