@@ -1,0 +1,7 @@
+mixin select-tree(arr,level = 1)
+    each item in arr
+        console.log("item là",item)
+        - const prefix = Array(level + 1).join("--")
+        option #{prefix}#{item._doc.title}
+        - if(item.children)
+            +select-tree(item.children,level+1)

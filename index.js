@@ -20,22 +20,21 @@ app.use(methodOverride('_method'))
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded())
 
+app.use(express.urlencoded({ extended: true }));
+
 app.set("views",`${__dirname}/views`);
 app.set("view engine","pug");
 
 // Flash
 app.use(cookieParser('i love dog and cat'));
-
 app.use(session({
     secret: 'i love dog and cat',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 6000 }
 }));
-
 app.use(flash());
 // End Flash
-
 
 app.use(express.static(`${__dirname}/public`))
 app.use("/uploads",express.static(`${__dirname}/uploads`))

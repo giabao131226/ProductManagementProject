@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug 
+
+block main 
+    h1 #{pageTitle}
+    .bg-gray.col-12
+        a(class = "bg-blue text-white font-bold border-none cursor-pointer px-2 py-2 text-decoration-none" href = "product-category/create") Thêm mới
+    div(class = "dsSanPham container-fluid")
+        .container 
+            h3 Danh sách
+            div(class = "d-flex justify-between")
+                div(class = "d-flex")
+                    form(
+                    action = `/admin/products/change-multi?_method=PATCH`
+                    method = "POST"
+                    id = "form-change-multi")
+                        select(name = "type")
+                            option(disabled selected) --Chọn Thao Tác--
+                            option(value = "active") Hoạt Động
+                            option(value = "inactive") Dừng Hoạt Động
+                            option(value = "delete") Xoá Tất Cả
+                            option(value = "change-position") Thay đổi vị trí
+                        input(
+                            class = "d-none"
+                            name = "ids"
+                            value =""
+                        )
+                        button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
+                    a(href = "products/trashCan") Thùng Rác
+            
+                a(href = "/admin/products/create") Thêm mới sản phẩm
+                
+            
+        table(class = "container-fluid" checkbox-multi)
+                thead
+                    tr.text-align-center
+                        th 
+                            input(type = "checkbox" id = "changeStatusAll")
+                        th STT 
+                        th Hình ảnh
+                        th Tiêu đề
+                        th Vị trí
+                        th Trạng thái
+                        th Hành động
+                tbody 
+                    each item,index in category
+                        tr.text-align-center
+                            td
+                                input(type = "checkbox" name = "id" value = `${item.id}`)
+                            td #{index+1}
+                            td(style = "width: 100px;height:100px")
+                                img(src = `${item.thumbnail}` style = "width: 100px;height:100px")
+                            td #{item.title}
+                            
+                            td 
+                                input(type = "number" name = "position" value = `${item.position}`)
+                            td
+                                button(
+                                    class = `border-none font-bold rounded text-white font-14.px-3 ${item.active=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                    button-status = item.active=="active" ? "inactive" : "active"
+                                    id-element = item.id
+                                    ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
+                            td 
+                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                                    a(href = `/admin/products/edit/${item.id}` class = "text-black text-decoration-none") Sửa
+                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
+                                button
+                                    a(href = `/admin/products/detail/${item.id}`) Xem chi tiết
+        

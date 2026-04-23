@@ -1,0 +1,52 @@
+
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+
+block main
+    +Alert(messages,5000)
+
+    h1 #{pageTitle}
+
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-create-product
+            method = "POST"
+            action = "/admin/product-category/create" 
+            enctype ="multipart/form-data"
+            required
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Chọn Ảnh Cho Sản Phẩm
+                input(type = "file" name = 'thumbnail' accept = 'image/*')
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Tiêu đề
+                input(type = "text" name = 'title' required)
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Danh mục cha
+                select(name = "parent_id")
+                    +select-tree(category)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Mô tả
+                textarea(name = 'des' class = "textarea-tinymce")
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 fonr-bold") Vị trí
+                input(type = "number" placeholder = "Tự động tăng" name = 'possition')
+
+            div(class = "d-flex items-center gap-x-3 col-12")
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'active' value = 'active') 
+                    label Hoạt Động
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'active' value = 'inactive')
+                    label Dừng Hoạt Động
+
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới
+
+
+
+
+
+
