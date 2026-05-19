@@ -3,18 +3,16 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
 
-
 block main
     +Alert(messages,5000)
 
     h1 #{pageTitle}
-
     div
         form(
             class = "d-flex flex-column items-start px-3"
-            form-create-product
+            form-edit-product
             method = "POST"
-            action = "/admin/product-category/create" 
+            action = `/admin/product-category/edit/${data._id}?_method=PATCH`
             enctype ="multipart/form-data"
             required
         )
@@ -23,31 +21,34 @@ block main
                 input(type = "file" name = 'thumbnail' accept = 'image/*' change-image)
             div(class = "d-flex col-12")
                 div(class = "d-flex flex-column col-6")
+                    p(class = "m-0 font-bold") Ảnh Cũ
+                    img(src = data.thumbnail class = "col-10")
+                div(class = "d-flex flex-column col-6")
                     p(class = "m-0 font-bold") Ảnh Mới
                     img(class = "col-10" id = "edit-new-image")
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Tiêu đề
-                input(type = "text" name = 'title' required)
+                input(type = "text" name = 'title' value = data.title required)
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Danh mục cha
                 select(name = "parent_id")
-                    +select-tree(category)
+                    +select-tree(category,1,data.parent_id)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Mô tả
                 textarea(name = 'des' class = "textarea-tinymce")
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 fonr-bold") Vị trí
-                input(type = "number" placeholder = "Tự động tăng" name = 'possition')
+                input(type = "number" placeholder = "Tự động tăng" name = 'possition' value = data.position)
 
             div(class = "d-flex items-center gap-x-3 col-12")
                 div(class = " gap-x-2")
-                    input(type = 'radio' name = 'active' value = 'active') 
+                    input(type = 'radio' name = 'active' value = 'active' checked = (data.status == "active" ? true : false)) 
                     label Hoạt Động
                 div(class = " gap-x-2")
-                    input(type = 'radio' name = 'active' value = 'inactive')
+                    input(type = 'radio' name = 'active' value = 'inactive' checked = (data.status == "active" ? true : false))
                     label Dừng Hoạt Động
 
-            button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Chỉnh sửa
 
     
 

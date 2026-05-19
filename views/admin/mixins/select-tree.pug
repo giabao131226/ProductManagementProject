@@ -1,7 +1,6 @@
-mixin select-tree(arr,level = 1)
+mixin select-tree(arr,level = 1,parent_category)
     each item in arr
-        console.log("item là",item)
         - const prefix = Array(level + 1).join("--")
-        option #{prefix}#{item._doc.title}
+        option(value = item._doc._id selected = (parent_category == item._doc._id ? true : false)) #{prefix}#{item._doc.title}
         - if(item.children)
-            +select-tree(item.children,level+1)
+            +select-tree(item.children,level+1,parent_category)

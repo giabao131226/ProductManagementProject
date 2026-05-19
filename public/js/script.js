@@ -181,17 +181,6 @@ if(showAlert){
 }
 // End Show Alert
 
-// Edit Product
-// const formEditProduct = document.querySelector("#form-edit-product")
-// if(formEditProduct){
-//     formEditProduct.addEventListener("submit",(e) => {
-//         e.preventDefault();
-
-//     })
-// }
-// End edit Product
-
-
 // Hàm Sort
 const selectSort = document.querySelector(".select-sort")
 if(selectSort){
@@ -217,3 +206,35 @@ if(selectSort){
 
 
 // End Sort
+
+// Hàm delete product-category
+const formProductCategory = document.querySelector(".delete-product-category")
+const buttonDeleteProductCategory = document.querySelectorAll("[button-delete-product-category]")
+if(buttonDeleteProductCategory.length > 0){
+    buttonDeleteProductCategory.forEach((item) => item.addEventListener("click",(e) => {
+        const id = e.target.getAttribute("id-element");
+        formProductCategory.action = `/admin/product-category/delete/${id}?_method=PATCH`;
+        formProductCategory.submit();
+    }))
+}
+
+
+// Edit hiển thị image mới
+const inputImage = document.querySelector("input[change-image]");
+if(inputImage){
+    inputImage.addEventListener("change",(e) => {
+        const file = e.target.files[0];
+        const newUrlImage = URL.createObjectURL(file);
+        const imgNew = document.querySelector("#edit-new-image");
+        imgNew.setAttribute("src",newUrlImage);
+    })
+}
+
+// Edit category
+// const formChangeCategory = document.querySelector("form[form-edit-product]")
+// if(formChangeCategory){
+//     formChangeCategory.addEventListener("submit",(e) => {
+//         e.preventDefault();
+
+//     })
+// }

@@ -4,7 +4,10 @@ const productCategorySchema = mongoose.Schema({
     parent_id: String,
     description: String,
     thumbnail: String,
-    status: String,
+    status: {
+        type: String,
+        default: "active"
+    },
     position: Number,
     deleted: {
         type: Boolean,

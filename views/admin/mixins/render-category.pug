@@ -1,0 +1,27 @@
+mixin render-category(arr,level)
+    - const prefix = new Array(level+1).join("--")
+    each item,index in arr
+        tr.text-align-center
+            td
+                input(type = "checkbox" name = "id" value = `${item._id}`)
+            td #{item._id}
+            td(style = "width: 100px;height:100px")
+                img(src = `${item.thumbnail}` style = "width: 100px;height:100px")
+            td #{prefix + item.title}
+            
+            td 
+                input(type = "number" name = "position" value = `${item.position}`)
+            td
+                button(
+                    class = `border-none font-bold rounded text-white font-14.px-3 ${item.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                    button-status = item.status=="active" ? "inactive" : "active"
+                    id-element = item._id
+                    ) #{item.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+            td 
+                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                    a(href = `/admin/product-category/edit/${item._id}` class = "text-black text-decoration-none") Sửa
+                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product-category id-element = item._id) Xoá
+                button
+                    a(href = `/admin/products/detail/${item._id}`) Xem chi tiết
+        - if(item.children?.length > 0) 
+            +render-category(item.children,level+1)
