@@ -4,7 +4,7 @@ module.exports.index = async (req,res) => {
     const find = {
         deleted: false
     }
-    const listRoles = await Roles.find(find);
+    const listRoles = await Roles.find(find).lean();
     res.render("admin/pages/roles/index.pug",{
         roles: listRoles
     });
