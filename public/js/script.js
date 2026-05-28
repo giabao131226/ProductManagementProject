@@ -238,3 +238,16 @@ if(inputImage){
 
 //     })
 // }
+
+
+
+// Function Role
+const buttonDeleteRole = document.querySelector("button[button-delete-role]");
+if(buttonDeleteRole){
+    buttonDeleteRole.addEventListener("click",(e) => {
+        const formDeleteRole = document.querySelector("form[form-delete-roles]");
+        const id = e.target.getAttribute("id-element");
+        formDeleteRole.action+= `/delete/${id}?_method=DELETE`;
+        formDeleteRole.submit();
+    })
+}

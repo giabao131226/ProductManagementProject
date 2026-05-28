@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+block main
+
+    +Alert(messages,5000)
+    h1 trang tạo mới nhóm quyền
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-create-role
+            method = "POST"
+            action = "/admin/roles/create" 
+            required
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Tiêu đề
+                input(type = "text" name = 'title' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Mô tả
+                textarea(name = 'description' class = "textarea-tinymce")
+
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới

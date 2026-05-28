@@ -175,10 +175,9 @@ module.exports.createPost = async (req, res) => {
 
 module.exports.editProducts = async (req,res) => {
     const id = req.params.id;
-    
-    const productDetail = await Product.find({_id:id})
+    const productDetail = await Product.findOne({"_id":id})
     res.render("admin/pages/products/edit",{
-        productDetail: productDetail[0]
+        productDetail: productDetail
     })
 }
 

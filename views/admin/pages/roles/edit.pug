@@ -1,0 +1,26 @@
+
+extends ../../layouts/default 
+include ../../mixins/alert
+
+
+block main
+    pre= JSON.stringify(messages)
+    +Alert(messages,5000)
+
+    h1 #{pageTitle}
+
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-edit-roles
+            method = "POST"
+            action = `/admin/roles/edit/${roleDetail._id}?_method=PATCH`
+            required
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Tiêu đề
+                input(type = "text" name = 'title' value = `${roleDetail.title}` required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Mô tả ngắn
+                textarea(name = 'description' class = "textarea-tinymce") !{roleDetail.description}
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Xác Nhận

@@ -1,0 +1,84 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+block main
+    +Alert(messages,5000)
+    h1 Nhóm Quyền
+
+    .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Bộ lọc và tìm kiếm
+                .boLoc.px-3.py-3.d-flex.justify-between 
+                    .d-flex.items-center.gap-x-3
+                        //- each item in button 
+                        //-     button(class = `buttonDefault border-none ${item.class}` active = `${item.status}`) #{item.content}
+                    form(class = "d-flex items-center form__timKiem rounded" id = "form-search")
+                        input(type = "text" name = "keyword" class = "border-none outline-none")
+                        button(class = "border-none bg-white")
+                            i(class="fa-solid fa-magnifying-glass")
+    .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Sắp Xếp
+            select(name="sort" class="select-sort" style = "margin: 20px 12px;")
+                option(readonly value = "") Sắp Xếp
+                option(value="position-asc" selected= keyAndValueSort === "position-asc") Vị Trí Tăng Dần
+                option(value="position-desc" selected= keyAndValueSort === "position-desc") Vị Trí Giảm Dần
+                option(value="price-asc" selected= keyAndValueSort === "price-asc") Giá Cả Tăng Dần                    
+                option(value="price-desc" selected= keyAndValueSort === "price-desc") Giá Cả Giảm Dần                    
+                option(value="title-asc" selected= keyAndValueSort === "title-asc") Tiêu Đề A-Z
+                option(value="title-desc" selected= keyAndValueSort === "title-desc") Tiêu Đề Z-A
+            button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
+
+    div(class = "dsSanPham container-fluid")
+        .container 
+            h3 Danh sách
+            div(class = "d-flex justify-between")
+                div(class = "d-flex")
+                    form(
+                    action = `/admin/products/change-multi?_method=PATCH`
+                    method = "POST"
+                    id = "form-change-multi")
+                        select(name = "type")
+                            option(disabled selected) --Chọn Thao Tác--
+                            option(value = "active") Hoạt Động
+                            option(value = "inactive") Dừng Hoạt Động
+                            option(value = "delete") Xoá Tất Cả
+                            option(value = "change-position") Thay đổi vị trí
+                        input(
+                            class = "d-none"
+                            name = "ids"
+                            value =""
+                        )
+                        button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
+                    a(href = "products/trashCan") Thùng Rác
+            
+                a(href = "roles/create") Thêm mới nhóm quyền
+                
+            
+        table(class = "container-fluid" checkbox-multi)
+                thead
+                    tr.text-align-center
+                        th 
+                            input(type = "checkbox" id = "changeStatusAll")
+                        th STT 
+                        th Tiêu đề
+                        th Miêu tả ngắn
+                        th Hành động
+                tbody 
+                    each item,index in roles
+                        tr.text-align-center
+                            td
+                                input(type = "checkbox" name = "id" value = `${item.id}`)
+                            td #{index+1}
+                            td #{item.title}
+                            td !{item.description}
+                            td 
+                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                                    a(href = `/admin/roles/edit/${item.id}` class = "text-black text-decoration-none") Sửa
+                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-role id-element = item.id) Xoá
+                                button
+                                    a(href = `/admin/products/detail/${item.id}`) Xem chi tiết
+    form(
+        form-delete-roles
+        method = "POST"
+        action = "/admin/roles"
+    )

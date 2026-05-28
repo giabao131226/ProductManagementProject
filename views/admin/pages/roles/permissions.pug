@@ -1,0 +1,83 @@
+extends ../../layouts/default
+
+block main
+    h1 Phân quyền
+
+    .container-fluid.text-align-start
+        .d-flex.justify-end
+            button.bg-blue.border-none.rounded.font-bold.text-white.px-2(btn-update-role) Cập Nhật
+
+        div(class = "d-none" roles = roles)
+
+        table.col-12
+            thead
+                tr.text-align-center
+                    th Tính Năng
+                    each role in roles 
+                        th #{role.title}
+                tr.text-align-center(id-permissions class = "d-none")
+                    th
+                    each role in roles
+                        th(id-value = role._id) #{role._id}
+            tbody
+                tr.text-align-center
+                    th Danh mục sản phẩm
+                    each role in roles
+                        th
+                tr(permission = "permissions-category-view" class = "text-align-center")
+                    td Xem
+                    each role in roles
+                        td
+                            input(
+                                type = "checkbox" )
+                tr(permission =  "permissions-category-create" class = "text-align-center")
+                    td Thêm Mới
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr(permission = "permissions-category-edit" class = "text-align-center")
+                    td Chỉnh Sửa
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr( permission = "permissions-category-delete" class = "text-align-center")
+                    td Xoá
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr.text-align-center
+                    th Sản phẩm
+                    each role in roles
+                        th
+                tr(permission = "permissions-product-view" class = "text-align-center")
+                    td Xem
+                    each role in roles
+                        td
+                            input(
+                                type = "checkbox" )
+                tr(permission =  "permissions-product-create" class = "text-align-center")
+                    td Thêm Mới
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr(permission = "permissions-product-edit" class = "text-align-center")
+                    td Chỉnh Sửa
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr( permission = "permissions-product-delete" class = "text-align-center")
+                    td Xoá
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+
+    form(
+        form-update-permissions
+        action = "/admin/roles/permissions?_method=PATCH"
+        method = "POST"
+        class = "d-none"
+    )
+        input(type="text" name = "roles")
+
+    script(src = "/js/roles.js")
+                        
