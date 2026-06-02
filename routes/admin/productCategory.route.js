@@ -20,6 +20,7 @@ router.post("/create",
     upload.single("thumbnail"),
     async (req, res,next) => {
         try {
+            console.log(req.file);
             if (req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 req.body.thumbnail = result.url;

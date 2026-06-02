@@ -22,7 +22,9 @@ app.use(bodyParser.urlencoded())
 
 app.use(express.urlencoded({ extended: true }));
 
+// Khi render sẽ auto nhảy vào view
 app.set("views",`${__dirname}/views`);
+// cho biết template engine là pug và khi render tự động thêm đuôi .pug
 app.set("view engine","pug");
 
 // Flash

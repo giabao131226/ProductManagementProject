@@ -1,0 +1,51 @@
+extends ../../layouts/default.pug 
+
+include ../../mixins/alert.pug
+
+block main
+    h1 Thêm mới tài khoản
+
+    +Alert(messages,5000)
+
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-create-account
+            method = "POST"
+            action = "/admin/accounts/create" 
+            enctype ="multipart/form-data"
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Chọn Ảnh Đại Diện
+                input(type = "file" name = 'avatar' accept = 'image/*')
+            div(class = "d-flex col-12")
+                div(class = "d-flex flex-column col-6")
+                    p(class = "m-0 font-bold") Ảnh Mới
+                    img(class = "col-10" id = "edit-new-image")
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Họ tên *
+                input(type = "text" name = 'fullName' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Email *
+                input(type = "email" name = 'email' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Mật khẩu *
+                input(type = "text" name = 'password')
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Số điện thoại
+                input(type = "text" name = 'phone')
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Phân quyền
+                select(name = "role_id")
+                    each role in roles
+                        option(value = role._id) #{role.title}
+                
+            div(class = "d-flex items-center gap-x-3 col-12")
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'status' value = 'active') 
+                    label Hoạt Động
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'status' value = 'inactive')
+                    label Dừng Hoạt Động
+
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới
