@@ -18,7 +18,11 @@ block main
         )
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Chọn Ảnh Cho Sản Phẩm
-                input(type = "file" name = 'thumbnail' accept = 'image/*')
+                input(type = "file" name = 'thumbnail' accept = 'image/*' change-image)
+            div(class = "d-flex col-12")
+                div(class = "d-flex flex-column col-6")
+                    p(class = "m-0 font-bold") Ảnh Mới
+                    img(class = "col-10" id = "edit-new-image")
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Tiêu đề
                 input(type = "text" name = 'title' required)
