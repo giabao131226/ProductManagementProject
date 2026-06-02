@@ -3,14 +3,19 @@
     ul(class = "list-unstyled")
         li
             a(href = "/admin/dashboard" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Tổng quan
-        li
-            a(href = "/admin/products" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Sản Phẩm
-        li
-            a(href = "/admin/product-category"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh mục sản phẩm
-        li 
-            a(href = "/admin/roles"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Nhóm Quyền
-        li 
-            a(href = "/admin/roles/permissions"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Phân Quyền
-        li
-            a(href = "/admin/accounts" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh sách tài khoản
+        if(role.permissions.includes("permissions-product-view"))
+            li
+                a(href = "/admin/products" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Sản Phẩm
+        if(role.permissions.includes("permissions-category-view"))
+            li
+                a(href = "/admin/product-category"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh mục sản phẩm
+        if(role.permissions.includes("permissions-role-view"))
+            li 
+                a(href = "/admin/roles"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Nhóm Quyền
+        if(role.permissions.includes("permissions-permission-view"))
+            li 
+                a(href = "/admin/roles/permissions"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Phân Quyền
+        if(role.permissions.includes("permissions-account-view"))
+            li
+                a(href = "/admin/accounts" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh sách tài khoản
         

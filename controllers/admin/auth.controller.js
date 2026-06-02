@@ -14,17 +14,17 @@ module.exports.signIn = async (req,res) => {
             "email": req.body.email
         })
         if(user){
-            if(user.password = md5(req.body.password)){
-                console.log(user);
-                console.log(user.token);
+            if(user.password == md5(req.body.password)){
                 res.cookie("token",user.token);
                 req.flash("success","Đăng nhập thành công");
                 return res.redirect("/admin/dashboard");
             }else{
-                return req.flash("error","Đăng nhập không thành công. Mật khẩu không chính xác")
+                req.flash("error","Đăng nhập không thành công. Mật khẩu không chính xác")
+                return res.redirect("/admin/auth");
             }
         }else{
-            return req.flash("error","Đăng nhập không thành công. Email không chính xác")
+            req.flash("error","Đăng nhập không thành công. Email không chính xác")
+            return res.redirect("/admin/auth");
         }
     }catch(error){
         console.log("Lỗi khi đăng nhập: "+error);

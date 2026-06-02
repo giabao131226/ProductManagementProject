@@ -71,6 +71,75 @@ block main
                         td
                             input(type = "checkbox")
 
+                tr.text-align-center
+                    th Nhóm Quyền
+                    each role in roles
+                        th
+                tr(permission = "permissions-role-view" class = "text-align-center")
+                    td Xem
+                    each role in roles
+                        td
+                            input(
+                                type = "checkbox" )
+                tr(permission =  "permissions-role-create" class = "text-align-center")
+                    td Thêm Mới
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr(permission = "permissions-role-edit" class = "text-align-center")
+                    td Chỉnh Sửa
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr( permission = "permissions-role-delete" class = "text-align-center")
+                    td Xoá
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+
+                tr.text-align-center
+                    th Phân Quyền
+                    each role in roles
+                        th
+                tr(permission = "permissions-permission-view" class = "text-align-center")
+                    td Xem
+                    each role in roles
+                        td
+                            input(
+                                type = "checkbox" )
+                tr(permission = "permissions-permission-edit" class = "text-align-center")
+                    td Chỉnh Sửa
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                
+                tr.text-align-center
+                    th Tài Khoản
+                    each role in roles
+                        th
+                tr(permission = "permissions-account-view" class = "text-align-center")
+                    td Xem
+                    each role in roles
+                        td
+                            input(
+                                type = "checkbox" )
+                tr(permission =  "permissions-account-create" class = "text-align-center")
+                    td Thêm Mới
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr(permission = "permissions-account-edit" class = "text-align-center")
+                    td Chỉnh Sửa
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr( permission = "permissions-account-delete" class = "text-align-center")
+                    td Xoá
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                
+
     form(
         form-update-permissions
         action = "/admin/roles/permissions?_method=PATCH"

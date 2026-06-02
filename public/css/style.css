@@ -162,3 +162,7 @@ td{
 .h-screen{
     height: 100vh;
 }
+.alert-error{
+    background-color: red;
+    color: white;
+}

@@ -13,7 +13,7 @@ mixin Alert(messages,time)
             div(
                 show-alert 
                 data-time = {time}
-                class = "alert alert-success d-flex justify-between")
+                class = "alert alert-error d-flex justify-between")
                 span #{messages.error}
                 button(close-alert class = "bg-none border-none") x
     

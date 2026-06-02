@@ -1,6 +1,10 @@
 extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
 
 block main
+
+    +Alert(messages,5000)
+
     .container-fluid.text-align-start.d-flex.justify-center.items-center.h-screen
         .container.d-flex.justify-center.items-center
             form(class = "d-flex flex-column" style = "width: 400px;" action = "http://localhost:3000/admin/auth" method = "POST")

@@ -230,15 +230,6 @@ if(inputImage){
     })
 }
 
-// Edit category
-// const formChangeCategory = document.querySelector("form[form-edit-product]")
-// if(formChangeCategory){
-//     formChangeCategory.addEventListener("submit",(e) => {
-//         e.preventDefault();
-
-//     })
-// }
-
 // Function Role
 const buttonDeleteRole = document.querySelector("button[button-delete-role]");
 if(buttonDeleteRole){

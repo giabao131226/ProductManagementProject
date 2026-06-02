@@ -1,4 +1,5 @@
 const Accounts = require("../models/account.model");
+const Roles = require("../models/roles.model");
 
 module.exports.auth = async (req,res,next) => {
     try{
@@ -8,6 +9,9 @@ module.exports.auth = async (req,res,next) => {
             "status": "active",
             "token": token
         });
+        const role = await Roles.findOne({"_id": account.role_id});
+        res.locals.role = role;
+        res.locals.user = account;
         if(!account){
             return res.redirect("/admin/auth");
         }
