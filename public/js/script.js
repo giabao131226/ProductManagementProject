@@ -239,8 +239,6 @@ if(inputImage){
 //     })
 // }
 
-
-
 // Function Role
 const buttonDeleteRole = document.querySelector("button[button-delete-role]");
 if(buttonDeleteRole){
@@ -249,5 +247,14 @@ if(buttonDeleteRole){
         const id = e.target.getAttribute("id-element");
         formDeleteRole.action+= `/delete/${id}?_method=DELETE`;
         formDeleteRole.submit();
+    })
+}
+
+// Đăng XUất
+const btnDangXuat = document.querySelector("[btn-sign-out]")
+if(btnDangXuat){
+    btnDangXuat.addEventListener("click",() => {
+        document.cookie = "token=; max-age=0; path=/;";
+        window.location.href = "/admin/auth";
     })
 }
