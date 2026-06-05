@@ -81,14 +81,22 @@ block main
                             td #{item.role.title}
                             td #{item._doc.email}
                             td
-                                button(
-                                    class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
-                                    button-status = item._doc.status=="active" ? "inactive" : "active"
-                                    id-element = item.id
-                                    ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+                                if(role.permissions.includes("permissions-account-edit"))
+                                    button(
+                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                        button-status = item._doc.status=="active" ? "inactive" : "active"
+                                        id-element = item.id
+                                        ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+                                else
+                                    button(
+                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                        button-status = item._doc.status=="active" ? "inactive" : "active"
+                                        ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
                             td 
-                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
-                                    a(href = `/admin/products/edit/${item._id}` class = "text-black text-decoration-none") Sửa
-                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
+                                if(role.permissions.includes("permissions-account-edit"))
+                                    button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                                        a(href = `/admin/products/edit/${item._id}` class = "text-black text-decoration-none") Sửa
+                                if(role.permissions.includes("permissions-account-delete"))
+                                    button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
                                 button
                                     a(href = `/admin/products/detail/${item.id}`) Xem chi tiết

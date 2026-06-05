@@ -4,6 +4,7 @@ const controller = require("../../controllers/admin/accounts.controller");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const cloudinary = require("cloudinary");
+const authorization = require("../../middlewares/authorization.middleware");
 
 cloudinary.config({
     cloud_name: "dnlcvjrnb",
@@ -11,10 +12,10 @@ cloudinary.config({
     api_secret: "FY8lP8RMpVvfypM7WcbmXukKbeA"
 });
 
-router.get("/",controller.index);
-router.get("/create",controller.create)
+router.get("/",authorization.autho("permissions-account-view"),controller.index);
+router.get("/create",authorization.autho("permissions-account-create"),controller.create)
 router.post(
-    "/create",
+    "/create",authorization.autho("permissions-account-create"),
     upload.single("avatar"),
     async (req, res, next) => {
         try {

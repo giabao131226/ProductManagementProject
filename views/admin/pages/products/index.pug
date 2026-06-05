@@ -54,7 +54,8 @@ block main
                         button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
                     a(href = "products/trashCan") Thùng Rác
             
-                a(href = "/admin/products/create") Thêm mới sản phẩm
+                if(role.permissions.includes("permission-product-create"))
+                    a(href = "/admin/products/create") Thêm mới sản phẩm
                 
             
         table(class = "container-fluid" checkbox-multi)
@@ -81,16 +82,25 @@ block main
                             td #{item.price}$
                             td 
                                 input(type = "number" name = "position" value = `${item.position}`)
+                            if(role.permissions.includes("permissions-product-edit"))
                             td
-                                button(
+                                if(role.permissions.includes("permissions-product-edit"))
+                                    button(
                                     class = `border-none font-bold rounded text-white font-14.px-3 ${item.active=="active" ? "bg-green-200" : "bg-red-600"}` 
                                     button-status = item.active=="active" ? "inactive" : "active"
                                     id-element = item.id
                                     ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
+                                else
+                                    button(
+                                    class = `border-none font-bold rounded text-white font-14.px-3 ${item.active=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                    id-element = item.id
+                                    ) #{item.active=="active" ? "Hoạt Động" : "Không hoạt động"}
                             td 
-                                button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
-                                    a(href = `/admin/products/edit/${item.id}` class = "text-black text-decoration-none") Sửa
-                                button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
+                                if(role.permissions.includes("permissions-product-edit"))
+                                    button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                                        a(href = `/admin/products/edit/${item.id}` class = "text-black text-decoration-none") Sửa
+                                if(role.permissions.includes("permissions-product-delete"))
+                                    button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
                                 button
                                     a(href = `/admin/products/detail/${item.id}`) Xem chi tiết
     

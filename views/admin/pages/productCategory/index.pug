@@ -24,9 +24,9 @@ block main
                         value =""
                     )
                     button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
-        
-            a(class = "rounded bg-blue text-white font-bold border-none cursor-pointer px-2 py-2 text-decoration-none" href = "product-category/create") Thêm mới
-            
+
+            if(role.permissions.includes("permission-category-create"))
+                a(class = "rounded bg-blue text-white font-bold border-none cursor-pointer px-2 py-2 text-decoration-none" href = "product-category/create") Thêm mới
         table(class = "container-fluid" checkbox-multi)
                 thead
                     tr.text-align-center

@@ -6,6 +6,7 @@ const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const authorization = require("../../middlewares/authorization.middleware");
 
 
 cloudinary.config({
@@ -14,8 +15,8 @@ cloudinary.config({
     api_secret: "FY8lP8RMpVvfypM7WcbmXukKbeA"
 });
 
-router.get("/",controller.index)
-router.get("/create",controller.create)
+router.get("/",authorization.autho("permissions-category-view"),controller.index)
+router.get("/create",authorization.autho("permissions-category-create"),controller.create)
 router.post("/create",
     upload.single("thumbnail"),
     async (req, res,next) => {
@@ -31,9 +32,9 @@ router.post("/create",
         }
     }
     ,controller.createPost)
-router.patch("/delete/:id",controller.delete)
-router.get("/edit/:id",controller.edit)
-router.patch("/edit/:id",upload.single("thumbnail"),async (req,res,next) => {
+router.patch("/delete/:id",authorization.autho("permissions-category-delete"),controller.delete)
+router.get("/edit/:id",authorization.autho("permissions-category-edit"),controller.edit)
+router.patch("/edit/:id",authorization.autho("permissions-category-edit"),upload.single("thumbnail"),async (req,res,next) => {
     try{
         if(req.file){
             const result = await cloudinary.uploader.upload(req.file.path);

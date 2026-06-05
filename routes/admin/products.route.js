@@ -17,22 +17,21 @@ const upload = multer({
 const router = express.Router();
 
 const controller = require("../../controllers/admin/product.controller")
+const authorization = require("../../middlewares/authorization.middleware");
 
-router.get("/", controller.index)
+router.get("/",authorization.autho("permissions-product-view") ,controller.index)
 router.patch("/change-status/:status/:id", controller.changeStatus)
 router.patch("/change-multi", controller.changeMulti)
 router.delete("/delete-product/:id", controller.deleteProduct)
 router.get("/trashCan", controller.trashCan)
 router.patch("/trash-can/restore-product/:id", controller.restoreProduct)
-router.get("/create", controller.create)
-router.post("/create",
+router.get("/create",authorization.autho("permissions-product-create"),controller.create)
+router.post("/create",authorization.autho("permissions-product-post"),
     upload.single("thumbnail"),
     async (req, res,next) => {
         try {
             if (req.file) {
-                console.log(req.file)
                 const result = await cloudinary.uploader.upload(req.file.path);
-                console.log(result)
                 req.body.thumbnail = result.secure_url
             }
             next()
@@ -40,13 +39,11 @@ router.post("/create",
             res.status(500).json({ error: err.message });
         }},
         controller.createPost)
-router.get("/edit/:id", controller.editProducts)
-router.patch("/edit/:id", upload.single("thumbnail"), async (req, res) => {
+router.get("/edit/:id", authorization.autho("permissions-product-edit"),controller.editProducts)
+router.patch("/edit/:id", authorization.autho("permissions-product-edit"),upload.single("thumbnail"), async (req, res) => {
     try {
         if (req.file) {
-            console.log(req.file)
             const result = await cloudinary.uploader.upload(req.file.path);
-            console.log(result)
             req.body.thumbnail = req.file.path
         }
         next()
@@ -54,6 +51,6 @@ router.patch("/edit/:id", upload.single("thumbnail"), async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }, controller.editProductPatch)
-router.get("/detail/:id", controller.detailProduct)
+router.get("/detail/:id", authorization.autho("permissions-product-view"),controller.detailProduct)
 
 module.exports = router;
