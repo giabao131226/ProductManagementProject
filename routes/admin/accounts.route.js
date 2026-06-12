@@ -32,5 +32,18 @@ router.post(
     },
     controller.createPost
 );
+router.get("/detail",controller.detail);
+router.patch("/detail/:id",upload.single("avatar"),async (req,res,next) => {
+    try{
+        if(req.file){
+            const result = await cloudinary.uploader.upload(req.file.path);
+            req.body.avatar = result.url;
+        }
+        next();
+    }catch(error){
+        console.log("Lỗi khi cập nhật thông tin tài khoản: "+error);
+        return res.redirect("/admin/accounts/detail");
+    }
+},controller.detailPatch);
 
 module.exports = router;

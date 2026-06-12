@@ -166,3 +166,6 @@ td{
     background-color: red;
     color: white;
 }
+.cursor-pointer{
+    cursor: pointer;
+}

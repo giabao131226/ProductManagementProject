@@ -26,29 +26,33 @@ router.delete("/delete-product/:id", controller.deleteProduct)
 router.get("/trashCan", controller.trashCan)
 router.patch("/trash-can/restore-product/:id", controller.restoreProduct)
 router.get("/create",authorization.autho("permissions-product-create"),controller.create)
-router.post("/create",authorization.autho("permissions-product-post"),
+router.post("/create",authorization.autho("permissions-product-create"),
     upload.single("thumbnail"),
     async (req, res,next) => {
         try {
             if (req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 req.body.thumbnail = result.secure_url
+                console.log(result);
             }
-            next()
+            next();
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            req.flash("error","Lỗi không thể up ảnh")
+            return res.redirect("/admin/products");
         }},
         controller.createPost)
 router.get("/edit/:id", authorization.autho("permissions-product-edit"),controller.editProducts)
-router.patch("/edit/:id", authorization.autho("permissions-product-edit"),upload.single("thumbnail"), async (req, res) => {
+router.patch("/edit/:id", authorization.autho("permissions-product-edit"),upload.single("thumbnail"), async (req, res,next) => {
     try {
         if (req.file) {
             const result = await cloudinary.uploader.upload(req.file.path);
-            req.body.thumbnail = req.file.path
+            req.body.thumbnail = result.url;
         }
         next()
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.log("Lỗi khi cập nhật sản phẩm: "+err);
+        req.flash("error","Không thể cập nhật ảnh vui lòng thử lại");
+        return res.redirect(`/admin/products/edit/${req.params.id}`);
     }
 }, controller.editProductPatch)
 router.get("/detail/:id", authorization.autho("permissions-product-view"),controller.detailProduct)

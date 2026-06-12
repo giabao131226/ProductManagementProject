@@ -3,4 +3,7 @@ header(class = "bg-black .container-fluid")
     .d-flex.justify-between.items-center.px-3
         a(href = "/" class = "text-decoration-none")
             h1(class = "text-bold text-white m-0") ADMIN
-        button.bg-red.text-white.border-none.rounded(btn-sign-out) Đăng Xuất
+        .d-flex.items-center.justify-end.gap-x-1
+            img(src = user.avatar class = "avatar")
+            span.text-white.font-bold.bg-blue.px-2.rounded.cursor-pointer(href = `/admin/accounts/detail`) #{user.fullName}
+            button.bg-red.text-white.border-none.rounded(btn-sign-out) Đăng Xuất

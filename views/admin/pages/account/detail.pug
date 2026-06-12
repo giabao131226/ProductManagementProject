@@ -1,0 +1,48 @@
+extends ../../layouts/default 
+include ../../mixins/alert
+
+block main
+    +Alert(messages,5000)
+
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-create-account
+            method = "POST"
+            action = `/admin/accounts/detail/${user._id}?_method=PATCH`
+            enctype ="multipart/form-data"
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Chọn Ảnh Đại Diện
+                input(type = "file" name = 'avatar' accept = 'image/*' change-image)
+            div(class = "d-flex col-12")
+                div(class = "d-flex flex-column col-6")
+                    p(class = "m-0 font-bold") Ảnh Cũ
+                    img(src = user.avatar class = "col-10")
+                div(class = "d-flex flex-column col-6")
+                    p(class = "m-0 font-bold") Ảnh Mới
+                    img(class = "col-10" id = "edit-new-image")
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Họ tên *
+                input(type = "text" name = 'fullName' required value = user.fullName)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Email *
+                input(type = "email" name = 'email' required value = user.email)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Số điện thoại
+                input(type = "text" name = 'phone' value = user.phone)
+            div(class = "d-flex col-12 gap-x-1")
+                span(class = "m-0 font-bold") Quyền:
+                each item in roles
+                    if item._id.toString() === user.role_id.toString()
+                        span(class = "font-bold text-red") #{item.title}
+                
+            div(class = "d-flex items-center gap-x-3 col-12")
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'status' value = 'active' checked = user.status === "active" ? true : false) 
+                    label Hoạt Động
+                div(class = " gap-x-2")
+                    input(type = 'radio' name = 'status' value = 'inactive' checked = user.status === "inactive" ? true : false)
+                    label Dừng Hoạt Động
+
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Cập Nhật
