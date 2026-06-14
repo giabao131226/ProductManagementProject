@@ -105,7 +105,7 @@ module.exports.edit = async (req,res) => {
 module.exports.editPatch = async (req,res) => {
     const id = req.params.id;
     if(!req.body.title) return;
-    if(!req.body.position){
+    if(!req.body.possition){
         const count = await productCategory.countDocuments();
         req.body.position = count;
     }
@@ -116,19 +116,17 @@ module.exports.editPatch = async (req,res) => {
     if(req.body.thumbnail){
         url = req.body.thumbnail
     }
-    console.log(url);
 
     const result = await productCategory.updateOne({"_id": id},{
         "title": req.body.title,
         "parent_id": req.body.parent_id,
         "status": req.body.status,
-        "position": req.body.position,
+        "position": req.body.possition,
         "deleted": req.body.deleted,
-        "thumbnail": url
+        "thumbnail": url,
+        "status": req.body.status
     })
-
-    console.log(result);
-
+    
     req.flash("success","Chỉnh sửa sản phẩm thành công");
     res.redirect("/admin/product-category");
 }

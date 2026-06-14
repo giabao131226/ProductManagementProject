@@ -8,7 +8,6 @@ const cloudinary = require("cloudinary");
 const fs = require("fs");
 const authorization = require("../../middlewares/authorization.middleware");
 
-
 cloudinary.config({
     cloud_name: "dnlcvjrnb",
     api_key: "345477329557222",
@@ -21,7 +20,6 @@ router.post("/create",
     upload.single("thumbnail"),
     async (req, res,next) => {
         try {
-            console.log(req.file);
             if (req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 req.body.thumbnail = result.url;

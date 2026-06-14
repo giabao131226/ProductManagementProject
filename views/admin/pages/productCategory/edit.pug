@@ -32,6 +32,7 @@ block main
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Danh mục cha
                 select(name = "parent_id")
+                    option(value = "") Lựa chọn danh mục cha
                     +select-tree(category,1,data.parent_id)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Mô tả

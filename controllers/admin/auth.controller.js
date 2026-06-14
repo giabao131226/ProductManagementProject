@@ -28,6 +28,7 @@ module.exports.signIn = async (req,res) => {
         }
     }catch(error){
         console.log("Lỗi khi đăng nhập: "+error);
-        return req.flash("error","Đăng nhập không thành công. Có lỗi trong cơ sở dữ liệu")
+        req.flash("error","Đăng nhập không thành công. Có lỗi trong cơ sở dữ liệu");
+        return res.redirect("/admin/auth");
     }
 }
