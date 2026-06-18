@@ -4,15 +4,18 @@ block main
     .container-fluid 
         .container 
             h2.text-red DANH SÁCH SẢN PHẨM
-
-            .d-flex.items-center.gap-x-3.flex-wrap
-                each item in products 
-                    .boxItem.col-3.rounded-4.m-top-2
-                        img(src = `${item.thumbnail}`)
-                        .boxItem__info.d-flex.flex-column.items-start.px-3.py-2
-                            p.m-0.font-bold(style = "height: 50px;") #{item.title}
-                            p.text-red.m-0.font-14.font-500  #{item.price}$
-                            del.text-red.font-14.font-500 549$
-                            span.text-white.bg-red.rounded.px-2.font-14.font-500 -12.96%
-                            a(href = `/products/detail/${item.id}`) Xem chi tiết
+            
+            if(products.length > 0)
+                .d-flex.items-center.gap-x-3.flex-wrap
+                    each item in products 
+                        .boxItem.col-3.rounded-4.m-top-2
+                            img(src = `${item.thumbnail}`)
+                            .boxItem__info.d-flex.flex-column.items-start.px-3.py-2
+                                p.m-0.font-bold(style = "height: 50px;") #{item.title}
+                                p.text-red.m-0.font-14.font-500  #{item.price}$
+                                del.text-red.font-14.font-500 549$
+                                span.text-white.bg-red.rounded.px-2.font-14.font-500 -12.96%
+                                a(href = `/products/detail/${item.id}`) Xem chi tiết
+            else
+                p.font-bold.text-gray.text-align-center Hiện tại chưa có sản phẩm nào
                         

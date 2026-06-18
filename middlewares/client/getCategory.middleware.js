@@ -17,7 +17,7 @@ module.exports.getCategory = async (req,res,next) => {
         })
         return tree;
         }
-        const productCategory = await ProductCategory.find().lean();
+        const productCategory = await ProductCategory.find({"deleted": false,"status": "active"}).lean();
         const treeCategory = createTree(productCategory,'');
         res.locals.treeCategory = treeCategory;
         next();

@@ -91,10 +91,6 @@
 }
 
 /* CSS custom */
-.sider{
-    width: 15vw;
-    height: calc(100vh - 50px);
-}
 .sider li{
     transition: all ease 800ms;
 }

@@ -1,0 +1,36 @@
+
+body{
+    height: 100vh;
+}
+.header-admin{
+    position: sticky;
+    top: 0;
+}
+.body{
+    height: 92%;
+}
+.main{
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sider li{
+    transition: all ease 800ms;
+}
+.sider li::after{
+    transition: all ease 800ms;
+}
+.sider li::after{
+    content: "";
+    display: block;
+    background-color: white;
+    border-radius: 10px;
+    height: 1px;
+    transform: scaleX(0);
+}
+.sider li:hover a{
+    background-color: #5D585C;
+}
+.sider li:hover::after{
+    transform: scaleX(100%);
+}

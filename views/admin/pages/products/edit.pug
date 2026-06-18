@@ -1,6 +1,7 @@
 
 extends ../../layouts/default 
 include ../../mixins/alert
+include ../../mixins/select-tree
 
 
 block main
@@ -30,6 +31,11 @@ block main
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Tiêu đề
                 input(type = "text" name = 'title' value = `${productDetail.title}` required)
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Danh mục
+                select(name = "categoryID")
+                    option(value = "") Lựa chọn danh mục
+                    +select-tree(treeCategory,1,'')
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Mô tả
                 textarea(name = 'des' value = `${productDetail.des}`)

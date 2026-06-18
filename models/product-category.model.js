@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
+
 const productCategorySchema = mongoose.Schema({
     title: String,
     parent_id: String,
@@ -13,9 +15,24 @@ const productCategorySchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deletedAt: Date
+    deletedAt: Date,
+    slug: {
+        type: String,
+        slug: "title",
+        unique: true
+    }
 })
 
-const productCategory = mongoose.model("productCategory",productCategorySchema,"product-category");
+productCategorySchema.pre("save", async function() {
+    if (this.isModified("title")) {
+        this.slug = slugify(this.title, {
+            lower: true,
+            strict: true,
+            locale: "vi"
+        });
+    }
 
+});
+
+const productCategory = mongoose.model("productCategory",productCategorySchema,"product-category");
 module.exports =  productCategory;

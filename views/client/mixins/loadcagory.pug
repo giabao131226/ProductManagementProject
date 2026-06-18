@@ -3,6 +3,6 @@ mixin LoadCategory(arr)
     ul(class = "nav-menu")
         each item in arr
             li(class = "nav-item")
-                a(href = "/" class = "d-block text-decoration-none") #{item.title}
+                a(href = ("/products/"+item.slug) class = "d-block text-decoration-none") #{item.title}
                 if(item.children)
                     +LoadCategory(item.children)
