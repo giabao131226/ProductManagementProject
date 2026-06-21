@@ -1,0 +1,52 @@
+.nav-item {
+    position: relative;
+}
+ul{
+    list-style: none;
+    padding: 0;
+}
+header ul li{
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+
+.nav-menu {
+    display: none;
+    position: absolute;
+    background: #ddd;
+    min-width: 150px;
+}
+
+.nav-item:hover > .nav-menu {
+    display: block;
+}
+
+/* Menu cấp 1 xổ xuống */
+.nav-item > .nav-menu {
+    top: 100%;
+    left: 0;
+}
+
+/* Menu cấp 2, 3... hiện sang trái */
+.nav-menu .nav-menu {
+    top: 0;
+    left: -100%;
+}
+
+.header-client{
+    background-color: transparent;
+    border-bottom: 1px solid #ddd;
+    padding: 4px 0px;
+    position: fixed;
+    top: 0;
+    background: transparent;
+    z-index: 1;
+}
+.background{
+    width: 100%;
+}
+
+.background img{
+    width: 100%;
+    object-fit: cover;
+}

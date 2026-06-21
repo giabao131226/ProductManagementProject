@@ -44,5 +44,8 @@ router.patch("/edit/:id",authorization.autho("permissions-category-edit"),upload
         res.status(500).json({ error: err.message });
 
     }
-},controller.editPatch)
+},controller.editPatch);
+router.patch("/change-status/:status/:id",authorization.autho("permissions-category-edit"),controller.changeStatus);
+
+
 module.exports = router;

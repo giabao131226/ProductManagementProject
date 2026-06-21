@@ -1,47 +1,72 @@
 extends ../../layouts/default.pug 
 include ../../mixins/render-category.pug
+include ../../mixins/alert.pug
 
-block main 
-    h1 #{pageTitle}
+block main
+    +Alert(messages,5000)
     
     div(class = "dsSanPham container-fluid")
-        h3 Danh sách
-        div(class = "d-flex justify-between")
-            div(class = "d-flex")
-                form(
-                action = `/admin/products/change-multi?_method=PATCH`
-                method = "POST"
-                id = "form-change-multi")
-                    select(name = "type")
-                        option(disabled selected) --Chọn Thao Tác--
-                        option(value = "active") Hoạt Động
-                        option(value = "inactive") Dừng Hoạt Động
-                        option(value = "delete") Xoá Tất Cả
-                        option(value = "change-position") Thay đổi vị trí
-                    input(
-                        class = "d-none"
-                        name = "ids"
-                        value =""
-                    )
-                    button(type = "submit" class = "border-none text-white bg-blue rounded") Áp Dụng
+        h3 #{pageTitle}
+        .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Bộ lọc và tìm kiếm
+                .boLoc.px-3.py-3.d-flex.justify-between 
+                    .d-flex.items-center.gap-x-3
+                        each item in button
+                            button(class = `border-none ${status == item.value ? "active" : ""}` status = `${item.value}` btn-loc-status) #{item.title}
+                    form(class = "d-flex items-center form__timKiem rounded" id = "form-search")
+                        input(type = "text" name = "keyword" class = "border-none outline-none" value = keyword)
+                        button(class = "border-none bg-white")
+                            i(class="fa-solid fa-magnifying-glass")
+        .py-2
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Sắp Xếp
+            select(name="sort" class="select-sort" style = "margin: 20px 12px;")
+                option(readonly value = "") Sắp Xếp
+                option(value="position-asc" selected= keyAndValueSort === "position-asc") Vị Trí Tăng Dần
+                option(value="position-desc" selected= keyAndValueSort === "position-desc") Vị Trí Giảm Dần
+                option(value="price-asc" selected= keyAndValueSort === "price-asc") Giá Cả Tăng Dần                    
+                option(value="price-desc" selected= keyAndValueSort === "price-desc") Giá Cả Giảm Dần                    
+                option(value="title-asc" selected= keyAndValueSort === "title-asc") Tiêu Đề A-Z
+                option(value="title-desc" selected= keyAndValueSort === "title-desc") Tiêu Đề Z-A
+            button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
 
             if(role.permissions.includes("permission-category-create"))
                 a(class = "rounded bg-blue text-white font-bold border-none cursor-pointer px-2 py-2 text-decoration-none" href = "product-category/create") Thêm mới
-        table(class = "container-fluid" checkbox-multi)
-                thead
-                    tr.text-align-center
-                        th 
-                            input(type = "checkbox" id = "changeStatusAll")
-                        th STT 
-                        th Hình ảnh
-                        th Tiêu đề
-                        th Vị trí
-                        th Trạng thái
-                        th Hành động
-                tbody 
-                    +render-category(category,1)
+        .py-2
+        table.container-fluid.custom-border.bg-gray-200(checkbox-multi)
+            thead
+                tr.text-align-center.bg-light-blue
+                    th.py-2
+                        input.cursor-pointer(type="checkbox" id="changeStatusAll")
+                    th.py-2.font-bold STT
+                    th.py-2.font-bold Hình ảnh
+                    th.py-2.font-bold Tiêu đề
+                    th.py-2.font-bold Vị trí
+                    th.py-2.font-bold Trạng thái
+                    th.py-2.font-bold Hành động
+            tbody
+                +render-category(category,1)
+        
+        nav 
+        ul(class = "pagination")
+            - if(currentPage>1)
+                li(class = "page-item")
+                    button(class = "page-link" button-pagination = currentPage-1) Trang trước
+            - for (let i = 1;i<=totalPage;i++)
+                li(class = `page-item ${currentPage==i ? "active" : ""}`)
+                    button(class = "page-link" button-pagination = i) #{i}
+            
+            - if(currentPage<totalPage)
+                li(class = "page-item")
+                    button(class = "page-link" button-pagination = currentPage+1) Kế tiếp
     form(
         action = "",
         method = "POST",
         class = "delete-product-category"
-    )   
+    )  
+    form(
+        id = "form-changeStatus"
+        method = "POST"
+        action = "/admin/product-category/change-status"
+    )

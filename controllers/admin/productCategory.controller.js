@@ -1,31 +1,61 @@
 const productCategory = require("../../models/product-category.model");
 const mongoose = require("mongoose");
 const createTree = require("../../helper/createTree");
+const pagination = require("../../helper/pagination")
 
 // [GET] "/product-category"
 module.exports.index = async (req,res) => {
-    const query = {"deleted": false}
+    const query = {"deleted": false};
+    const page = req.query.page || 1;
 
-    function createTree(arr,parentID){
-        const tree = [];
-        arr.forEach((item) => {
-            if(item.parent_id == parentID){
-                const currentNode = {...item};
-                const children = createTree(arr,item.id);
-                if(children.length > 0){
-                    currentNode.children = children;
-                }
-                tree.push(currentNode);
-            }
-        })
-        return tree;
+    const status = req.query.status;
+    if(status && status != "all"){
+        query.status = status;
     }
+    const keyword = req.query.keyword || "";
+    if(keyword){
+        query.title = { $regex: keyword, $options: "i" }
+    }
+    const key = req.query.key || "position";
+    const sortValue = req.query.sortValue || "asc";
 
-    const category = await productCategory.find(query).lean();
-    const categoryTree = createTree(category,"");
-    
+    // Pagination
+    let objectPagination = {
+        currentPage: 1,
+        limitItems: 4
+    }
+    pagination(req.query, objectPagination, query)
+    const countProductCategory = await productCategory.countDocuments(query);
+    const totalPage = Math.ceil(countProductCategory / objectPagination.limitItems)
+    objectPagination.totalPage = totalPage
+    //End Pagination
+        
+    const button = [
+        {
+            "title": "Tất Cả",
+            "value": "all"
+        },
+        {
+            "title": "Hoạt Động",
+            "value": "active"
+        },
+        {
+            "title": "Không Hoạt Động",
+            "value": "in-active"
+        }
+    ]
+
+    const category = await productCategory.find(query).lean().sort({[key]: sortValue}).skip((page-1)*objectPagination.limitItems).limit(objectPagination.limitItems);
+    const treeCategory = createTree.getTree(category,"");
+
     res.render("admin/pages/productCategory/index.pug",{
-        category: category
+        pageTitle: "Danh Mục Sản Phẩm",
+        category: treeCategory,
+        button: button,
+        keyword: keyword,
+        status: status,
+        currentPage: objectPagination.currentPage,
+        totalPage: objectPagination.totalPage,
     })
 }
 
@@ -129,4 +159,18 @@ module.exports.editPatch = async (req,res) => {
     
     req.flash("success","Chỉnh sửa sản phẩm thành công");
     res.redirect("/admin/product-category");
+}
+// [PATCH] "/product-category/change-status/:status/:id"
+module.exports.changeStatus = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const status = req.params.status;
+
+        const result = await productCategory.updateOne({"_id":id},{"status": status});
+        req.flash("success","Cập Nhật Trạng Thái Thành Công");
+        res.redirect("/admin/product-category");
+
+    }catch(error){
+        console.log("Lỗi khi thay đổi trạng thái danh mục sản phẩm: "+error);
+    }
 }

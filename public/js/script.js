@@ -22,13 +22,10 @@ const formSearch = document.querySelector("#form-search")
 if (formSearch) {
     formSearch.addEventListener("submit", (e) => {
         e.preventDefault();
-        const value = e.target.keyword.value
+        const value = e.target.keyword.value;
 
         const url = new URL(window.location.href)
-
-        if (value) {
-            url.searchParams.set("keyword", value)
-        }
+        url.searchParams.set("keyword", value)
 
         window.location.href = url.href
 
@@ -63,7 +60,8 @@ changeStatus.forEach((item) => {
 
         const form = document.querySelector("#form-changeStatus")
 
-        form.action = `/admin/products/change-status/${status}/${id}?_method=PATCH`
+        form.action += `/${status}/${id}?_method=PATCH`;
+        console.log(form.action);
         form.submit()
     })
 })
@@ -247,5 +245,19 @@ if(btnDangXuat){
     btnDangXuat.addEventListener("click",() => {
         document.cookie = "token=; max-age=0; path=/;";
         window.location.href = "/admin/auth";
+    })
+}
+
+
+// Lọc status trong Danh Mục Sản Phẩm
+const btnLocTrangThai = document.querySelectorAll("[btn-loc-status]")
+if(btnLocTrangThai.length > 0){
+    btnLocTrangThai.forEach((item) => {
+        item.addEventListener("click",(e) => {
+            const status = e.target.getAttribute("status");
+            const url = new URL(window.location.href);
+            url.searchParams.set("status",status)
+            window.location.href = url;
+        })
     })
 }
