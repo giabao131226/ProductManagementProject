@@ -1,5 +1,26 @@
 extend ../../layouts/default.pug 
 
 block main 
+    link(rel = "stylesheet" href = "/css/client/product.css")
+
     .col-12.px-0.py-0.background
-        img(class = "px-0 py-0" src = "https://i.pinimg.com/736x/89/d5/a9/89d5a9652919b5c73672c04be95392de.jpg")
+        img(class = "px-0 py-0" src = "https://img.magnific.com/free-photo/empty-black-gold-luxury-podium-pedestal-product-display-background-3d-rendering_56104-1370.jpg?semt=ais_hybrid&w=740&q=80")
+    if(products.length > 0)
+        .col-12.px-3
+            .h3.m-0.font-bold.text-red Sản phẩm nổi bật
+            .d-flex.items-center.gap-x-3.flex-wrap
+                each item in products 
+                    a(href = `/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2 text-black text-decoration-none")
+                        .boxItem__image
+                            img(src = `${item.thumbnail}`)
+                        .boxItem__info.d-flex.flex-column.items-start.px-3.py-2
+                            span.font-14.font-bold #{item.title}
+                            span.font-bold.text-red #{item.price}đ
+                            .d-flex.items-center.gap-x-3
+                                span.font-bold.font-14 -40%
+                                delete.font-bold.font-14 569.400đ
+                            
+                            span.font-11.font-bold.text-gray-600 Giao thứ 6, 26/0
+    else
+        p.font-bold.text-gray.text-align-center Hiện tại chưa có sản phẩm nào
+

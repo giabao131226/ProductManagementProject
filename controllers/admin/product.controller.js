@@ -215,9 +215,12 @@ module.exports.createPost = async (req, res) => {
 // [GET] /admin/products/edit/:id
 module.exports.editProducts = async (req, res) => {
     const id = req.params.id;
-    const productDetail = await Product.findOne({ "_id": id })
+    const productDetail = await Product.findOne({ "_id": id });
+    const productCategory = await ProductCategory.find({"deleted": false,"status": 'active'}).lean();
+    const treeCategory = await treeHelper.getTree(productCategory,'');
     res.render("admin/pages/products/edit", {
-        productDetail: productDetail
+        productDetail: productDetail,
+        treeCategory: treeCategory
     })
 }
 
@@ -235,7 +238,8 @@ module.exports.editProductPatch = async (req, res) => {
         if (req.body.price) req.body.price = parseInt(req.body.price)
         if (req.body.discountPercentage) req.body.discountPercentage = parseInt(req.body.discountPercentage)
         if (req.body.quantity) req.body.quantity = parseInt(req.body.quantity)
-
+        if(req.body.featured == 'value') req.body.featured = true;
+        else req.body.featured = false;
         const oldDataString = transHelper.changeObjectToString(oldDetail.toObject());
 
         await Product.updateOne({ _id: id }, {
@@ -245,7 +249,10 @@ module.exports.editProductPatch = async (req, res) => {
                 thumbnail: `${req.file ? req.body.thumbnail : oldDetail.thumbnail}`,
                 price: `${req.body.price || oldDetail.price}`,
                 active: `${req.body.active}`,
-                categoryID: req.body.categoryID
+                categoryID: req.body.categoryID,
+                featured: req.body.featured,
+                quantity: req.body.quantity,
+                description: req.body.description
             }
         })
         oldDetail.title = req.body.title;
@@ -254,6 +261,9 @@ module.exports.editProductPatch = async (req, res) => {
         oldDetail.price = req.body.price;
         oldDetail.active = req.body.active;
         oldDetail.categoryID = req.body.categoryID;
+        oldDetail.featured = req.body.featured;
+        oldDetail.quantity = req.body.quantity;
+        oldDetail.description = req.body.description;
 
         const newData = { ...oldDetail };
         const newDataString = transHelper.changeObjectToString(newData._doc);

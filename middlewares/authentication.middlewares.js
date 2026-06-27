@@ -9,12 +9,12 @@ module.exports.auth = async (req,res,next) => {
             "status": "active",
             "token": token
         });
-        const role = await Roles.findOne({"_id": account.role_id});
-        res.locals.role = role;
-        res.locals.user = account;
         if(!account){
             return res.redirect("/admin/auth");
         }
+        const role = await Roles.findOne({"_id": account.role_id});
+        res.locals.role = role;
+        res.locals.user = account;
         next();
     }catch(error){
         console.log("Lỗi middle ware khi đăng nhập: "+error);

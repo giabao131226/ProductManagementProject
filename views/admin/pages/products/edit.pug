@@ -8,7 +8,7 @@ block main
     +Alert(messages,5000)
 
     h1 #{pageTitle}
-    #{productDetail._id}
+    #{treeCategory[0]}
     div
         form(
             class = "d-flex flex-column items-start px-3"
@@ -35,10 +35,10 @@ block main
                 p(class = "m-0 font-bold") Danh mục
                 select(name = "categoryID")
                     option(value = "") Lựa chọn danh mục
-                    +select-tree(treeCategory,1,'')
+                    +select-tree(treeCategory,1,productDetail.categoryID)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Mô tả
-                textarea(name = 'des' value = `${productDetail.des}`)
+                textarea(name = 'description' value = `${productDetail.description}`)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Gía
                 input(type = "text" name = 'price' value = `${productDetail.price}`)
@@ -49,15 +49,22 @@ block main
                 p(class = "m-0 font-bold") Số lượng
                 input(type = "number" name = 'quantity' value = `${productDetail.quantity}`)
             div(class = "d-flex flex-column col-12")
-                p(class = "m-0 fonr-bold") Vị trí
+                p(class = "m-0 font-bold") Vị trí
                 input(type = "number" placeholder = "Tự động tăng" name = 'possition')
-
-            div(class = "d-flex items-center gap-x-3 col-12")
-                div(class = " gap-x-2")
-                    input(type = 'radio' name = 'active' value = 'active' checked = `${productDetail.active === "active" ? true : false}`) 
-                    label Hoạt Động
-                div(class = " gap-x-2")
-                    input(type = 'radio' name = 'active' value = 'inactive')
-                    label Dừng Hoạt Động
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Sản phẩm nổi bật
+                div(class = "d-flex items-center gap-x-3 col-12")
+                    div(class = " gap-x-2")
+                        input(type = 'checkbox' name = 'featured' value = true checked = (productDetail.featured === true ? true : false)) 
+                        label Nổi bật
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Trạng Thái
+                div(class = "d-flex items-center gap-x-3 col-12")
+                    div(class = " gap-x-2")
+                        input(type = 'radio' name = 'active' value = 'active' checked = `${productDetail.active === "active" ? true : false}`) 
+                        label Hoạt Động
+                    div(class = " gap-x-2")
+                        input(type = 'radio' name = 'active' value = 'inactive')
+                        label Dừng Hoạt Động
 
             button(type = "submit" class = "bg-blue text-white border-none rounded") Xác Nhận

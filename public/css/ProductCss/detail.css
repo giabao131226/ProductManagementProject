@@ -20,3 +20,13 @@
     cursor: pointer;
 }
 
+
+.btn-add-cart{
+    border: 1px solid blue;
+    color: blue;
+    font-size: 14px;
+}
+
+.space{
+    height: 80px;
+}

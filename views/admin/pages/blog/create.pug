@@ -1,0 +1,50 @@
+
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +Alert(messages,5000)
+
+    h1 #{pageTitle}
+
+    div
+        form(
+            class = "d-flex flex-column items-start px-3"
+            form-create-blog
+            method = "POST"
+            action = "/admin/blogs/create" 
+            enctype ="multipart/form-data"
+            required
+        )
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Chọn Ảnh Cho Sản Phẩm
+                input(type = "file" name = 'thumbnail' accept = 'image/*' change-image)
+            div(class = "d-flex col-12")
+                div(class = "d-flex flex-column col-6")
+                    p(class = "m-0 font-bold") Ảnh Mới
+                    img(class = "col-10" id = "edit-new-image")
+            div(class = "d-flex flex-column col-12") 
+                p(class = "m-0 font-bold") Tiêu đề
+                input(type = "text" name = 'title' required)
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Nội dung
+                textarea(name = 'content' class = "textarea-tinymce")
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Mô tả ngắn
+                textarea(name = 'excerpt' class = "textarea-tinymce")
+            div(class = "d-flex flex-column col-12")
+                p(class = "m-0 font-bold") Trạng thái
+                div(class = "d-flex items-center gap-x-3 col-12")
+                    div(class = " gap-x-2")
+                        input(type = 'radio' name = 'status' value = 'active') 
+                        label Hoạt Động
+                    div(class = " gap-x-2")
+                        input(type = 'radio' name = 'status' value = 'inactive')
+                        label Dừng Hoạt Động
+            button(type = "submit" class = "bg-blue text-white border-none rounded") Tạo mới
+
+
+
+
+
+

@@ -3,20 +3,31 @@ include ../mixins/loadcagory.pug
 header.header-client.container-fluid.text-algin-start
     .container 
         .d-flex.items-center.justify-between
-            .logo-app
-                img(src = "https://cdn.daca.vn/media/logo/logo.svg" class = "col-2")
+            a( class = "logo-app" href = "/")
+                img(src = "/image/Gemini_Generated_Image_oon276oon276oon2.png")
             .d-flex.items-center.gap-x-3
                 ul(class = "list-style-type-none m-0 d-flex items-center gap-x-5")
                     each item in treeCategory
                         li(class = "nav-item")
-                            a(href = ("/" + item.slug) class = "d-block text-decoration-none") #{item.title}
+                            a(href = ("/" + item.slug) class = "d-block text-decoration-none")
+                                span(class = "font-bold text-white") #{item.title}
                             if(item.children)
                                 +LoadCategory(item.children)
                 
-                p.font-bold.rounded.m-0 |
-                .d-flex.gap-x-3.items-center
+                p.font-bold.rounded.m-0.text-white |
+                .d-flex.gap-x-3.items-center.font-bold.text-white
                     i(class="fa-solid fa-cart-shopping")
-                    i(class="fa-solid fa-magnifying-glass")
+                    form(
+                        action = "/search"
+                        form-search-product
+                        class = "search-box d-none"
+                    )
+                        input(name = "search" type = "text")
+                        d-flex.px-2
+                        button.font-bold.text-black.bg-white.border-none.rounded(type = "submit") Tìm Kiếm
+                    button(class = "kinh-lup border-none px-0 py-0 bg-transparent" btn-open-search-box)
+                        i(class="fa-solid fa-magnifying-glass")
+//- div.header-spacer
 
                     
   

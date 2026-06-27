@@ -1,24 +1,27 @@
 extend ../../layouts/default.pug 
 
-block main
+block main 
     link(rel = "stylesheet" href = "/css/client/product.css")
-    .container-fluid
-        .container 
-            h2.text-red DANH SÁCH SẢN PHẨM
-            if(products.length > 0)
+
+    .container-fluid.text-align-start
+        .container
+        .header-space
+        if(products.length > 0)
+            .col-12.px-3
+                .h3.m-0.font-bold.text-red #{pageTitle}
                 .d-flex.items-center.gap-x-3.flex-wrap
                     each item in products 
-                        a(href = `/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2")
+                        a(href = `/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2 text-black text-decoration-none")
                             .boxItem__image
                                 img(src = `${item.thumbnail}`)
                             .boxItem__info.d-flex.flex-column.items-start.px-3.py-2
-                                span.font-14 #{item.title}
+                                span.font-14.font-bold #{item.title}
                                 span.font-bold.text-red #{item.price}đ
                                 .d-flex.items-center.gap-x-3
                                     span.font-bold.font-14 -40%
                                     delete.font-bold.font-14 569.400đ
                                 
                                 span.font-11.font-bold.text-gray-600 Giao thứ 6, 26/0
-            else
-                p.font-bold.text-gray.text-align-center Hiện tại chưa có sản phẩm nào
-                        
+        else
+            p.font-bold.text-gray.text-align-center Hiện tại chưa có sản phẩm nào
+

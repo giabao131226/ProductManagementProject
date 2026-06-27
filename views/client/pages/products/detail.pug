@@ -3,4 +3,36 @@ extend ../../layouts/default.pug
 
 
 block main 
+    link(rel = "stylesheet" href = "/css/ProductCss/detail.css")
+
+    .space
+    .container-fluid.text-align-start
+        .container
+            .d-flex.gap-x-4
+                img(src = Product.thumbnail class = "col-6 px-0 py-0")
+
+                .d-flex.flex-column.items-start.gap-y-3.bg-white.rounded-lg.col-6.px-4
+                    h4.m-0.font-bold #{Product.title}
+                    span Danh mục:
+                        span.font-bold.text-blue.font-14 #{" "+Product.category.title}
+                    span.font-bold.text-red #{Product.price}đ
+                    span.font-bold Còn lại:
+                        span #{" "+Product.quantity}
+                    input(type = "number" name = "quantity" value = 1)
+                    div
+                        button.col-12.border-none.rounded.font-bold.bg-red.text-white.font-bold Mua ngay
+                        .py-1
+                        button.col-12.border-none.rounded.font-bold.bg-transparent.btn-add-cart(btn-add-cart id-product = Product._id) Thêm vào giỏ hàng
+            br
+            .d-flex.flex-column.items-start.bg-white.rounded.px-3.py-2
+                h5.m-0.font-bold.text-red Mô tả sản phẩm
+                span.font-14.font-bold #{Product.description}
+
+    form(
+        class = "d-none"
+        action = "/cart/add-cart"
+        method = "POST"
+        form-add-cart
+    )
+        
     
