@@ -9,6 +9,7 @@
         if(role.permissions.includes("permissions-category-view"))
             li
                 a(href = "/admin/product-category"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh mục sản phẩm
+        if(role.permissions.includes("permissions-blog-view"))
             li
                 a(href = "/admin/blogs"  class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Bài đăng
         if(role.permissions.includes("permissions-role-view"))

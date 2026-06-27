@@ -11,9 +11,12 @@ cloudinary.config({
     api_secret: "FY8lP8RMpVvfypM7WcbmXukKbeA"
 })
 
-router.get("/",controller.index);
-router.get("/create",controller.create);
-router.post("/create",upload.single("thumbnail"),async (req,res,next) => {
+const authorization = require("../../middlewares/authorization.middleware");
+
+
+router.get("/",authorization.autho("permissions-blog-view"),controller.index);
+router.get("/create",authorization.autho("permissions-blog-create"),controller.create);
+router.post("/create",authorization.autho("permissions-blog-create"),upload.single("thumbnail"),async (req,res,next) => {
     try{
         if(req.file){
             const result = await cloudinary.uploader.upload(req.file.path);
@@ -26,8 +29,8 @@ router.post("/create",upload.single("thumbnail"),async (req,res,next) => {
         return res.redirect("/admin/blogs");
     }
 },controller.createPost);
-router.get("/edit/:id",controller.edit);
-router.patch("/edit/:id",upload.single("thumbnail"),async (req,res,next) => {
+router.get("/edit/:id",authorization.autho("permissions-blog-edit"),controller.edit);
+router.patch("/edit/:id",authorization.autho("permissions-blog-edit"),upload.single("thumbnail"),async (req,res,next) => {
     try{
         if(req.file){
             const result = await cloudinary.uploader.upload(req.file.path);
@@ -40,6 +43,6 @@ router.patch("/edit/:id",upload.single("thumbnail"),async (req,res,next) => {
         return res.redirect("/admin/blogs")
     }
 },controller.editPatch);
-router.delete("/delete/:id",controller.delete);
+router.delete("/delete/:id",authorization.autho("permissions-blog-delete"),controller.delete);
 
 module.exports = router;
