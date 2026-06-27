@@ -7,7 +7,6 @@ module.exports.index = async (req,res) => {
             "deleted": false,
             "status": "active"
         })
-        console.log(blogs);
         return res.render("admin/pages/blog/index",{
             user: user,
             blogs: blogs
@@ -39,6 +38,32 @@ module.exports.createPost = async (req,res) => {
         console.log("Lỗi khi tạo bài đăng: "+ex);
         req.flash("error","Tạo bài đăng thất bại");
         return res.redirect("/admin/blogs");
+    }
+}
 
+// [GET] "/admin/blogs/edit/:id"
+module.exports.edit = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const blog = await Blog.findOne({"_id":id});
+        return res.render("admin/pages/blog/edit",{
+            blog: blog
+        })
+    }catch(ex){
+        console.log("Lỗi khi hiển thị trang chỉnh sửa bài đăng: "+ex);
+    }
+}
+
+// [PATCH] "/admin/blogs/edit/:id"
+module.exports.editPatch = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const blog = await Blog.updateOne({"_id":id},{...req.body});
+        req.flash("success","Cập nhật bài đăng thành công");
+        return res.redirect("/admin/blogs");
+    }catch(ex){
+        console.log("Lỗi khi chỉnh sửa bài đăng: "+ex);
+        req.flash("error","Chỉnh sửa thất bại. Vui lòng thử lại");
+        return res.redirect("/admin")
     }
 }

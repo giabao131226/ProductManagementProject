@@ -70,18 +70,18 @@ block main
                         td.py-2
                             img.rounded.object-fit-cover(src=item.thumbnail style="width:70px;height:70px")
                         td.py-2.text-align-start.font-14.font-bold #{item.title}
-                        td.py-2.text-align-start.font-14.font-bold #{item.excerpt}
+                        td.py-2.text-align-start.font-14.font-bold !{item.excerpt}
                         td.py-2
                             button.border-none.font-bold.rounded.font-14.py-1.px-3.cursor-pointer(class=item.status=="active" ? "bg-green text-white" : "bg-red text-white" button-status=item.status=="active" ? "inactive" : "active" id-element=item.id) #{item.status=="active" ? "Hoạt động" : "Không hoạt động"}
                         td.py-2
                             .d-flex.gap-x-3
-                                if(role.permissions.includes("permissions-product-edit"))
+                                if(role.permissions.includes("permissions-blog-edit"))
                                     button.bg-orange.border-none.font-bold.rounded.font-14.py-1.px-3.cursor-pointer
-                                        a.text-decoration-none.text-white(href=`/admin/products/edit/${item.id}`) Sửa
-                                if(role.permissions.includes("permissions-product-delete"))
+                                        a.text-decoration-none.text-white(href=`/admin/blogs/edit/${item.id}`) Sửa
+                                if(role.permissions.includes("permissions-blog-delete"))
                                     button.bg-red.border-none.font-bold.rounded.font-14.py-1.px-3.cursor-pointer(button-delete-product id-element=item.id) Xoá
                                 button.bg-blue.border-none.font-bold.rounded.font-14.py-1.px-3.cursor-pointer
-                                    a.text-decoration-none.text-white(href=`/admin/products/detail/${item.id}`) Xem
+                                    a.text-decoration-none.text-white(href=`/admin/blogs/detail/${item.id}`) Xem
     
     
     //- nav 

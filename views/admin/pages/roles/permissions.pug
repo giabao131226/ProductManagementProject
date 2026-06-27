@@ -138,6 +138,31 @@ block main
                     each role in roles
                         td
                             input(type = "checkbox")
+                tr.text-align-center
+                    th Bài đăng
+                    each role in roles
+                        th
+                tr(permission = "permissions-blog-view" class = "text-align-center")
+                    td Xem
+                    each role in roles
+                        td
+                            input(
+                                type = "checkbox" )
+                tr(permission =  "permissions-blog-create" class = "text-align-center")
+                    td Thêm Mới
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr(permission = "permissions-blog-edit" class = "text-align-center")
+                    td Chỉnh Sửa
+                    each role in roles
+                        td
+                            input(type = "checkbox")
+                tr( permission = "permissions-blog-delete" class = "text-align-center")
+                    td Xoá
+                    each role in roles
+                        td
+                            input(type = "checkbox")
                 
 
     form(

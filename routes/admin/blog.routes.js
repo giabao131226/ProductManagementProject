@@ -26,5 +26,19 @@ router.post("/create",upload.single("thumbnail"),async (req,res,next) => {
         return res.redirect("/admin/blogs");
     }
 },controller.createPost);
+router.get("/edit/:id",controller.edit);
+router.patch("/edit/:id",upload.single("thumbnail"),async (req,res,next) => {
+    try{
+        if(req.file){
+            const result = await cloudinary.uploader.upload(req.file.path);
+            req.body.thumbnail = result.secure_url;
+        }
+        next();
+    }catch(ex){
+        console.log("Lỗi khi chỉnh sửa ảnh của bài đăng: "+ex);
+        req.flash("error","Lỗi khi chỉnh sửa ảnh. Vui lòng thử lại");
+        return res.redirect("/admin/blogs")
+    }
+},controller.editPatch);
 
 module.exports = router;
