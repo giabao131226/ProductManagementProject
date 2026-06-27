@@ -40,5 +40,6 @@ router.patch("/edit/:id",upload.single("thumbnail"),async (req,res,next) => {
         return res.redirect("/admin/blogs")
     }
 },controller.editPatch);
+router.delete("/delete/:id",controller.delete);
 
 module.exports = router;

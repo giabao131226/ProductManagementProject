@@ -64,6 +64,21 @@ module.exports.editPatch = async (req,res) => {
     }catch(ex){
         console.log("Lỗi khi chỉnh sửa bài đăng: "+ex);
         req.flash("error","Chỉnh sửa thất bại. Vui lòng thử lại");
-        return res.redirect("/admin")
+        return res.redirect("/admin");
     }
+}
+
+// [DELETE] "/admin/blogs/delete/:id"
+module.exports.delete = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const result = await Blog.updateOne({"_id":id},{"deleted": true});
+        req.flash("success","Xoá bài đăng thành công");
+        return res.redirect("/admin/blogs");
+    }catch(ex){
+        console.log("Lỗi khi xoá bài đăng: "+ex);
+        req.flash("error","Không thể xoá bài đăng. Vui lòng thử lại");
+        return res.redirect("/admin/blogs");
+    }
+
 }

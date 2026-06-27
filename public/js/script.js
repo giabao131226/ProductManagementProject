@@ -139,7 +139,6 @@ if(buttonDeleteProduct.length > 0){
     buttonDeleteProduct.forEach((item) => {
         item.addEventListener("click",() => {
             const id = item.getAttribute("id-element")
-            
             const formDeleteProduct = document.querySelector("#delete-product")
             if(formDeleteProduct){
                 formDeleteProduct.action = `${formDeleteProduct.getAttribute("data-path")}/${id}?_method=DELETE`
