@@ -1,0 +1,48 @@
+extends ../../layouts/default.pug
+
+block main
+    link(rel = "stylesheet" href = "/css/admin/product/detail.css")
+    .container-fluid.text-align-start
+        .container
+            .d-flex.justify-center.py-4.gap-x-3
+                .col-8.bg-white.rounded
+                    .blog-header.d-flex.flex-column.justify-start.gap-y-1.py-2
+                        h3.font-bold.m-0 #{blog.title}
+                        .d-flex.items-center.gap-x-3
+                            .d-flex.items-center
+                                i(class="fa-solid fa-user text-red")
+                                .px-1
+                                span #{blog.accountID.fullName}
+                            .d-flex.items-center
+                                i(class="fa-regular fa-calendar text-red")
+                                .px-1
+                                .span #{blog.createdAt.toLocaleString("vi-VN")}
+                        .d-flex.items-center.gap-x-3.font-20
+                            i(class="fa-brands fa-facebook")
+                            i(class="fa-brands fa-instagram")
+                            i(class="fa-brands fa-x")
+                            i(class="fa-brands fa-linkedin")
+                    .br
+                    h3.m-0.font-bold.text-red Nội dung bài viết
+                    .d-flex.flex-column.justify-start.px-2
+                        p !{blog.content}
+
+                    .br
+                    h3.m-0.font-bold.text-red Mô tả ngắn
+                    - if(blog.concerpt)
+                        .d-flex.flex-column.justify-start.px-2
+                            p !{blog.concerpt}
+                    - else
+                        .d-flex.justify-center
+                            p.font-bold.text-gray-600 Không có đoạn mô tả ngắn cho bài viết
+                    
+                        
+                .col-4.bg-white.rounded
+                    .blog-header.d-flex.flex-column.justify-start.gap-y-1.py-2
+                        h3.font-bold.m-0 Các bài viết liên quan
+                    .br
+                    .d-flex.flex-column
+
+
+
+                

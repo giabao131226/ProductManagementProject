@@ -10,7 +10,7 @@ const blogSchema = mongoose.Schema({
     status: String,
     accountID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Account"
+        ref: "Accounts"
     },
     slug: {
         type: String,

@@ -1,0 +1,25 @@
+
+.fa-facebook:hover{
+    color: blue;
+    cursor: pointer;
+}
+.fa-x:hover{
+    color: black;
+    cursor: pointer;
+}
+.fa-instagram:hover{
+    color: orange;
+    cursor: pointer;
+}
+.fa-linkedin:hover{
+    color: purple;
+    cursor: pointer;
+}
+
+.br{
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: black;
+    margin: 4px 0px;
+}

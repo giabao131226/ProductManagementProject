@@ -27,7 +27,6 @@ module.exports.index = async (req, res) => {
             class: ""
         }
     ]
-
     const query = { "delete": false }
 
     filterStatus(req.query, listButton, query)

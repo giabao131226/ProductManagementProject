@@ -13,7 +13,6 @@ cloudinary.config({
 
 const authorization = require("../../middlewares/authorization.middleware");
 
-
 router.get("/",authorization.autho("permissions-blog-view"),controller.index);
 router.get("/create",authorization.autho("permissions-blog-create"),controller.create);
 router.post("/create",authorization.autho("permissions-blog-create"),upload.single("thumbnail"),async (req,res,next) => {
@@ -44,5 +43,10 @@ router.patch("/edit/:id",authorization.autho("permissions-blog-edit"),upload.sin
     }
 },controller.editPatch);
 router.delete("/delete/:id",authorization.autho("permissions-blog-delete"),controller.delete);
+router.get("/detail/:id",(req,res,next) => {
+    console.log("abc");
+    next();
+},authorization.autho("permissions-blog-view"),controller.detail);
+router.patch("/change-status/:status/:id",authorization.autho("permissions-blog-edit",controller.changeStatus))
 
 module.exports = router;

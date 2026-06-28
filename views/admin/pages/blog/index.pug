@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug 
 
 include ../../mixins/alert
+include ../../mixins/pagination
 
 block main
 
@@ -12,10 +13,10 @@ block main
             p.bg-gray-200.font-bold.px-3.py-3.m-0 Bộ lọc và tìm kiếm
                 .boLoc.px-3.py-3.d-flex.justify-between 
                     .d-flex.items-center.gap-x-3
-                        //- each item in button 
-                        //-     button(class = `buttonDefault border-none ${item.class}` active = `${item.status}`) #{item.content}
+                        each item in buttons 
+                            button(class = `buttonDefault border-none ${item.class}` active = `${item.status}`) #{item.content}
                     form(class = "d-flex items-center form__timKiem rounded" id = "form-search")
-                        input(type = "text" name = "keyword" class = "border-none outline-none")
+                        input(type = "text" name = "keyword" value = keyword class = "border-none outline-none")
                         button(class = "border-none bg-white")
                             i(class="fa-solid fa-magnifying-glass")
     .py-2
@@ -23,13 +24,11 @@ block main
         .productTool.container.px-0.rounded
             p.bg-gray-200.font-bold.px-3.py-3.m-0 Sắp Xếp
             select(name="sort" class="select-sort" style = "margin: 20px 12px;")
-                option(readonly value = "") Sắp Xếp
-                option(value="position-asc" selected= keyAndValueSort === "position-asc") Vị Trí Tăng Dần
-                option(value="position-desc" selected= keyAndValueSort === "position-desc") Vị Trí Giảm Dần
-                option(value="price-asc" selected= keyAndValueSort === "price-asc") Giá Cả Tăng Dần                    
-                option(value="price-desc" selected= keyAndValueSort === "price-desc") Giá Cả Giảm Dần                    
-                option(value="title-asc" selected= keyAndValueSort === "title-asc") Tiêu Đề A-Z
-                option(value="title-desc" selected= keyAndValueSort === "title-desc") Tiêu Đề Z-A
+                option Sắp xếp theo
+                option(value="createdAt-asc" selected = keyAndValueSort === "createdAt-asc") Từ cũ đến mới
+                option(value="createdAt-desc" selected = keyAndValueSort === "createdAt-desc") Từ mới đến cũ
+                option(value="title-asc" selected = keyAndValueSort === "title-asc") Tiêu Đề A-Z
+                option(value="title-desc" selected = keyAndValueSort === "title-desc") Tiêu Đề Z-A
             button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
     .py-2
     div(class="dsSanPham container-fluid")
@@ -83,34 +82,13 @@ block main
                                 button.bg-blue.border-none.font-bold.rounded.font-14.py-1.px-3.cursor-pointer
                                     a.text-decoration-none.text-white(href=`/admin/blogs/detail/${item.id}`) Xem
     
-    
-    //- nav 
-    //-     ul(class = "pagination")
-    //-         - if(currentPage>1)
-    //-             li(class = "page-item")
-    //-                 button(class = "page-link" button-pagination = currentPage-1) Trang trước
-    //-         - for (let i = 1;i<=totalPage;i++)
-    //-             li(class = `page-item ${currentPage==i ? "active" : ""}`)
-    //-                 button(class = "page-link" button-pagination = i) #{i}
-            
-    //-         - if(currentPage<totalPage)
-    //-             li(class = "page-item")
-    //-                 button(class = "page-link" button-pagination = currentPage+1) Kế tiếp
-
+    +Pagination(currentPage,totalPage)
 
     form(
         id = "form-changeStatus"
         method = "POST"
-        action = "/admin/products/change-status"
+        action = "/admin/blogs/change-status"
     )
-
-    form(
-        id = "change-position"
-        method = "POST"
-        action = ""
-        data-path = `/admin/products/change-position`
-    )
-
     form(
         id = "delete-product"
         method = "POST"

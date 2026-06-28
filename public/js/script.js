@@ -53,18 +53,19 @@ buttonPagination.forEach((item) => {
 
 // ChangeStatus
 const changeStatus = document.querySelectorAll("[button-status]")
-changeStatus.forEach((item) => {
-    item.addEventListener("click", (e) => {
-        const status = e.target.getAttribute("button-status")
-        const id = e.target.getAttribute("id-element")
+if(changeStatus.length > 0 ){
+    changeStatus.forEach((item) => {
+        item.addEventListener("click", (e) => {
+            const status = e.target.getAttribute("button-status")
+            const id = e.target.getAttribute("id-element")
 
-        const form = document.querySelector("#form-changeStatus")
-
-        form.action += `/${status}/${id}?_method=PATCH`;
-        console.log(form.action);
-        form.submit()
+            const form = document.querySelector("#form-changeStatus")
+            form.action += `/${status}/${id}?_method=PATCH`;
+            console.log(form.action);
+            form.submit();
+        })
     })
-})
+}
 // End Change Status
 const checkboxMulti = document.querySelector("[checkbox-multi]")
 if (checkboxMulti) {
