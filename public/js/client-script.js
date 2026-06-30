@@ -1,12 +1,19 @@
 
 window.addEventListener("scroll",() => {
-    if(window.scrollY >= 10){
+    const lastScrolly = 200;
+    if(window.scrollY >= lastScrolly){
         const header = document.querySelector("header.header-client");
         header.classList.add("bg-white");
-        header.classList.add("text-black");
-        const spanHeader = header.querySelectorAll(".text-white");
+        const spanHeader = header.querySelectorAll(".text-header");
         if(spanHeader.length > 0){
-            spanHeader.forEach((item) => item.classList.remove("text-white"));
+            spanHeader.forEach((item) => item.style.color='black');
+        }
+    }else if(window.scrollY < lastScrolly){
+        const header = document.querySelector("header.header-client");
+        header.classList.remove("bg-white");
+        const spanHeader = header.querySelectorAll(".text-header");
+        if(spanHeader.length > 0){
+            spanHeader.forEach((item) => item.style.color='white');
         }
     }
 })

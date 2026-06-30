@@ -1,5 +1,7 @@
 include ../mixins/loadcagory.pug
 
+
+link(rel = "stylesheet" href = "css/client/header.css")
 header.header-client.container-fluid.text-algin-start
     .container 
         .d-flex.items-center.justify-between
@@ -10,13 +12,13 @@ header.header-client.container-fluid.text-algin-start
                     each item in treeCategory
                         li(class = "nav-item")
                             a(href = ("/" + item.slug) class = "d-block text-decoration-none")
-                                span(class = "font-bold text-white") #{item.title}
+                                span(class = "font-bold text-header") #{item.title}
                             if(item.children)
                                 +LoadCategory(item.children)
                 
-                p.font-bold.rounded.m-0.text-white |
+                p.font-bold.rounded.m-0.text-header |
                 .d-flex.gap-x-3.items-center.font-bold.text-white
-                    a(href = "/cart" class = "text-black text-white")
+                    a(href = "/cart" class = "text-header")
                         i(class="fa-solid fa-cart-shopping")
                     form(
                         action = "/search"
@@ -26,7 +28,7 @@ header.header-client.container-fluid.text-algin-start
                         input(name = "search" type = "text")
                         d-flex.px-2
                         button.font-bold.text-black.bg-white.border-none.rounded(type = "submit") Tìm Kiếm
-                    button(class = "kinh-lup border-none px-0 py-0 bg-transparent text-white" btn-open-search-box)
+                    button(class = "kinh-lup border-none px-0 py-0 bg-transparent text-header" btn-open-search-box)
                         i(class="fa-solid fa-magnifying-glass")
 //- div.header-spacer
 
