@@ -1,34 +1,43 @@
-
-window.addEventListener("scroll",() => {
-    const lastScrolly = 200;
-    if(window.scrollY >= lastScrolly){
-        const header = document.querySelector("header.header-client");
-        header.classList.add("bg-white");
-        const spanHeader = header.querySelectorAll(".text-header");
-        if(spanHeader.length > 0){
-            spanHeader.forEach((item) => item.style.color='black');
+// Handle Header CSS
+if (window.location.pathname == "/") {
+    window.addEventListener("scroll", () => {
+        const lastScrolly = 200;
+        if (window.scrollY >= lastScrolly) {
+            const header = document.querySelector("header.header-client");
+            header.classList.add("bg-white");
+            const spanHeader = header.querySelectorAll(".text-header");
+            if (spanHeader.length > 0) {
+                spanHeader.forEach((item) => item.style.color = 'black');
+            }
+        } else if (window.scrollY < lastScrolly) {
+            const header = document.querySelector("header.header-client");
+            header.classList.remove("bg-white");
+            const spanHeader = header.querySelectorAll(".text-header");
+            if (spanHeader.length > 0) {
+                spanHeader.forEach((item) => item.style.color = 'white');
+            }
         }
-    }else if(window.scrollY < lastScrolly){
-        const header = document.querySelector("header.header-client");
-        header.classList.remove("bg-white");
-        const spanHeader = header.querySelectorAll(".text-header");
-        if(spanHeader.length > 0){
-            spanHeader.forEach((item) => item.style.color='white');
-        }
+    })
+} else {
+    const header = document.querySelector("header.header-client");
+    header.classList.add("bg-white");
+    const spanHeader = header.querySelectorAll(".text-header");
+    if (spanHeader.length > 0) {
+        spanHeader.forEach((item) => item.style.color = 'black');
     }
-})
+}
 
 // Open search box
 const btnOpenSeachBox = document.querySelector("[btn-open-search-box]")
-if(btnOpenSeachBox){
-    btnOpenSeachBox.addEventListener("click",(e) => {
+if (btnOpenSeachBox) {
+    btnOpenSeachBox.addEventListener("click", (e) => {
         const activeSearch = document.querySelector(".active-search");
         const searchBox = document.querySelector(".search-box");
-        if(activeSearch){
+        if (activeSearch) {
             searchBox.classList.add("d-none");
             btnOpenSeachBox.classList.remove("active-search");
             btnOpenSeachBox.classList.remove("text-blue-400");
-        }else{
+        } else {
             searchBox.classList.remove("d-none");
             btnOpenSeachBox.classList.add("active-search");
             btnOpenSeachBox.classList.add("text-blue-400");
@@ -38,13 +47,13 @@ if(btnOpenSeachBox){
 
 // Search Client
 const formSearchClient = document.querySelector("[form-search-product]");
-if(formSearchClient){
-    formSearchClient.addEventListener("submit",(e) => {
+if (formSearchClient) {
+    formSearchClient.addEventListener("submit", (e) => {
         e.preventDefault();
         const keyword = e.target.querySelector("input").value;
         const action = e.target.action;
         const url = new URL(action);
-        url.searchParams.set("keyword",keyword);
+        url.searchParams.set("keyword", keyword);
         console.log(url.href);
         window.location.href = url.href;
     })
@@ -52,8 +61,8 @@ if(formSearchClient){
 
 // add product to cart
 const btnAddCart = document.querySelector("[btn-add-cart]");
-if(btnAddCart){
-    btnAddCart.addEventListener("click",(e) => {
+if (btnAddCart) {
+    btnAddCart.addEventListener("click", (e) => {
         const idProduct = e.target.getAttribute("id-product");
         const quantity = document.querySelector("input[name = 'quantity']").value;
         const formAdd = document.querySelector("[form-add-cart]");
