@@ -50,3 +50,19 @@ module.exports.addCart = async (req,res) => {
         return res.redirect(backUrl);
     }
 }
+
+// [GET] "/delete-product/:id"
+module.exports.deleteProduct = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const cartID = res.locals.cartID;
+
+        const result = await Cart.updateOne({"_id": cartID},{$pull: {"products": {productId: id}}});
+        req.flash("success","Xoá sản phẩm khỏi giỏ hàng thành công");
+        return res.redirect("/cart");
+    }catch(ex){
+        console.log("Lỗi khi xoá sản phẩm khỏi giỏ hàng: "+ex);
+        req.flash("error","Xảy ra lỗi khi xoá sản phẩm khỏi giỏ hàng");
+        return res.redirect("/cart");
+    }
+}

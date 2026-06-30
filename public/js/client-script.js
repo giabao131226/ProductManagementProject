@@ -74,5 +74,16 @@ if (btnAddCart) {
     })
 }
 
-// change-quantity-cart
+// Handle Delete
+const btnDelete = document.querySelector("[btn-delete]")
+if(btnDelete){
+    btnDelete.addEventListener("click",(e) => {
+        const elementID = e.target.getAttribute("element-id");
+        console.log(elementID);
+        const formDelete = document.querySelector("[form-delete]");
+        formDelete.action += `/${elementID}`;
+        console.log(formDelete.action);
+        formDelete.submit(); 
+    })
+}
 

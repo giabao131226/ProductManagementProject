@@ -7,5 +7,6 @@ router.use(cartMiddleware.cartId);
 
 router.get("/",controller.index)
 router.post("/add-cart",controller.addCart);
+router.get("/delete-product/:id",controller.deleteProduct);
 
 module.exports = router;

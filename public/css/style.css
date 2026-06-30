@@ -382,3 +382,6 @@ td{
 .header-space{
     height: 80px;
 }
+.alert{
+    z-index: 1000;
+}

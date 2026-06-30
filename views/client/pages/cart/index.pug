@@ -1,8 +1,9 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert
 
 block main
     link(rel = "stylesheet" href = "css/client/cart.css")
-
+    +Alert(messages,5000)
     - 
         function formatMoney(s){
             const money = s.toString();
@@ -41,14 +42,21 @@ block main
                                 .d-flex.items-center.gap-x-1.justify-center
                                     img(src = product.thumbnail class = "col-2 px-0 py-0")
                                     span.font-bold.font-14 #{product.title}
-                            td.font-bold #{product.price}đ
+                            td.font-bold #{formatMoney(product.price)}đ
                             td
                                 button.border-none.font-bold.bg-white(btn-cart-quantity) +
                                 input(type = "text" name = "quantity" value = product.quantity class = "col-1 px-0 py-0 text-align-center")
                                 button.border-none.font-bold.bg-white(btn-cart-quantity) -
                             td.font-bold.text-red #{formatMoney(product.price * product.quantity)}đ
                             td
-                                button.bg-red.text-white.font-bold.rounded.border-none Xoá
+                                button.bg-red.text-white.font-bold.rounded.border-none(btn-delete element-id = product._id) Xoá
+    
+    form(
+        class = "d-none"
+        form-delete
+        action = "/cart/delete-product"
+        method = 'GET'
+    )
 
 
             
