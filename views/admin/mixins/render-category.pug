@@ -1,67 +1,27 @@
-mixin render-category(arr,level)
-    - const prefix = new Array(level+1).join("-- ")
-    each item,index in arr
-        tr.text-align-center.boxItem
+mixin render-category(arr, level)
+    - const prefix = new Array(level + 1).join("-- ")
+    each item in arr
+        tr
             td
-                input.cursor-pointer(
-                    type="checkbox"
-                    name="id"
-                    value=item._id
-                )
-
-            td.font-14.font-500
-                #{item._id}
-
+                input.cursor-pointer(type="checkbox" name="id" value=item._id)
+            td.font-13 #{item._id}
             td
-                img.rounded.object-fit-cover(
-                    src=item.thumbnail
-                    style="width:100px;height:100px"
-                )
-
-            td.font-500(
-                style=`text-align:left;padding-left:${level * 20}px`
-            )
-                #{prefix} #{item.title}
-
+                img.rounded(src=item.thumbnail style="width:80px;height:80px;object-fit:cover")
+            td.font-bold.text-align-start(style=`padding-left:${level * 20}px`) #{prefix} #{item.title}
             td
-                input.rounded.custom-border.text-align-center.py-1(
-                    type="number"
-                    name="position"
-                    value=item.position
-                    style="width:70px"
-                )
-
+                input.rounded.custom-border.text-align-center.py-1(type="number" name="position" value=item.position style="width:70px")
             td
                 if(role.permissions.includes("permissions-category-edit"))
-                    button.border-none.font-bold.rounded.font-14.py-2.cursor-pointer(
-                        class=`${item.status=="active" ? "bg-green-200 text-white" : "bg-red-600 text-white"}`
-                        button-status=item.status=="active" ? "inactive" : "active"
-                        id-element=item._id
-                    ) #{item.status=="active" ? "Hoạt động" : "Không hoạt động"}
+                    button.border-none.rounded.font-13.font-bold.py-2.px-3.cursor-pointer(class=`${item.status=="active" ? "bg-blue text-white" : "bg-red text-white"}` button-status=item.status=="active" ? "inactive" : "active" id-element=item._id) #{item.status=="active" ? "Hoạt động" : "Không hoạt động"}
                 else
-                    button.border-none.font-bold.rounded.font-14.py-2(
-                        class=`${item.status=="active" ? "bg-green-200 text-white" : "bg-red-600 text-white"}`
-                    ) #{item.status=="active" ? "Hoạt động" : "Không hoạt động"}
-
+                    button.border-none.rounded.font-13.font-bold.py-2.px-3(class=`${item.status=="active" ? "bg-blue text-white" : "bg-red text-white"}`) #{item.status=="active" ? "Hoạt động" : "Không hoạt động"}
             td
-                .d-flex.gap-x-3.justify-content-center
-
-                    if(role.permissions.includes("permissions-category-edit"))
-                        button.bg-yellow.border-none.font-bold.rounded.font-14.py-2.cursor-pointer
-                            a.text-decoration-none.text-black(
-                                href=`/admin/product-category/edit/${item._id}`
-                            ) Sửa
-
-                    if(role.permissions.includes("permissions-category-delete"))
-                        button.bg-red-600.text-white.border-none.font-bold.rounded.font-14.py-2.cursor-pointer(
-                            button-delete-product-category
-                            id-element=item._id
-                        ) Xóa
-
-                    button.bg-blue.text-white.border-none.font-bold.rounded.font-14.py-2.cursor-pointer
-                        a.text-decoration-none.text-white(
-                            href=`/admin/products/detail/${item._id}`
-                        ) Chi tiết
-
+                if(role.permissions.includes("permissions-category-edit"))
+                    button.bg-orange.border-none.rounded.font-13.font-bold.py-2.px-3.cursor-pointer
+                        a.text-decoration-none.text-black(href=`/admin/product-category/edit/${item._id}`) Sửa
+                if(role.permissions.includes("permissions-category-delete"))
+                    button.bg-red.text-white.border-none.rounded.font-13.font-bold.py-2.px-3.cursor-pointer(button-delete-product-category id-element=item._id) Xóa
+                button.bg-blue.text-white.border-none.rounded.font-13.font-bold.py-2.px-3.cursor-pointer
+                    a.text-decoration-none.text-white(href=`/admin/products/detail/${item._id}`) Chi tiết
         - if(item.children?.length > 0)
-            +render-category(item.children,level+1)
+            +render-category(item.children, level + 1)

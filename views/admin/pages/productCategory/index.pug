@@ -21,18 +21,20 @@ block main
         .py-2
         .productTool.container.px-0.rounded
             p.bg-gray-200.font-bold.px-3.py-3.m-0 Sắp Xếp
-            select(name="sort" class="select-sort" style = "margin: 20px 12px;")
-                option(readonly value = "") Sắp Xếp
-                option(value="position-asc" selected= keyAndValueSort === "position-asc") Vị Trí Tăng Dần
-                option(value="position-desc" selected= keyAndValueSort === "position-desc") Vị Trí Giảm Dần
-                option(value="price-asc" selected= keyAndValueSort === "price-asc") Giá Cả Tăng Dần                    
-                option(value="price-desc" selected= keyAndValueSort === "price-desc") Giá Cả Giảm Dần                    
-                option(value="title-asc" selected= keyAndValueSort === "title-asc") Tiêu Đề A-Z
-                option(value="title-desc" selected= keyAndValueSort === "title-desc") Tiêu Đề Z-A
-            button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
+            .d-flex.items-center.justify-between.px-2
+                .d-flex.items-center
+                    select(name="sort" class="select-sort" style = "margin: 20px 12px;")
+                        option(readonly value = "") Sắp Xếp
+                        option(value="position-asc" selected= keyAndValueSort === "position-asc") Vị Trí Tăng Dần
+                        option(value="position-desc" selected= keyAndValueSort === "position-desc") Vị Trí Giảm Dần
+                        option(value="price-asc" selected= keyAndValueSort === "price-asc") Giá Cả Tăng Dần                    
+                        option(value="price-desc" selected= keyAndValueSort === "price-desc") Giá Cả Giảm Dần                    
+                        option(value="title-asc" selected= keyAndValueSort === "title-asc") Tiêu Đề A-Z
+                        option(value="title-desc" selected= keyAndValueSort === "title-desc") Tiêu Đề Z-A
+                    button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
 
-            if(role.permissions.includes("permission-category-create"))
-                a(class = "rounded bg-blue text-white font-bold border-none cursor-pointer px-2 py-2 text-decoration-none" href = "product-category/create") Thêm mới
+                if(role.permissions.includes("permissions-category-create"))
+                    a(class = "rounded bg-blue text-white font-bold border-none cursor-pointer px-2 py-2 text-decoration-none" href = "product-category/create") Thêm mới
         .py-2
         table.container-fluid.custom-border.bg-gray-200(checkbox-multi)
             thead

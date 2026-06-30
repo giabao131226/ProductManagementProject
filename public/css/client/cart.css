@@ -1,0 +1,12 @@
+
+
+.table-cart,thead,tbody,tr,th,td{
+    border: none;
+}
+.table-cart{
+    width: 80%;
+}
+.table-cart thead{
+    background-color: rgb(202, 189, 189);
+    color: white;
+}

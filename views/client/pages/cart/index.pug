@@ -1,0 +1,54 @@
+extends ../../layouts/default.pug
+
+block main
+    link(rel = "stylesheet" href = "css/client/cart.css")
+
+    - 
+        function formatMoney(s){
+            const money = s.toString();
+            if(money.length < 4){
+                return money;
+            }
+            const arr = [];
+            let pos = 0;
+            for(var i = money.length - 1;i>=0;i--){
+                arr.push(money[i])
+                pos++
+                if(pos % 3 == 0 && i!=0) {
+                    arr.push(",")
+                }
+            }
+            
+            return arr.reverse().join("");
+        }
+    
+
+    .header-space
+    .container-fluid.text-align-start
+        .container.d-flex.justify-center
+            table(class = "col-12 px-0 py-0" class = "table-cart")
+                thead
+                    tr
+                        th Sản phẩm
+                        th Đơn Giá
+                        th Số Lượng
+                        th Số Tiền
+                        th Thao Tác
+                tbody
+                    each product in cart.products
+                        tr.bg-white
+                            td.py-2
+                                .d-flex.items-center.gap-x-1.justify-center
+                                    img(src = product.thumbnail class = "col-2 px-0 py-0")
+                                    span.font-bold.font-14 #{product.title}
+                            td.font-bold #{product.price}đ
+                            td
+                                button.border-none.font-bold.bg-white(btn-cart-quantity) +
+                                input(type = "text" name = "quantity" value = product.quantity class = "col-1 px-0 py-0 text-align-center")
+                                button.border-none.font-bold.bg-white(btn-cart-quantity) -
+                            td.font-bold.text-red #{formatMoney(product.price * product.quantity)}đ
+                            td
+                                button.bg-red.text-white.font-bold.rounded.border-none Xoá
+
+
+            

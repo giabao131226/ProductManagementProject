@@ -63,23 +63,8 @@ module.exports.index = async (req,res) => {
 module.exports.create = async (req,res) => {
     const find = {deleted: false}
 
-    function createTree(arr,parentID){
-        const tree = [];
-        arr.forEach((item) => {
-            if(item.parent_id == parentID){
-                const currentNode = {...item};
-                const children = createTree(arr,item.id);
-                if(children.length > 0){
-                    currentNode.children = children;
-                }
-                tree.push(currentNode);
-            }
-        })
-        return tree;
-    }
-
-    const records = await productCategory.find(find);
-    const category = createTree(records,"");
+    const records = await productCategory.find(find).lean();
+    const category = createTree.getTree(records,"");
 
     res.render(
         "admin/pages/productCategory/create.pug",
@@ -102,7 +87,6 @@ module.exports.createPost = async (req,res) => {
         req.body.parent_id = "";
     }
     const result = await productCategory.create(req.body);
-
     req.flash("success","Thêm mới danh mục thành công");
     res.redirect("/admin/product-category");
 }
@@ -122,9 +106,8 @@ module.exports.edit = async (req,res) => {
     const data = await productCategory.findById( new mongoose.Types.ObjectId(req.params.id)).lean();
 
     const find = {deleted: false}
-    const records = await productCategory.find(find);
+    const records = await productCategory.find(find).lean();
     const category = createTree.getTree(records,"");
-
     res.render("admin/pages/productCategory/edit",{
         "pageTitle": "Chỉnh sửa sản phẩm",
         "data": data,

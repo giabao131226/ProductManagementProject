@@ -3,6 +3,9 @@ const router = express.Router();
 const controller = require("../../controllers/client/cart.controller");
 const cartMiddleware = require("../../middlewares/cart.middleware");
 
-router.post("/add-cart/:productID",cartMiddleware.cartId,controller.addCart);
+router.use(cartMiddleware.cartId);
+
+router.get("/",controller.index)
+router.post("/add-cart",controller.addCart);
 
 module.exports = router;

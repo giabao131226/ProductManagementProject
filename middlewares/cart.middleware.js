@@ -3,6 +3,7 @@ const Cart = require("../models/cart.model");
 module.exports.cartId = async (req,res,next) => {
     try{
         const cartID = req.cookies.cartID;
+        console.log(cartID);
         if(!cartID){
             const cart = await Cart.create({});
             res.cookie("cartID",cart._id);

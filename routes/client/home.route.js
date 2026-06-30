@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.get("/",controller.index);
 router.get("/search",controller.search);
-router.get("/:slugProduct",controller.detailProduct);
+router.get("/chi-tiet-san-pham/:slugProduct",controller.detailProduct);
 
 module.exports = router;

@@ -10,7 +10,7 @@ block main
             .h3.m-0.font-bold.text-red Sản phẩm nổi bật
             .d-flex.items-center.gap-x-3.flex-wrap
                 each item in products 
-                    a(href = `/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2 text-black text-decoration-none")
+                    a(href = `/chi-tiet-san-pham/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2 text-black text-decoration-none")
                         .boxItem__image
                             img(src = `${item.thumbnail}`)
                         .boxItem__info.d-flex.flex-column.items-start.px-3.py-2

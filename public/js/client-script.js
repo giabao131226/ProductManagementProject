@@ -48,10 +48,15 @@ const btnAddCart = document.querySelector("[btn-add-cart]");
 if(btnAddCart){
     btnAddCart.addEventListener("click",(e) => {
         const idProduct = e.target.getAttribute("id-product");
+        const quantity = document.querySelector("input[name = 'quantity']").value;
         const formAdd = document.querySelector("[form-add-cart]");
-        const action = formAdd.action + "/"+idProduct;
-        formAdd.action = action;
-        console.log(formAdd.action);
+        const inputQuantity = formAdd.querySelector("input[name='quantity']");
+        const inputProductID = formAdd.querySelector("input[name='productID']");
+        inputQuantity.value = parseInt(quantity);
+        inputProductID.value = idProduct;
         formAdd.submit();
     })
 }
+
+// change-quantity-cart
+

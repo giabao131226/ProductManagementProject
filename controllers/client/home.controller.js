@@ -23,7 +23,6 @@ module.exports.index = async (req,res) => {
 module.exports.detailProduct = async (req,res) => {
     try{
         const slug = req.params.slugProduct;
-        console.log(slug);
         const productDetail = await Product.findOne({"slug": slug,"delete": false,"active": 'active'}).lean();
         const productCategory = await ProductCategory.findOne({"_id": productDetail.categoryID}).lean();
         productDetail.category = productCategory;

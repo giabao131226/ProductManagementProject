@@ -16,7 +16,8 @@ header.header-client.container-fluid.text-algin-start
                 
                 p.font-bold.rounded.m-0.text-white |
                 .d-flex.gap-x-3.items-center.font-bold.text-white
-                    i(class="fa-solid fa-cart-shopping")
+                    a(href = "/cart" class = "text-black text-white")
+                        i(class="fa-solid fa-cart-shopping")
                     form(
                         action = "/search"
                         form-search-product
@@ -25,7 +26,7 @@ header.header-client.container-fluid.text-algin-start
                         input(name = "search" type = "text")
                         d-flex.px-2
                         button.font-bold.text-black.bg-white.border-none.rounded(type = "submit") Tìm Kiếm
-                    button(class = "kinh-lup border-none px-0 py-0 bg-transparent" btn-open-search-box)
+                    button(class = "kinh-lup border-none px-0 py-0 bg-transparent text-white" btn-open-search-box)
                         i(class="fa-solid fa-magnifying-glass")
 //- div.header-spacer
 

@@ -34,8 +34,6 @@ module.exports.productWithCategory = async (req,res) => {
             return arr;
         }
         const listCategory = await getSub(category._id);
-        console.log(listCategory);
-
         const products = await Product.find({"delete": false,"categoryID": {$in: listCategory}}).limit(6);
 
         return res.render("client/pages/products/index",{
