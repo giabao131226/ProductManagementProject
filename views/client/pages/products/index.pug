@@ -8,7 +8,7 @@ block main
             if(products.length > 0)
                 .d-flex.items-center.gap-x-3.flex-wrap
                     each item in products 
-                        a(href = `/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2")
+                        a(href = `/chi-tiet-san-pham/${item.slug}` class = "boxItem col-2 px-0 py-0 m-top-2")
                             .boxItem__image
                                 img(src = `${item.thumbnail}`)
                             .boxItem__info.d-flex.flex-column.items-start.px-3.py-2
