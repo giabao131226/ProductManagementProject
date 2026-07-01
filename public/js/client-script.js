@@ -4,6 +4,7 @@ if (window.location.pathname == "/") {
         const lastScrolly = 200;
         if (window.scrollY >= lastScrolly) {
             const header = document.querySelector("header.header-client");
+            header.style.position = "fixed";
             header.classList.add("bg-white");
             const spanHeader = header.querySelectorAll(".text-header");
             if (spanHeader.length > 0) {
@@ -20,6 +21,7 @@ if (window.location.pathname == "/") {
     })
 } else {
     const header = document.querySelector("header.header-client");
+    header.style.position = "sticky";
     header.classList.add("bg-white");
     const spanHeader = header.querySelectorAll(".text-header");
     if (spanHeader.length > 0) {
