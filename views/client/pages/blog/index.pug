@@ -1,0 +1,36 @@
+extends ../../layouts/default
+
+block main
+    link(rel = "stylesheet" href = "css/client/blog.css")
+    .container-fluid.text-align-start
+        .container.d-flex.justify-center
+            .d-flex.justify-center.col-12
+                .col-3.d-flex.flex-column.gap-y-2
+                    h3.font-bold.text-red Bài Viết Mới
+                    each item in news
+                        a(href = `/blog/${item.slug}`).blog.d-flex.gap-x-1.text-decoration-none.text-black
+                            img(src = (item.thumbnail ? item.thubmnail : "") class = "col-3 px-0 py-0")
+                            div.col-9.px-0.py-0
+                                p.m-0.font-bold.font-14.title #{item.title}
+                                p.m-0.font-bold.font-11 #{item.createdAt.toLocaleString("vi-VN")}
+                    .blog.d-flex.gap-x-1
+                        img(src = "https://cdn.daca.vn/thumbs/blog/tong-hop/top%2010%20trang%20web%20ai%20h%E1%BB%97%20tr%E1%BB%A3%20l%E1%BA%ADp%20tr%C3%ACnh%20vi%C3%AAn%20hi%E1%BB%87u%20qu%E1%BA%A3%20nh%E1%BA%A5t_thumb_150.png" class = "col-3 px-0 py-0")
+                        div.col-9.px-0.py-0
+                            p.m-0.font-bold.font-14.title Top 10 trang web AI hỗ trợ lập trình
+                            p.m-0.font-bold.font-11 16/2/2025
+                .col-9.d-flex.gap-x-3
+                    each blog in blogs 
+                        a(href = `/blog/${blog.slug}`).blog.col-4.px-0.py-0.d-flex.flex-column.text-decoration-none.text-black
+                            .ratio-4x3
+                                img(src = (blog.thumbnail ? blog.thumbnail : "https://png.pngtree.com/png-vector/20230417/ourlarge/pngtree-facebook-post-template-with-emoticons-vector-png-image_6714218.png") class = "object-fit-cover h-100 w-100")
+                            .d-flex.flex-column.col-12
+                                p.m-0.font-bold.title #{blog.title}
+                                .d-flex.items-center.gap-x-1
+                                    i(class="fa-regular fa-calendar-days")
+                                    span.font-11 #{blog.createdAt.toLocaleString("vi-VN")}
+                                p.mp-0.font-bold.title #{blog.excerpt}
+
+
+
+
+
