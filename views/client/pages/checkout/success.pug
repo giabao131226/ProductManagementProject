@@ -1,0 +1,71 @@
+extends ../../layouts/default
+include ../../mixins/alert.pug
+
+block main
+    .container-fluid.text-align-start
+        .container
+            h3.font-bold.text-red Đặt hàng thành công
+
+            +Alert(messages,5000)
+            - 
+                function formatMoney(s){
+                    const money = s.toString();
+                    if(money.length < 4){
+                        return money;
+                    }
+                    const arr = [];
+                    let pos = 0;
+                    for(var i = money.length - 1;i>=0;i--){
+                        arr.push(money[i])
+                        pos++
+                        if(pos % 3 == 0 && i!=0) {
+                            arr.push(",")
+                        }
+                    }
+                    
+                    return arr.reverse().join("");
+                }
+
+            .col-12.bg-white
+                h5.font-bold.text-black Thông tin cá nhân
+                table.col-12.text-align-start
+                    tbody
+                        tr
+                            td.font-11 Họ tên
+                            td.font-bold.font-14 #{order.userInfo.fullName}
+                        tr
+                            td.font-11 Số điện thoại
+                            td.font-bold.font-14 #{order.userInfo.phone}
+                        tr 
+                            td.font-11 Địa chỉ
+                            td.font-bold.font-14 #{order.userInfo.address}
+                .py-2
+                h5.font-bold.text-black Thông tin đơn hàng
+                table.col-12
+                    thead
+                        tr
+                            th.col-2 STT
+                            th.col-2 Ảnh
+                            th.col-2 Tên
+                            th.col-2 Gía
+                            th.col-2 Số lượng
+                            th.col-2 Tổng tiền
+                    tbody
+                        each product,index in order.products
+                            tr
+                                td #{index+1}
+                                td 
+                                    img(src = product.productInfo.thumbnail class = "col-12 px-0 py-0")
+                                td #{product.productInfo.title}
+                                td.font-bold.text-red.font-14 #{formatMoney(product.price)}đ
+                                td #{product.quantity}
+                                td.font-bold.text-red.font-14 #{formatMoney(product.price * product.quantity)}đ
+                
+                .d-flex.justify-end
+                    span.font-bold.font-11 Tổng đơn hàng: 
+                        span.font-bold.font-14.text-red #{formatMoney(totalPrice)}đ 
+                            
+                        
+            
+
+

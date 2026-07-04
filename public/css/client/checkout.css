@@ -1,0 +1,13 @@
+.table-cart{
+    width:100%;
+    max-width:500px;
+    margin:auto;
+}
+
+.table-cart input{
+    outline:none;
+}
+
+.table-cart input:focus{
+    border-color:#22c55e;
+}
