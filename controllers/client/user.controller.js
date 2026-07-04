@@ -21,7 +21,6 @@ module.exports.registerPost = async (req,res) => {
             return res.redirect("/user/register");
         }
         let error = {};
-        console.log(email);
         if(!validate.validateEmail(email)){
             console.log(email);
             error.errorEmail = "Địa chỉ email không đúng định dạng. Vui lòng kiểm tra lại";
@@ -33,7 +32,7 @@ module.exports.registerPost = async (req,res) => {
             error.errorCfPassword =  "Xác nhận mật khẩu phải trùng khớp với mật khẩu";
         }
         if(Object.keys(error).length > 0){
-            req.session.oldDataRegister = {
+            res.session.oldDataRegister = {
                 dataInput: data,
                 error: error
             }
@@ -52,7 +51,10 @@ module.exports.registerPost = async (req,res) => {
 
 // [GET] "/user/login"
 module.exports.login = (req,res) =>{
-    return res.render("client/pages/user/login");
+    const oldData = req.session.oldDataLogin || {};
+    return res.render("client/pages/user/login",{
+        oldData: oldData
+    });
 }
 
 // [POST] "/user/loginPost"
@@ -67,7 +69,7 @@ module.exports.loginPost = async (req,res) => {
             error.errorPassword = "Mật khẩu không đúng định dạng. Vui lòng kiểm tra lại";
         }
         if(Object.keys(error).length > 0){
-            res.session.oldDataLogin = {
+            req.session.oldDataLogin = {
                 error: error
             }
             return res.redirect("/user/login");

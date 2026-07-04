@@ -13,13 +13,13 @@ block main
                 .d-flex.flex-column
                     label.font-bold.text-gray-600 Email
                     input(type = "text" name = "email" placeholder = "abc@gmail.com" class = "font-bold text-black")
-                    //- - if(oldData.error)
-                    //-     p.text-error.m-0 #{oldData.error.errorEmail}
+                    - if(oldData.error)
+                        p.text-error.m-0 #{oldData.error.errorEmail}
                 .d-flex.flex-column
                     label.font-bold.text-gray-600 Password
                     input(type = "password" name = "password" placeholder = "Nhập mật khẩu" class = "font-bold text-black")
-                    //- - if(oldData.error)
-                    //-     p.text-error.m-0 #{oldData.error.errorPassword}
+                    - if(oldData.error)
+                        p.text-error.m-0 #{oldData.error.errorPassword}
                 .d-flex.items-center.justify-between.font-14
                     span.font-bold Chưa có tài khoản? 
                         a(href = "/user/login") Đăng Ký
