@@ -404,3 +404,8 @@ td{
 .alert{
     z-index: 1000;
 }
+.text-error{
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+}

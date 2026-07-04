@@ -1,0 +1,15 @@
+.register-form{
+    width: 40%;
+}
+.register-form input{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+}
+.register-form button{
+    border: none;
+    background-color: #FFB734;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+}

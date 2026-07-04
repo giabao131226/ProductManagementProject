@@ -4,11 +4,15 @@ const getCategoryMiddleWare = require("../../middlewares/client/getCategory.midd
 const cartRouter = require("./cart.route");
 const blogRouter = require("./blog.route");
 const checkoutRouter = require("./checkout.route");
+const userRouter = require("./user.route");
+const userMiddleware = require("../../middlewares/user.midleware");
 
 module.exports = (app) => {
+    app.use(userMiddleware.userInfo);
     app.use("/",getCategoryMiddleWare.getCategory,homeRouter)
     app.use("/products",productRouter)
     app.use("/cart",cartRouter)
     app.use("/blog",blogRouter)
     app.use("/checkout",checkoutRouter)
+    app.use("/user",userRouter)
 }

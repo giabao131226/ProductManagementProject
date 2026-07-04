@@ -30,6 +30,18 @@ header.header-client.container-fluid.text-algin-start
                         button.font-bold.text-black.bg-white.border-none.rounded(type = "submit") Tìm Kiếm
                     button(class = "kinh-lup border-none px-0 py-0 bg-transparent text-header" btn-open-search-box)
                         i(class="fa-solid fa-magnifying-glass")
+                p.font-bold.rounded.m-0.text-header |
+                .d-flex.gap-x-3.items-center.font-bold
+                    - if(user)
+                        a(href = "/user/logout")
+                            button Đăng xuất
+                    - else
+                        a(href = "/user/login")
+                            button.font-bold.text-white.bg-blue.border-none Đăng Nhập
+                        a(href = "/user/register")
+                            button.font-bold.border-none Đăng Ký
+                        
+                
 
                     
   

@@ -89,3 +89,15 @@ if(btnDelete){
     })
 }
 
+// Handle hidden error
+const formRegister = document.querySelector(".register-form");
+if(formRegister){
+    const inputs = formRegister.querySelectorAll("input");
+    inputs.forEach((item) =>{
+        item.addEventListener("keydown",(e) => {
+            const textError = e.target.nextElementSibling;
+            textError.classList.add("d-none");
+        })
+    })
+}
+
