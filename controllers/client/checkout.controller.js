@@ -7,7 +7,6 @@ module.exports.index = async (req,res) => {
     try{
         const cartID = req.cookies.cartID;
         const cart =  await Cart.findOne({"_id": cartID}).lean();
-        console.log(cart);
         cart.products = await Promise.all(cart.products.map(async (item) => {
             const product = await Product.findOne({"_id": item.productId}).select("thumbnail title price").lean();
             product.quantity = item.quantity;

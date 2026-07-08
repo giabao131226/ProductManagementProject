@@ -1,33 +1,36 @@
-extends ../../layouts/default
 
-block main
-    link(rel = "stylesheet" href = "/css/client/register.css")
-    .container-fluid.text-align-start.bg-white.w-100.h-100
-        .container.d-flex.justify-center
-            form(
-                action = "/user/register" 
-                method = "POST"
-                class = "d-flex flex-column gap-y-3 register-form"
-            )
-                h3.font-bold.text-align-center.m-0 Đăng Ký Tài Khoản
-                .d-flex.flex-column
-                    label.font-bold.text-gray-600 Email
-                    input(type = "text" name = "email" placeholder = "abc@gmail.com" class = "font-bold text-black")
-                    - if(oldData.error)
-                        p.text-error.m-0 #{oldData.error.errorEmail}
-                .d-flex.flex-column
-                    label.font-bold.text-gray-600 Password
-                    input(type = "password" name = "password" placeholder = "Nhập mật khẩu" class = "font-bold text-black")
-                    - if(oldData.error)
-                        p.text-error.m-0 #{oldData.error.errorPassword}
-                .d-flex.flex-column
-                    label.font-bold.text-gray-600 Confirm Password
-                    input(type = "password" name = "cfPassword" placeholder = "Nhập xác nhận mật khẩu" class = "font-bold text-black")
-                    - if(oldData.error)
-                        p.text-error.m-0 #{oldData.error.errorCfPasword}
-                .d-flex.items-center.justify-between.font-14
-                    span.font-bold Đã có tài khoản? 
-                        a(href = "/user/login") Đăng Nhập
-                    span.font-bold Chính sách
-                button Đăng ký
+link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous")
+link(rel = "stylesheet" href = "/css/style.css")
+link(rel = "stylesheet" href = "/css/flex.css")
+link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer")
+link(rel = "stylesheet" href = "/css/client/register.css")
+
+.bg-user.container-fluid.text-align-start.bg-white.w-screen.h-screen.d-flex.items-center
+    .container.d-flex.justify-center
+        form(
+            action = "/user/register" 
+            method = "POST"
+            class = "d-flex flex-column gap-y-3 register-form"
+        )
+            h3.font-bold.text-align-center.m-0 Đăng Ký Tài Khoản
+            .d-flex.flex-column
+                label.font-bold.text-black Email
+                input(type = "text" name = "email" placeholder = "abc@gmail.com" class = "font-bold text-black")
+                - if(oldData.error)
+                    p.text-error.m-0 #{oldData.error.errorEmail}
+            .d-flex.flex-column
+                label.font-bold.text-black Password
+                input(type = "password" name = "password" placeholder = "Nhập mật khẩu" class = "font-bold text-black")
+                - if(oldData.error)
+                    p.text-error.m-0 #{oldData.error.errorPassword}
+            .d-flex.flex-column
+                label.font-bold.text-black Confirm Password
+                input(type = "password" name = "cfPassword" placeholder = "Nhập xác nhận mật khẩu" class = "font-bold text-black")
+                - if(oldData.error)
+                    p.text-error.m-0 #{oldData.error.errorCfPasword}
+            .d-flex.items-center.justify-between.font-14
+                span.font-bold Đã có tài khoản? 
+                    a(href = "/user/login") Đăng Nhập
+                span.font-bold Chính sách
+            button Đăng ký
                 

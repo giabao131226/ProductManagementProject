@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 const cartSchema = mongoose.Schema({
     accountID: mongoose.Schema.Types.ObjectId,
-    products: Array
+    products: Array,
+    ticked: {
+        type: Boolean,
+        default: false
+    }
 },{
     timestamps: true
 })

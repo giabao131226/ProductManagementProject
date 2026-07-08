@@ -9,7 +9,6 @@
 
 body{
     font-family: "Roboto", sans-serif;
-    background-color: #F7F7F7;
     margin: 0;
 }
 .border-box{
@@ -273,6 +272,9 @@ table{
 }
 .h-screen{
     height: 100vh;
+}
+.w-screen{
+    width: 100vw;
 }
 .outline-none{
     outline: none;

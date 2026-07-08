@@ -10,3 +10,23 @@ if(btnQuantity.length > 0){
         })
     })
 }
+
+
+// Xử lý check 
+const inputCheckAll = document.querySelector("[name='check-all']");
+if(inputCheckAll){
+    inputCheckAll.addEventListener("click",(e) => {
+        const trs = document.querySelectorAll("tr[product-id]");
+        if(inputCheckAll.checked){
+            trs.forEach((item) =>{
+                const inputCheck = item.querySelector("input[type='checkbox']");
+                inputCheck.checked = true;
+            });
+        }else{
+                trs.forEach((item) =>{
+                    const inputCheck = item.querySelector("input[type='checkbox']");
+                    inputCheck.checked = false;
+                });
+        }
+    })
+}

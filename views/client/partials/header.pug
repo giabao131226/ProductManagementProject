@@ -33,8 +33,15 @@ header.header-client.container-fluid.text-algin-start
                 p.font-bold.rounded.m-0.text-header |
                 .d-flex.gap-x-3.items-center.font-bold
                     - if(user)
-                        a(href = "/user/logout")
-                            button Đăng xuất
+                        div(class="dropdown")
+                            button(class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                                i(class="fa-regular fa-user")
+                                span Xin chào #{user.fullName}
+                            .dropdown-menu(aria-labelledby="dropdownMenuButton")  
+                                a(href = "/user/profile")
+                                    button.border-none.col-12 Thông tin tài khoản
+                                a(href = "/user/logout")
+                                    button.border-none.col-12 Đăng xuất
                     - else
                         a(href = "/user/login")
                             button.font-bold.text-white.bg-blue.border-none Đăng Nhập

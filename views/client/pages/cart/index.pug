@@ -26,28 +26,32 @@ block main
     .container-fluid.text-align-start
         .container.d-flex.flex-column.items-center
             - if(cart.products.length > 0)
-                table(class = "col-12 px-0 py-0" class = "table-cart")
+                table(class = "col-12 px-0 py-0" class = "table-cart" table-cart)
                     thead
                         tr
-                            th Sản phẩm
-                            th Đơn Giá
-                            th Số Lượng
-                            th Số Tiền
-                            th Thao Tác
+                            th.col-1
+                                input(type = "checkbox" name = "check-all")
+                            th.col-3 Sản phẩm
+                            th.col-2 Đơn Giá
+                            th.col-2 Số Lượng
+                            th.col-2 Số Tiền
+                            th.col-2 Thao Tác
                     tbody
                         each product in cart.products
-                            tr.bg-white
-                                td.py-2
+                            tr.bg-white(product-id = product._id)
+                                td.col-1
+                                    input(type = "checkbox")
+                                td.col-3.py-2
                                     .d-flex.items-center.gap-x-1.justify-center
                                         img(src = product.thumbnail class = "col-2 px-0 py-0")
                                         span.font-bold.font-14 #{product.title}
-                                td.font-bold #{formatMoney(product.price)}đ
-                                td
+                                td.col-2.font-bold #{formatMoney(product.price)}đ
+                                td.col-2
                                     a.border-none.font-bold.bg-white.text-decoration-none(href = `/cart/${product._id}/${product.quantity+1}`) +
-                                    input(type = "text" name = "quantity" value = product.quantity class = "col-1 px-0 py-0 text-align-center")
+                                    input(type = "text" name = "quantity" value = product.quantity class = "col-3 px-0 py-0 text-align-center")
                                     a.border-none.font-bold.bg-white(href = `/cart/${product._id}/${product.quantity-1}`) -
-                                td.font-bold.text-red #{formatMoney(product.price * product.quantity)}đ
-                                td
+                                td.col-2.font-bold.text-red #{formatMoney(product.price * product.quantity)}đ
+                                td.col-2
                                     button.bg-red.text-white.font-bold.rounded.border-none(btn-delete element-id = product._id) Xoá
                 .py-2
                 .d-flex.items-center.justify-end.col-12.bg-white.table-cart.gap-x-1

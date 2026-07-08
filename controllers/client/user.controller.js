@@ -91,3 +91,26 @@ module.exports.logout = (req,res) => {
     res.clearCookie("tokenUser");
     return res.redirect("/");
 }
+
+// [GET] "/user/profile"
+module.exports.profile = async (req,res) => {
+    const user = res.locals.user;
+    res.render("client/pages/user/profile",{
+        user: user
+    })
+}
+
+// [PATCH] "/user/profile/update"
+module.exports.updateProfile = async (req,res) =>{
+    try{
+        console.log(req.body);
+        const user = res.locals.user;
+        const result = await User.updateOne({"_id": user._id},{...req.body});
+        req.flash("Success","Cập nhật thông tin tài khoản thành công");
+        return res.redirect("/user/profile");
+    }catch(ex){
+        console.log("Có lỗi khi cập nhật tài khoản người dùng");
+        req.flash("error","Có lỗi khi cập nhật thông tin tài khoản người dùng");
+        return redirect("/user/profile");
+    }
+}

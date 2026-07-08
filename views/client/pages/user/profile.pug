@@ -1,0 +1,47 @@
+extends ../../layouts/default.pug
+
+block main
+    .container-fluid.text-align-start
+        .container
+            h3.font-bold.m-0 Hồ sơ của tôi 
+            span Quản lý thông tin hồ sơ để bảo mật tài khoản
+
+            br
+
+            form(class = "d-flex items-center form-profile" 
+                enctype = "multipart/form-data" 
+                method = "POST" 
+                action = "/user/profile/update?_method=PATCH")
+                .d-flex.flex-column.items-end.col-6.gap-y-2
+                    .d-flex.items-center.gap-x-3
+                        label Tên đăng nhập
+                        input(type = "text" name = "fullName" value = user.fullName)
+
+                    .d-flex.items-center.gap-x-3
+                        label Email
+                        input(type = "email" name = "email" value = user.email)
+                    .d-flex.items-center.gap-x-3
+                        label Số điện thoại
+                        input(type = "text" name = "phone" value = user.phone)
+                    .d-flex.items-center.gap-x-3
+                        label Giới tính
+                        .d-flex.items-center.gap-x-1
+                            input(type = "radio" name = "gender" value = "male" checked = (user.gender=="Male" ? true : false))
+                            label Nam
+                        .d-flex.items-center.gap-x-1
+                            input(type = "radio" name = "gender" value = "female")
+                            label Nữ
+                    .d-flex.items-center.gap-x-3
+                        label Ngày sinh
+                        input(type = "datetime-local" name = "birthOfDay" checked = (user.gender=="Male" ? true : false))
+                    div.d-flex.justify-start.col-7.gap-x-1
+                        button.font-bold.text-white.bg-red.border-none Lưu
+                        a(href = "/user/password")
+                            button.font-bold.text-white.bg-blue.border-none Đổi mật khẩu
+                .col-6.d-flex.flex-column.items-center.gap-y-2
+                    .vien-img
+                        img(src = user.avatar class = "profile-avatar")
+                    label.px-2.py-2.text-white.bg-blue(choose-image for = "profile-avatar") Chọn ảnh
+                    input(id = "profile-avatar" type = "file" name = "avatar" accept = "image/*" class = "d-none")
+
+    script(src = "/js/user.js")          

@@ -8,9 +8,12 @@ module.exports.index = async (req, res) => {
     try {
         const cartID = res.locals.cartID;
         const cart = await Cart.findOne({ "_id": cartID }).lean();
+        let allTick = true;
         cart.products = await Promise.all(cart.products.map(async (item) => {
             const product = await Product.findOne({ "_id": item.productId }).select("_id title price thumbnail").lean();
             product.quantity = item.quantity;
+            product.ticked = item.ticked;
+            if(!item.ticked) allTick = false;
             return product;
         }));
 
@@ -21,6 +24,7 @@ module.exports.index = async (req, res) => {
         return res.render("client/pages/cart/index.pug", {
             cart: cart,
             totalPrice: totalPrice,
+            allTick: allTick
         });
 
     } catch (ex) {
