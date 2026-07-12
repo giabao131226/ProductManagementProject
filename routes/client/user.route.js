@@ -29,5 +29,11 @@ router.patch("/profile/update",upload.single("avatar"),async (req,res,next) => {
     console.log("Lỗi khi cập nhật ảnh đại diện "+ex);
    }
 },controller.updateProfile);
+router.get("/password",controller.password);
+router.post("/password",controller.passwordPost);
+router.get("/password/otp",controller.typeOtp);
+router.post("/password/otp",controller.otpPost);
+router.get("/password/change",controller.changePassword);
+router.post("/password/change",controller.changePasswordPost);
 
 module.exports = router;

@@ -1,0 +1,28 @@
+
+include ../../mixins/alert
+
+link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous")
+link(rel = "stylesheet" href = "/css/style.css")
+link(rel = "stylesheet" href = "/css/flex.css")
+link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer")
+link(rel = "stylesheet" href = "/css/client/register.css")
+
++Alert(messages,5000)
+
+.bg-user.container-fluid.text-align-start.bg-white.w-screen.h-screen.d-flex.items-center
+    .container.d-flex.justify-center
+        form(
+            action = "/user/password/otp" 
+            method = "POST"
+            class = "d-flex flex-column gap-y-3 register-form"
+        )
+            h3.font-bold.text-align-center.m-0 Quên Mật Khẩu
+            .d-flex.flex-column
+                label.font-bold.text-black OTP
+                input(
+                    type = "text" 
+                    name = "otp" 
+                    placeholder = "Nhập mã otp đã nhận qua email" 
+                    class = "font-bold text-black"
+                )
+            button(type = "submit") Xác Minh

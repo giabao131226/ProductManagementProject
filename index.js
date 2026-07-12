@@ -1,4 +1,3 @@
-
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const flash = require('express-flash')
@@ -9,6 +8,7 @@ const methodOverride = require("method-override")
 const route = require("./routes/client/index.route")
 const routeAdmin = require("./routes/admin/index.route")
 const database = require("./config/database")
+const nodemailer = require("nodemailer")
 require("dotenv").config();
 
 database.connect();

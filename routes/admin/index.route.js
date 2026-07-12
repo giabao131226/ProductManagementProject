@@ -9,6 +9,7 @@ const authRouter = require("./auth.routes");
 const blogRouter = require("./blog.routes");
 const uploadRouter = require("./upload.route");
 const middlewareAuth = require("../../middlewares/authentication.middlewares");
+const settingRouter = require("../../routes/admin/settings.route");
 
 module.exports = (app) => {
     const PATH_ADMIN = systemConfig.prefixpath
@@ -22,4 +23,5 @@ module.exports = (app) => {
     app.use(PATH_ADMIN + "/auth",authRouter)
     app.use(PATH_ADMIN +"/blogs",middlewareAuth.auth,blogRouter)
     app.use(PATH_ADMIN + "/upload",uploadRouter)
+    app.use(PATH_ADMIN+"/setting",middlewareAuth.auth,settingRouter);
 }
