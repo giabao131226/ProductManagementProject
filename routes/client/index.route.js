@@ -6,9 +6,11 @@ const blogRouter = require("./blog.route");
 const checkoutRouter = require("./checkout.route");
 const userRouter = require("./user.route");
 const userMiddleware = require("../../middlewares/user.midleware");
+const settingMiddleware = require("../../middlewares/setting-general.middlewares");
 
 module.exports = (app) => {
     app.use(userMiddleware.userInfo);
+    app.use(settingMiddleware.getSettingGenerals);
     app.use("/",getCategoryMiddleWare.getCategory,homeRouter)
     app.use("/products",productRouter)
     app.use("/cart",cartRouter)
