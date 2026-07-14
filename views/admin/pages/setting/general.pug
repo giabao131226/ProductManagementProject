@@ -17,29 +17,29 @@ block main
         )
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Tên Website
-                input(type = "text" name = "websiteName")
+                input(type = "text" name = "websiteName" value = setting.websiteName)
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Logo
                 input(type = "file" name = "logo" accept = "image/*" change-image)
             div(class = "d-flex col-12")
                 div(class = "d-flex flex-column col-6")
                     p(class = "m-0 font-bold") Ảnh Cũ
-                    img(class = "col-8")
+                    img(class = "col-8" src = setting.logo)
                 div(class = "d-flex flex-column col-6")
                     p(class = "m-0 font-bold") Ảnh Mới
                     img(class = "col-8" id = "edit-new-image")
             div(class = "d-flex flex-column col-12") 
                 p(class = "m-0 font-bold") Số điện thoại
-                input(type = "text" name = 'phone' required)
+                input(type = "text" name = 'phone' required value = setting.phone)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Email
-                input(type = "email" name = 'email')
+                input(type = "email" name = 'email' value = setting.email)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Địa chỉ
-                input(type = "text" name = 'address')
+                input(type = "text" name = 'address' value = setting.address)
             div(class = "d-flex flex-column col-12")
                 p(class = "m-0 font-bold") Copyright
-                input(type = "text" name = 'copyright')
+                input(type = "text" name = 'copyright' value = setting.copyright)
 
             button(type = "submit" class = "bg-blue text-white border-none rounded") Cập nhật
 
