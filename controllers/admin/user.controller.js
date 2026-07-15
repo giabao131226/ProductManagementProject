@@ -59,7 +59,7 @@ module.exports.index = async (req,res) => {
             .limit(objectPagination.limitItems)
             .skip((objectPagination.currentPage - 1) * 4);
 
-            
+
         return res.render("admin/pages/user/index",{
             users: users,
             button: listButton,  
@@ -69,5 +69,20 @@ module.exports.index = async (req,res) => {
         });        
     }catch(ex){
         console.log("Lỗi khi hiển thị trang danh sách người dùng: "+ex);
+    }
+}
+
+// [PATCH] "/admin/users/change-status/:status/:id"
+module.exports.changeStatus = async (req,res) => {
+    try{
+        const status = req.params.status;
+        const id = req.params.id;
+        const result = await User.updateOne({"_id": id},{"status": status});
+        req.flash("success","Cập nhật trạng thái tài khoản người dùng thành công");
+        return res.redirect("/admin/users");
+    }catch(ex){
+        console.log("Lỗi khi thay đổi trạng thái tài khoản người dùng: "+ex);
+        req.flash("error","Có lỗi xảy ra khi thay đổi trạng thái tài khoản người dùng. Vui lòng thử lại");
+        return res.redirect("/admin/users");
     }
 }
