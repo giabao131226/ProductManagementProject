@@ -13,7 +13,6 @@ module.exports.index = async (req, res) => {
                 ...item, role: role
             }
         }))
-        console.log(lastData);
 
         res.render("admin/pages/account/index", {
             accounts: lastData

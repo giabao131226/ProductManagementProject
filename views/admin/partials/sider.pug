@@ -21,6 +21,9 @@
         if(role.permissions.includes("permissions-account-view"))
             li
                 a(href = "/admin/accounts" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh sách tài khoản
+        if(role.permissions.includes("permissions-account-view"))
+            li
+                a(href = "/admin/users" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Danh sách người dùng
         li
             a(href = "/admin/setting/generals" class = "text-white font-bold text-decoration-none px-3 py-2 d-block") Cài đặt chung
         

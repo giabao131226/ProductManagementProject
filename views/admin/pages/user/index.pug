@@ -1,0 +1,127 @@
+extends ../../layouts/default
+include ../../mixins/alert
+
+
+block main
+    +Alert(messages,"5000")
+
+    h1 Danh sách tài khoản
+    .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Bộ lọc và tìm kiếm
+                .boLoc.px-3.py-3.d-flex.justify-between 
+                    .d-flex.items-center.gap-x-3
+                        each item in button 
+                            button(class = `buttonDefault border-none ${item.class}` active = `${item.status}`) #{item.content}
+                    form(class = "d-flex items-center form__timKiem rounded" id = "form-search")
+                        input(type = "text" name = "keyword" class = "border-none outline-none" value = keyword)
+                        button(class = "border-none bg-white")
+                            i(class="fa-solid fa-magnifying-glass")
+    .py-2
+    .container-fluid.px-3
+        .productTool.container.px-0.rounded
+            p.bg-gray-200.font-bold.px-3.py-3.m-0 Sắp Xếp
+            select(name="sort" class="select-sort" style = "margin: 20px 12px;")
+                option(readonly value = "") Sắp Xếp
+                option(value="createdAt-asc" selected= keyAndValueSort === "createdAt-asc") Thời Gian Tạo Tăng Dần
+                option(value="createdAt-desc" selected= keyAndValueSort === "createdAt-desc") Thời Gian Tạo Giảm Dần             
+                option(value="fullName-asc" selected= keyAndValueSort === "fullName-asc") Họ Và Tên A-Z
+                option(value="fullName-desc" selected= keyAndValueSort === "fullName-desc") Họ Và Tên Z-A
+            button(class = "bg-red border-none font-bold text-white rounded cursor-pointer button-clear") Clear
+    .py-2
+    div(class="dsSanPham container-fluid")
+        .container
+            div(class="d-flex justify-between align-self m-bottom-3")
+                div(class="d-flex gap-x-3 align-self")
+                    form(action="/admin/products/change-multi?_method=PATCH" method="POST" id="form-change-multi" class="d-flex gap-x-3 align-self")
+                        select(name="type" class="border-none rounded px-3 py-2")
+                            option(disabled selected) --Chọn Thao Tác--
+                            option(value="active") Hoạt Động
+                            option(value="inactive") Dừng Hoạt Động
+                            option(value="delete") Xoá Tất Cả
+                            option(value="change-position") Thay đổi vị trí
+                        input(class="d-none" name="ids" value="")
+                        button(type="submit" class="border-none text-white bg-blue rounded px-3 py-2 cursor-pointer") Áp Dụng
+                    a(href="products/trashCan" class="text-decoration-none text-gray-600 py-2") Thùng Rác
+                if(role.permissions.includes("permissions-product-create"))
+                    a(href="/admin/products/create" class="border-none text-white bg-blue px-4 py-2 rounded font-bold text-decoration-none cursor-pointer") Thêm mới người dùng
+                
+            
+        table.container-fluid.productTool.w-full.bg-white.rounded-lg(checkbox-multi)
+            thead
+                tr.text-align-center
+                    th 
+                        input(type = "checkbox" id = "changeStatusAll")
+                    th STT 
+                    th Avatar
+                    th Họ Và Tên
+                    th Số Điện Thoại
+                    th Email
+                    th Trạng thái
+                    th Hành động
+                tbody 
+                    each item,index in users
+                        tr.text-align-center
+                            td
+                                input(type = "checkbox" name = "id" value = `${item._doc._id}`)
+                            td #{index+1}
+                            td(style = "width: 100px;height:100px")
+                                img(src = `${item._doc.avatar}` style = "width: 100px;height:100px")
+                            td #{item._doc.fullName}
+                            td #{item._doc.phone}
+                            td #{item._doc.email}
+                            td
+                                if(role.permissions.includes("permissions-account-edit"))
+                                    button(
+                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                        button-status = item._doc.status=="active" ? "inactive" : "active"
+                                        id-element = item.id
+                                        ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+                                else
+                                    button(
+                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                        button-status = item._doc.status=="active" ? "inactive" : "active"
+                                        ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+                            td 
+                                if(role.permissions.includes("permissions-account-edit"))
+                                    button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
+                                        a(href = `/admin/products/edit/${item._id}` class = "text-black text-decoration-none") Sửa
+                                if(role.permissions.includes("permissions-account-delete"))
+                                    button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
+                                button
+                                    a(href = `/admin/products/detail/${item.id}`) Xem chi tiết
+    
+    
+    nav 
+        ul(class = "pagination")
+            - if(currentPage>1)
+                li(class = "page-item")
+                    button(class = "page-link" button-pagination = currentPage-1) Trang trước
+            - for (let i = 1;i<=totalPage;i++)
+                li(class = `page-item ${currentPage==i ? "active" : ""}`)
+                    button(class = "page-link" button-pagination = i) #{i}
+            
+            - if(currentPage<totalPage)
+                li(class = "page-item")
+                    button(class = "page-link" button-pagination = currentPage+1) Kế tiếp
+
+
+    form(
+        id = "form-changeStatus"
+        method = "POST"
+        action = "/admin/products/change-status"
+    )
+
+    form(
+        id = "change-position"
+        method = "POST"
+        action = ""
+        data-path = `/admin/products/change-position`
+    )
+
+    form(
+        id = "delete-product"
+        method = "POST"
+        action = ""
+        data-path = `/admin/products/delete-product`
+    )
