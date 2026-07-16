@@ -77,12 +77,42 @@ module.exports.changeStatus = async (req,res) => {
     try{
         const status = req.params.status;
         const id = req.params.id;
+        console.log(status+"-"+id);
         const result = await User.updateOne({"_id": id},{"status": status});
         req.flash("success","Cập nhật trạng thái tài khoản người dùng thành công");
         return res.redirect("/admin/users");
     }catch(ex){
         console.log("Lỗi khi thay đổi trạng thái tài khoản người dùng: "+ex);
         req.flash("error","Có lỗi xảy ra khi thay đổi trạng thái tài khoản người dùng. Vui lòng thử lại");
+        return res.redirect("/admin/users");
+    }
+}
+
+// [PATCH] "/admin/users/ban/:id"
+module.exports.ban = async (req,res) => {
+    try{
+        const id = req.params.id;
+        console.log("ID là: "+id);
+        const result = await User.updateOne({"_id":id},{"status": "banned"});
+        req.flash("success","Ban tài khoản thành công");
+        return res.redirect("/admin/users");
+    }catch(ex){
+        console.log("Lỗi khi ban tài khoản: "+ex);
+        req.flash("error","Có lỗi xảy ra khi ban tài khoản người dùng");
+        return res.redirect("/admin/users");
+    }
+}
+
+// [PATCH] "/admin/users/delete/:id"
+module.exports.delete = async (req,res) => {
+    try{
+        const id = req.params.id;
+        const result = await User.updateOne({"_id":id,"deleted": true});
+        req.flash("success","Xoá thành công tài khoản");
+        return res.redirect("/admin/users");
+    }catch(ex){
+        console.log("Lỗi khi xoá mềm tài khoản người dùng: "+ex);
+        req.flash("error","Có lỗi xảy ra khi xoá mềm tài khoản người dùng. Vui lòng thử lại");
         return res.redirect("/admin/users");
     }
 }

@@ -43,9 +43,6 @@ block main
                         input(class="d-none" name="ids" value="")
                         button(type="submit" class="border-none text-white bg-blue rounded px-3 py-2 cursor-pointer") Áp Dụng
                     a(href="products/trashCan" class="text-decoration-none text-gray-600 py-2") Thùng Rác
-                if(role.permissions.includes("permissions-product-create"))
-                    a(href="/admin/products/create" class="border-none text-white bg-blue px-4 py-2 rounded font-bold text-decoration-none cursor-pointer") Thêm mới người dùng
-                
             
         table.container-fluid.productTool.w-full.bg-white.rounded-lg(checkbox-multi)
             thead
@@ -73,21 +70,28 @@ block main
                             td
                                 if(role.permissions.includes("permissions-account-edit"))
                                     button(
-                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green" : "bg-red"}` 
                                         button-status = item._doc.status=="active" ? "inactive" : "active"
                                         id-element = item.id
-                                        ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+                                        ) #{item._doc.status=="active" ? "Hoạt Động" : (item._doc.status == "banned" ? "Bị cấm" : "Không hoạt động")}
                                 else
                                     button(
-                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green-200" : "bg-red-600"}` 
+                                        class = `border-none font-bold rounded text-white font-14.px-3 ${item._doc.status=="active" ? "bg-green" : "bg-red"}` 
                                         button-status = item._doc.status=="active" ? "inactive" : "active"
-                                        ) #{item._doc.status=="active" ? "Hoạt Động" : "Không hoạt động"}
+                                        ) #{item._doc.status=="active" ? "Hoạt Động" : (item._doc.status == "banned" ? "Bị cấm" : "Không hoạt động")}
                             td 
                                 if(role.permissions.includes("permissions-account-edit"))
                                     button.bg-yellow.border-none.font-bold.rounded.font-14.px-3
                                         a(href = `/admin/products/edit/${item._id}` class = "text-black text-decoration-none") Sửa
                                 if(role.permissions.includes("permissions-account-delete"))
                                     button.bg-danger.text-white.border-none.font-bold.rounded.font-14.px-3(button-delete-product id-element = item.id) Xoá
+                                if(role.permissions.includes("permissions-account-edit"))
+                                    button(
+                                        btn-ban
+                                        id-account = item._id
+                                        class = `border-none font-bold rounded text-white font-14.px-3` 
+                                        ) 
+                                            i(class="fa-solid fa-ban")
                                 button
                                     a(href = `/admin/products/detail/${item.id}`) Xem chi tiết
     
@@ -111,5 +115,10 @@ block main
         id = "delete-product"
         method = "POST"
         action = ""
-        data-path = `/admin/products/delete-product`
+        data-path = `/admin/users/delete`
+    )
+    form(
+        id = "form-ban-acc"
+        method = "POST"
+        action = "/admin/users/ban"
     )

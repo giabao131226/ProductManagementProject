@@ -7,6 +7,7 @@ const checkoutRouter = require("./checkout.route");
 const userRouter = require("./user.route");
 const userMiddleware = require("../../middlewares/user.midleware");
 const settingMiddleware = require("../../middlewares/setting-general.middlewares");
+const authorization = require("../../middlewares/authorization.middleware");
 
 module.exports = (app) => {
     app.use(userMiddleware.userInfo);

@@ -8,3 +8,11 @@ module.exports.autho = (permissions) => {
         }else res.redirect("/admin/dashboard");
     }
 }
+
+module.exports.isBanned = (req,res,next) => {
+    const user = res.locals.user;
+    if(user.status == "banned"){
+        return res.redirect("/tai-khoan-bi-cam");
+    }
+    next();
+}

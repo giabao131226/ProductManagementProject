@@ -61,7 +61,6 @@ if(changeStatus.length > 0 ){
 
             const form = document.querySelector("#form-changeStatus")
             form.action += `/${status}/${id}?_method=PATCH`;
-            console.log(form.action);
             form.submit();
         })
     })
@@ -260,4 +259,18 @@ if(btnLocTrangThai.length > 0){
             window.location.href = url;
         })
     })
+}
+
+// Xử lý ban tài khoản
+const btnBanAcc = document.querySelectorAll("[btn-ban]");
+if(btnBanAcc.length>0){
+    btnBanAcc.forEach((item) => {
+        item.addEventListener("click",() => {
+            const id = item.getAttribute("id-account");
+            const formBan = document.querySelector("#form-ban-acc");
+            formBan.action+=`/${id}?_method=PATCH`;
+            formBan.submit();
+        })
+    })
+    
 }
