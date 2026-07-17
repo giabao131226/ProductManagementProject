@@ -9,12 +9,21 @@ const route = require("./routes/client/index.route")
 const routeAdmin = require("./routes/admin/index.route")
 const database = require("./config/database")
 const nodemailer = require("nodemailer")
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
+
 require("dotenv").config();
 
 database.connect();
 
 const app = express();
 const port = process.env.port;
+
+// Socket IO
+const server = createServer(app);
+const io = new Server(server);
+global._io = io;
+//
 
 app.use(methodOverride('_method'))
 // parse application/x-www-form-urlencoded
@@ -46,6 +55,6 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 route(app);
 routeAdmin(app);
 
-app.listen(port,() => {
+server.listen(port,() => {
     console.log("App listening port"+port)
 })

@@ -1,0 +1,20 @@
+extends ../../layouts/default
+
+block main
+    link(rel = "stylesheet" href = "css/client/chat.css")
+    .chat
+      .chat-header
+        h2 Chat Room
+
+      .chat-body#chatBody
+        .message.left
+          .bubble Xin chào 👋
+
+        .message.right
+          .bubble Chào bạn!
+
+      form(form-send-message).chat-footer
+        input#message(type="text" placeholder="Nhập tin nhắn...")
+        button#send Gửi
+    p.d-none(user_id = user._id)
+

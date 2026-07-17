@@ -2,20 +2,81 @@ const Accounts = require("../../models/account.model");
 const Roles = require("../../models/roles.model");
 const validate = require("../../helper/validate");
 const md5 = require("md5");
+const pagination = require("../../helper/pagination")
+
 
 // [GET] "/accounts/"
 module.exports.index = async (req, res) => {
     try {
-        const accounts = await Accounts.find();
+        const listButton = [{
+                content: "Tất cả",
+                status: "",
+                class: ""
+            },
+            {
+                content: "Hoạt Động",
+                status: "active",
+                class: ""
+            },
+            {
+                content: "Không Hoạt Động",
+                status: "inactive",
+                class: ""
+            }
+        ]
+
+        const find = {
+            "deleted": false
+        }
+
+        const status = req.query.status || "";
+        if (status != "" && status != "all") find.status = status;
+        const indexButtonActive = listButton.findIndex((item) => item.status == status);
+        if (indexButtonActive != -1) listButton[indexButtonActive].class = "active";
+
+        const keyword = req.query.keyword || "";
+        find.email = {
+            $regex: keyword,
+            $options: "i"
+        };
+
+        // Pagination
+        let objectPagination = {
+            currentPage: 1,
+            limitItems: 4
+        }
+        pagination(req.query, objectPagination, find)
+        const countBlog = await Accounts.countDocuments(find);
+        const totalPage = Math.ceil(countBlog / objectPagination.limitItems)
+        objectPagination.totalPage = totalPage
+        //End Pagination
+
+        // Sort
+        const keySort = req.query.key || "createdAt"
+        const valueSort = req.query.sortValue ? req.query.sortValue : "desc"
+        // End Sort
+
+        const accounts = await Accounts.find()
+            .sort({[keySort]: valueSort})
+            .select("-password")
+            .limit(objectPagination.limitItems)
+            .skip((objectPagination.currentPage - 1) * 4);
         const lastData = await Promise.all(accounts.map(async (item) => {
-            const role = await Roles.findOne({ "_id": item.role_id }).lean();
+            const role = await Roles.findOne({
+                "_id": item.role_id
+            }).lean();
             return {
-                ...item, role: role
+                ...item,
+                role: role
             }
         }))
 
         res.render("admin/pages/account/index", {
-            accounts: lastData
+            accounts: lastData,
+            button: listButton,
+            keyword: keyword,
+            currentPage: objectPagination.currentPage,
+            totalPage: objectPagination.totalPage, 
         });
     } catch (error) {
         console.log("Lỗi khi render trang danh sách tài khoản: " + error);
@@ -99,7 +160,9 @@ module.exports.createPost = async (req, res) => {
 // [GET] "/account/detail"
 module.exports.detail = async (req, res) => {
     try {
-        const roles = await Roles.find({ "deleted": false })
+        const roles = await Roles.find({
+            "deleted": false
+        })
         return res.render("admin/pages/account/detail.pug", {
             roles: roles
         })
@@ -110,13 +173,17 @@ module.exports.detail = async (req, res) => {
 }
 
 // [PATCH] "/account/detail/:id"
-module.exports.detailPatch = async (req,res) =>{
-    try{
+module.exports.detailPatch = async (req, res) => {
+    try {
         const id = req.params.id;
-        const result = await Accounts.updateOne({"_id": id},{...req.body});
-        req.flash("success","Cập Nhật Thông Tin Tài Khoản Thành Công");
+        const result = await Accounts.updateOne({
+            "_id": id
+        }, {
+            ...req.body
+        });
+        req.flash("success", "Cập Nhật Thông Tin Tài Khoản Thành Công");
         return res.redirect("/admin/accounts/detail");
-    }catch(error){
-        console.log("Lỗi khi cập nhật thông tin tài khoản: "+error);
+    } catch (error) {
+        console.log("Lỗi khi cập nhật thông tin tài khoản: " + error);
     }
 }

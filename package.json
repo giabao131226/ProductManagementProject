@@ -26,6 +26,7 @@
     "nodemailer": "^9.0.3",
     "pug": "^3.0.3",
     "slugify": "^1.6.9",
+    "socket.io": "^4.8.3",
     "streamifier": "^0.1.1",
     "tinymce": "^8.4.0"
   },

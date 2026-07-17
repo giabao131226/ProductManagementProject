@@ -77,7 +77,6 @@ module.exports.changeStatus = async (req,res) => {
     try{
         const status = req.params.status;
         const id = req.params.id;
-        console.log(status+"-"+id);
         const result = await User.updateOne({"_id": id},{"status": status});
         req.flash("success","Cập nhật trạng thái tài khoản người dùng thành công");
         return res.redirect("/admin/users");
