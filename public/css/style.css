@@ -411,3 +411,43 @@ td{
     font-weight: bold;
     font-size: 14px;
 }
+
+.ml-auto{
+    margin-left: auto;
+}
+
+.d-inline-block{
+    display: inline-block;
+}
+
+.banner-animation{
+    position: relative;
+    height: 50px;
+}
+
+.banner-animation .element-1{
+    position: absolute;
+    animation-name: loading;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+        animation-timing-function: linear ;
+
+    right: -10px;
+}
+.banner-animation .element-2{
+    position: absolute;
+    animation-name: loading;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear ;
+    animation-delay: 0.8s;
+    right: -30px;
+}
+@keyframes loading{
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(-130vw);
+    }
+}

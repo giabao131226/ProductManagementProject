@@ -1,20 +1,30 @@
 extends ../../layouts/default
 
 block main
+
     link(rel = "stylesheet" href = "css/client/chat.css")
     .chat
       .chat-header
         h2 Chat Room
 
       .chat-body#chatBody
-        .message.left
-          .bubble Xin chào 👋
+        each chat in chats
+            div.d-flex.flex-column
+              p.userName(class = (chat["user_id"]._id.toString() == user._id.toString() ? "d-none" : "")) #{chat.user_id.fullName}
+              div(class = (chat["user_id"]._id.toString() == user._id.toString() ? "right" : "left") user_id = user._id chat = chat["user_id"]).message.d-flex.items-center.gap-x-1
+                img(src = chat.user_id.avatar).avatar
+                .bubble #{chat.content}
+        span.chat-typing.d-none ... Người dùng đang nhập
 
-        .message.right
-          .bubble Chào bạn!
-
+      emoji-picker.ml-auto.bg-transparent.d-none
       form(form-send-message).chat-footer
         input#message(type="text" placeholder="Nhập tin nhắn...")
-        button#send Gửi
+        button.px-2.border-none.bg-transparent(btn-icon type = "button")
+          i(class="fa-regular fa-face-smile font-20")
+        button.px-2.border-none.bg-transparent(btn-image type = "button")
+          i(class="fa-regular fa-image font-20")
+        button#send(type = "submit") Gửi
     p.d-none(user_id = user._id)
 
+    script(type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js")
+    script(src = "js/chat.js")
