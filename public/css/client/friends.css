@@ -1,0 +1,25 @@
+
+.cardFriend{
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.cardFriend .vien{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: black;
+    overflow: hidden;
+}
+
+.cardFriend.add [btn-send-request-friend]{
+    display: none;
+}
+.cardFriend [btn-cancel-request-friend]{
+    display: none;
+}
+
+.cardFriend.add [btn-cancel-request-friend]{
+    display: block;
+}

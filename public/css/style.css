@@ -419,6 +419,9 @@ td{
 .d-inline-block{
     display: inline-block;
 }
+.p-2{
+    padding: 8px;
+}
 
 .banner-animation{
     position: relative;

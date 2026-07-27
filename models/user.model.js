@@ -5,6 +5,9 @@ const userSchema = new mongoose.Schema({
     fullName: String,
     email: String,
     password: String,
+    friends: Array,
+    requestFriends: Array,
+    acceptFriends: Array,
     tokenUser: {
         type: String,
         default: generate.generateRandomString(20)

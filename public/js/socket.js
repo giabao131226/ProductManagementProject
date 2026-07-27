@@ -7,9 +7,13 @@ const formSendMessage = document.querySelector("[form-send-message]");
 if(formSendMessage){
     formSendMessage.addEventListener("submit",(e) => {
         e.preventDefault();
-        const input = e.target.querySelector("input")
-        if(input.value.trim() == "") return;
-        const msg = input.value;
+        const input = e.target.querySelector("input");
+        const inputImage = e.target.querySelector("input[name='images']");
+        if(input.value.trim() == "" && inputImage.files.length == 0) return;
+        const msg = {
+            "content": input.value,
+            "images": [...inputImage.files]
+        };
         input.value = "";
         socket.emit("CLIENT_SEND_MESSAGE",msg);
     })
@@ -17,6 +21,21 @@ if(formSendMessage){
 
 
 socket.on("SERVER_RETURN_MESSAGE",(respone) => {
+
+    // div.d-flex.flex-column
+    //     p.userName(class = (chat["user_id"]._id.toString() == user._id.toString() ? "d-none" : "")) #{chat.user_id.fullName}
+    //     div(class = (chat["user_id"]._id.toString() == user._id.toString() ? "right" : "left")).message
+    //     .d-flex.flex-column(class = chat["user_id"]._id.toString() == user._id.toString() ? "items-end" : "")
+    //         .d-flex.items-center.gap-x-1
+    //         img(src = chat.user_id.avatar).avatar
+    //         .bubble #{chat.content}
+    //         - if(chat.images.length > 0)
+    //             each url in chat.images
+    //             img(
+    //                 class = "image" 
+    //                 src = url)
+
+    console.log(respone);
     const chatBody = document.querySelector("#chatBody");
     const rowChat = document.createElement("div");
     rowChat.classList.add("d-flex");
