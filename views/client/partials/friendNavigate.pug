@@ -1,10 +1,17 @@
+.friend-menu
+    a(href="/users/not-friends")
+        button(class=path == "not-friends" ? "active" : "")
+            | Danh sách người dùng
 
-.d-flex.items-center.justify-center.gap-x-3
-    a(href = "/users/not-friends")
-        button(class = path == "not-friends" ? "active" : "") Danh sách người dùng
-    a(href = "/users/friends")
-        button Danh sách bạn bè
-    a(href = "/users/request-friends")
-        button Lời mời đã gửi
-    a(href = "/users/requests")
-        button Lời mời kết bạn
+    a(href="/users/friends")
+        button(class=path == "friends" ? "active" : "")
+            | Danh sách bạn bè
+
+    a(href="/users/request-friends")
+        button(class=path == "request-friends" ? "active" : "")
+            | Lời mời đã gửi
+
+    a(href="/users/requests")
+        button(class=path == "requests" ? "active" : "")
+            | Lời mời kết bạn
+            span(totalAcceptFriend) #{totalAcceptFriend}

@@ -97,6 +97,9 @@ if(idPage && idPage.getAttribute("id-page") == "accept-friend"){
                         </button>
                     </div>
                 </div>`;
+            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+            console.log(elementToTalAcceptFriend);
+            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
         }
     })
 }

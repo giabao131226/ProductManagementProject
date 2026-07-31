@@ -33,8 +33,11 @@ module.exports = (socket) => {
 
         // Băn Socket về cho người nhận
         const myDetail = await User.findOne({"_id": myID,"status": "active"}).select("avatar fullName");
+        const requestDetail = await User.findOne({"_id": rqFriendID,"status": "active"}).select("acceptFriends");
+        const totalRequest = requestDetail.acceptFriends.length ?? 0;
         const respone = {
             "sendTo": rqFriendID,
+            "totalAcceptFriend": totalRequest,
             "userDetail": myDetail
         }
         socket.broadcast.emit("SEVER_RESPONE_AFTER_SEND_REQUEST",respone);

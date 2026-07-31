@@ -5,7 +5,7 @@ var socket = io({
     }
 });
 const bodyChat = document.querySelector(".chat-body");
-bodyChat.scrollTop = bodyChat.scrollHeight;
+// bodyChat.scrollTop = bodyChat.scrollHeight;
 
 const formSendMessage = document.querySelector("[form-send-message]");
 if(formSendMessage){

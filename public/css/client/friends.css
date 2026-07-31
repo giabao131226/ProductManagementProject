@@ -29,3 +29,53 @@
 .cardFriend.add [btn-cancel-request-friend]{
     display: block;
 }
+
+/* Thanh Điều Hướng */
+.friend-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.friend-menu a {
+    text-decoration: none;
+}
+
+.friend-menu button {
+    position: relative;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #f3f4f6;
+    color: #333;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.friend-menu button:hover {
+    background: #e5e7eb;
+}
+
+.friend-menu button.active {
+    background: #1877f2;
+    color: #fff;
+}
+
+.friend-menu button span {
+    margin-left: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+}
