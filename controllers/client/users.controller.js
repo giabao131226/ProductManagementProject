@@ -59,3 +59,20 @@ module.exports.acceptFriends = async (req,res) => {
         console.log("Có lỗi xảy ra khi hiển thị trang lời mời đã nhận: "+ex);
     }
 }
+
+// [GET] "/users/friends"
+module.exports.friends = async (req,res) => {
+    try{
+        const user = res.locals.user;
+        const users = await User.find({
+            "status": "active",
+            "_id": {$in: user.friends}
+        }).select("_id fullName avatar");
+
+        return res.render("client/pages/friends/list-friend",{
+            "users": users
+        })
+    }catch(ex){
+        console.log("Có lỗi xảy ra khi hiển thị danh sách bạn bè: "+ex);
+    }
+}

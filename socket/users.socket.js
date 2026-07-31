@@ -58,7 +58,6 @@ module.exports = (socket) => {
     socket.on("CLIENT_ACCEPT_REQUEST_FRIEND",async (data) => {
         const myID = data.myId;
         const rqFriendID = data.id;
-        console.log(data);
 
         // Thêm rqFriendID vào friends của myID và xoá nó trong requestFriends
         const existRQ = await User.findOne({
@@ -85,4 +84,16 @@ module.exports = (socket) => {
         }
     })
     // End Handle Accept Request Friend
+
+    // Handle Unfriend
+    socket.on("CLIENT_SEND_REQUEST_UNFRIEND",async (data) => {
+        const myID = data.myId;
+        const rqFriendID = data.id;
+
+        // Xoá rqFriendID trong friends của myID
+        const resultRQ = await User.updateOne({"_id": myID},{$pull: {"friends": rqFriendID}});
+        // Xoá myID trong friends của rqFriendID
+        const resultACC = await User.updateOne({"_id": rqFriendID},{$pull: {"friends": myID}});
+    })
+    // End Handle Unfriend
 }

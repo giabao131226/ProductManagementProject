@@ -51,3 +51,19 @@ if(btnAcceptRequestFriend.length>0){
         })
     })
 }
+
+// Handle Unfriend
+const btnUnfriends = document.querySelectorAll("button[btn-unfriend]");
+if(btnUnfriends.length>0){
+    btnUnfriends.forEach((item) => {
+        item.addEventListener("click",(e) => {
+            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
+            const rqFriendID = e.target.getAttribute("user-id");
+            const data = {
+                "myId": myId,
+                "id": rqFriendID
+            };
+            socket.emit("CLIENT_SEND_REQUEST_UNFRIEND",data);
+        })
+    })
+}
