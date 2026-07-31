@@ -2,12 +2,13 @@ extends ../../layouts/default
 
 block main
     link(rel = "stylesheet" href = "/css/client/friends.css")
+    p(id-page = "accept-friend")
     .container-fluid.text-align-start
         .container 
             .py-2
             include ../../partials/friendNavigate
             .py-2
-            .d-flex.items-center.gap-x-3
+            .d-flex.items-center.gap-x-3.listCardFriend
                 each item in users
                     .cardFriend.col-3.d-flex.items-center.gap-x-3
                         .vien

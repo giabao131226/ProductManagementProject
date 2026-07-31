@@ -31,8 +31,13 @@ module.exports = (socket) => {
             })
         }
 
-
-
+        // Băn Socket về cho người nhận
+        const myDetail = await User.findOne({"_id": myID,"status": "active"}).select("avatar fullName");
+        const respone = {
+            "sendTo": rqFriendID,
+            "userDetail": myDetail
+        }
+        socket.broadcast.emit("SEVER_RESPONE_AFTER_SEND_REQUEST",respone);
     })
     // END HANDLE ADD Friend
 
