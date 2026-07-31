@@ -15,6 +15,7 @@ block main
                         .d-flex.flex-column.gap-y-1 
                             span.font-bold.font-14 #{item.fullName}
                             button(btn-unfriend user-id = item._id).bg-blue.text-white.font-bold.border-none Huỷ Kết Bạn
+    
     p.d-none(user_id = user._id) Hello
 
     script(src = "/socket.io/socket.io.js")

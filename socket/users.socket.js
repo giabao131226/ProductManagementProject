@@ -31,6 +31,8 @@ module.exports = (socket) => {
             })
         }
 
+
+
     })
     // END HANDLE ADD Friend
 
@@ -67,7 +69,7 @@ module.exports = (socket) => {
         if(!existRQ){
             const resultRQ = await User.updateOne({"_id": myID},
                 {$push: {"friends": rqFriendID},
-                $pull: {"requestFriends": rqFriendID}
+                $pull: {"acceptFriends": rqFriendID}
             });
         }
 
@@ -79,7 +81,7 @@ module.exports = (socket) => {
         if(!existACC){
             const resultACC = await User.updateOne({"_id": rqFriendID},
                 {$push: {"friends": myID},
-                $pull: {"requestFriends": myID}
+                $pull: {"acceptFriends": myID}
             });
         }
     })

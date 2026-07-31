@@ -3,7 +3,6 @@ const registerChat = require("./chat.socket");
 
 module.exports = () => {
     _io.on("connection",(socket) => {
-        console.log("connected");
         registerFriend(socket);
         registerChat(socket);
     })
