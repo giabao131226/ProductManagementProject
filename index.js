@@ -11,6 +11,7 @@ const database = require("./config/database")
 const nodemailer = require("nodemailer")
 const { createServer } = require('node:http');
 const { Server } = require('socket.io');
+const initSocket = require("./socket/index.socket");
 
 require("dotenv").config();
 
@@ -54,6 +55,10 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 route(app);
 routeAdmin(app);
+
+//socket
+initSocket();
+//end socket
 
 server.listen(port,() => {
     console.log("App listening port"+port)

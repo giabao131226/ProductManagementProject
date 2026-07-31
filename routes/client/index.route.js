@@ -11,7 +11,6 @@ const userMiddleware = require("../../middlewares/user.midleware");
 const settingMiddleware = require("../../middlewares/setting-general.middlewares");
 const authorization = require("../../middlewares/authorization.middleware");
 
-
 module.exports = (app) => {
     app.use(userMiddleware.userInfo);
     app.use(settingMiddleware.getSettingGenerals);

@@ -11,10 +11,11 @@ block main
                 each item in users
                     .cardFriend.col-3.d-flex.items-center.gap-x-3
                         .vien
-                            img(src = users.avatar)
+                            img(src = item.avatar)
                         .d-flex.flex-column.gap-y-1 
                             span.font-bold.font-14 #{item.fullName}
-                            button(btn-send-request-friend user-id = item._id).bg-blue.text-white.font-bold Kết Bạn
+                            button(btn-accept-request-friend user-id = item._id).bg-blue.text-white.font-bold Chấp nhận
+                            button(btn-reject-request-friend user-id = item._id).bg-red.text-white.font-bold Từ chối
                             button(btn-cancel-request-friend user-id = item._id).bg-gray.text-white.font-bold Huỷ
     p.d-none(user_id = user._id) Hello
 

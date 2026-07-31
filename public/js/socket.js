@@ -1,5 +1,9 @@
 
-var socket = io();
+var socket = io({
+    auth: {
+        "userId": document.querySelector("p[user_id]").getAttribute("user-id")
+    }
+});
 const bodyChat = document.querySelector(".chat-body");
 bodyChat.scrollTop = bodyChat.scrollHeight;
 

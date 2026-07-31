@@ -9,14 +9,13 @@ block main
             .py-2
             .d-flex.items-center.gap-x-3
                 each item in users
-                    .cardFriend.col-3.d-flex.items-center.gap-x-3
+                    .cardFriend.col-3.d-flex.items-center.gap-x-3.add
                         .vien
                             img(src = users.avatar)
                         .d-flex.flex-column.gap-y-1 
                             span.font-bold.font-14 #{item.fullName}
                             button(btn-send-request-friend user-id = item._id).bg-blue.text-white.font-bold Kết Bạn
                             button(btn-cancel-request-friend user-id = item._id).bg-gray.text-white.font-bold Huỷ
-    p.d-none(user_id = user._id) Hello
-
+    p.d-none(user_id = user._id)
     script(src = "/socket.io/socket.io.js")
     script(src = "/js/friend.js")

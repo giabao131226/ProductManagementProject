@@ -12,6 +12,12 @@
     background-color: black;
     overflow: hidden;
 }
+.cardFriend .vien img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
 .cardFriend.add [btn-send-request-friend]{
     display: none;

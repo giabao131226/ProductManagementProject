@@ -7,11 +7,12 @@ if(btnSendRequestFriends.length>0){
         item.addEventListener("click",(e) => {
             const cardFriend = e.target.parentNode.closest(".cardFriend");
             if(cardFriend) cardFriend.classList.add("add");
+            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
             const rqFriendID = e.target.getAttribute("user-id");
             const data = {
+                "myId": myId,
                 "id": rqFriendID
             };
-            console.log(data);
             socket.emit("CLIENT_ADD_FRIEND",data);
         })
     })
@@ -24,11 +25,29 @@ if(btnCancelSendRequestFriend.length>0){
         item.addEventListener("click",(e) => {
             const cardFriend = e.target.parentNode.closest(".cardFriend");
             if(cardFriend) cardFriend.classList.remove("add");
+            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
             const rqFriendID = e.target.getAttribute("user-id");
             const data = {
+                "myId": myId,
                 "id": rqFriendID
             };
             socket.emit("CLIENT_CANCEL_ADD_FRIEND",data);
+        })
+    })
+}
+
+// Hanlde accept request friend
+const btnAcceptRequestFriend = document.querySelectorAll("button[btn-accept-request-friend]");
+if(btnAcceptRequestFriend.length>0){
+    btnAcceptRequestFriend.forEach((item) => {
+        item.addEventListener("click",(e) => {
+            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
+            const rqFriendID = e.target.getAttribute("user-id");
+            const data = {
+                "myId": myId,
+                "id": rqFriendID
+            };
+            socket.emit("CLIENT_ACCEPT_REQUEST_FRIEND",data);
         })
     })
 }
