@@ -37,6 +37,10 @@ const btnAcceptRequestFriend = document.querySelectorAll("button[btn-accept-requ
 if (btnAcceptRequestFriend.length > 0) {
     btnAcceptRequestFriend.forEach((item) => {
         item.addEventListener("click", (e) => {
+            const cardFriend = document.querySelector(".cardFriend[user-id]");
+            cardFriend.remove();
+            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+            elementToTalAcceptFriend.innerHTML = (parseInt(elementToTalAcceptFriend.innerHTML) - 1);
             emitFriendEvent(socket, "CLIENT_ACCEPT_REQUEST_FRIEND", e.target);
         })
     })
@@ -75,7 +79,7 @@ if (idPage) {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         if (response.sendTo == myId) {
             const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
-            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
+            elementToTalAcceptFriend.innerHTML = `${response.totalAcceptFriend}`;
             const listCardFriend = document.querySelector(".listCardFriend");
             
             if (idPage.getAttribute("id-page") == "accept-friend") {
@@ -121,5 +125,15 @@ if (idPage) {
         }
     })
     // End Handle SEVER RESPONE AFTER CANCEL SEND REQUEST
+
+    // Handle SEVER RESPONE AFTER ACCEPT REQUEST
+    socket.on("SEVER_RESPONE_AFTER_ACCEPT_REQUEST",(response) => {
+        const myId = document.querySelector("p[user_id]").getAttribute("user_id");
+        if (response.sendTo == myId) {
+            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
+        }
+    })
+    // Handle SEVER RESPONE AFTER ACCEPT REQUEST
 
 }
