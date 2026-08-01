@@ -8,9 +8,9 @@ block main
             .py-2
             include ../../partials/friendNavigate
             .py-2
-            .d-flex.items-center.gap-x-3
+            .d-flex.items-center.gap-x-3.listCardFriend
                 each item in users
-                    .cardFriend.col-3.d-flex.items-center.gap-x-3
+                    .cardFriend.col-3.d-flex.items-center.gap-x-3(user-id = item._id)
                         .vien
                             img(src = item.avatar)
                         .d-flex.flex-column.gap-y-1 

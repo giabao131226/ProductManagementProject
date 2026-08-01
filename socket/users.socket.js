@@ -135,6 +135,17 @@ module.exports = (socket) => {
         const resultRQ = await User.updateOne({"_id": rqFriendID},{
             $pull: {"requestFriends": myID}
         })
+
+        // Băn Socket về cho người nhận
+        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
+        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
+        const totalRequest = requestDetail.acceptFriends.length ?? 0;
+        const respone = {
+            "sendTo": rqFriendID,
+            "totalAcceptFriend": totalRequest,
+            "userDetail": myDetail
+        }
+        socket.broadcast.emit("SEVER_RESPONE_AFTER_REJECT_REQUEST", respone);
     })
     // End Handle Reject Requets Friend
 
