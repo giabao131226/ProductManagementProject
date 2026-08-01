@@ -23,7 +23,6 @@ if(formSendMessage){
     })
 }
 
-
 socket.on("SERVER_RETURN_MESSAGE",(respone) => {
 
     // div.d-flex.flex-column

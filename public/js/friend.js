@@ -1,3 +1,11 @@
+function emitFriendEvent(socket, event, target) {
+    const myId = document.querySelector("[user_id]").getAttribute("user_id");
+    const rqFriendID = target.getAttribute("user-id");
+    socket.emit(event, {
+        myId,
+        id: rqFriendID
+    });
+}
 
 var socket = io();
 // handleRequestFriend
@@ -7,13 +15,7 @@ if (btnSendRequestFriends.length > 0) {
         item.addEventListener("click", (e) => {
             const cardFriend = e.target.parentNode.closest(".cardFriend");
             if (cardFriend) cardFriend.classList.add("add");
-            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-            const rqFriendID = e.target.getAttribute("user-id");
-            const data = {
-                "myId": myId,
-                "id": rqFriendID
-            };
-            socket.emit("CLIENT_ADD_FRIEND", data);
+            emitFriendEvent(socket, "CLIENT_ADD_FRIEND", e.target);
         })
     })
 }
@@ -25,13 +27,7 @@ if (btnCancelSendRequestFriend.length > 0) {
         item.addEventListener("click", (e) => {
             const cardFriend = e.target.parentNode.closest(".cardFriend");
             if (cardFriend) cardFriend.classList.remove("add");
-            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-            const rqFriendID = e.target.getAttribute("user-id");
-            const data = {
-                "myId": myId,
-                "id": rqFriendID
-            };
-            socket.emit("CLIENT_CANCEL_ADD_FRIEND", data);
+            emitFriendEvent(socket, "CLIENT_CANCEL_ADD_FRIEND", e.target);
         })
     })
 }
@@ -41,13 +37,21 @@ const btnAcceptRequestFriend = document.querySelectorAll("button[btn-accept-requ
 if (btnAcceptRequestFriend.length > 0) {
     btnAcceptRequestFriend.forEach((item) => {
         item.addEventListener("click", (e) => {
-            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-            const rqFriendID = e.target.getAttribute("user-id");
-            const data = {
-                "myId": myId,
-                "id": rqFriendID
-            };
-            socket.emit("CLIENT_ACCEPT_REQUEST_FRIEND", data);
+            emitFriendEvent(socket, "CLIENT_ACCEPT_REQUEST_FRIEND", e.target);
+        })
+    })
+}
+
+// Handle reject request friend
+const btnRejectRequestFriend = document.querySelectorAll("button[btn-reject-request-friend]");
+if (btnRejectRequestFriend.length > 0) {
+    btnRejectRequestFriend.forEach((item) => {
+        item.addEventListener("click", (e) => {
+            const userID = e.target.getAttribute("user-id");
+            const cardFriend = e.target.parentNode.closest(".cardFriend");
+            const listCard = cardFriend.closest(".listCardFriend");
+            listCard.removeChild(cardFriend);
+            emitFriendEvent(socket, "CLIENT_REJECT_REQUEST_FRIEND", e.target);
         })
     })
 }
@@ -57,26 +61,25 @@ const btnUnfriends = document.querySelectorAll("button[btn-unfriend]");
 if (btnUnfriends.length > 0) {
     btnUnfriends.forEach((item) => {
         item.addEventListener("click", (e) => {
-            const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-            const rqFriendID = e.target.getAttribute("user-id");
-            const data = {
-                "myId": myId,
-                "id": rqFriendID
-            };
-            socket.emit("CLIENT_SEND_REQUEST_UNFRIEND", data);
+            emitFriendEvent(socket, "CLIENT_SEND_REQUEST_UNFRIEND", e.target);
         })
     })
 }
-
-
 //
+
+
 const idPage = document.querySelector("p[id-page]");
-if(idPage && idPage.getAttribute("id-page") == "accept-friend"){
-    socket.on("SEVER_RESPONE_AFTER_SEND_REQUEST",(response) => {
+if (idPage) {
+    // Handle 
+    socket.on("SEVER_RESPONE_AFTER_SEND_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-        if(response.sendTo == myId){
+        if (response.sendTo == myId) {
+            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
             const listCardFriend = document.querySelector(".listCardFriend");
-            listCardFriend.innerHTML+= `<div class="cardFriend col-3 d-flex items-center gap-x-3">
+            
+            if (idPage.getAttribute("id-page") == "accept-friend") {
+                listCardFriend.innerHTML += `<div class="cardFriend col-3 d-flex items-center gap-x-3" user-id = ${response.userDetail._id}>
                     <div class="vien">
                         <img src="${response.userDetail.avatar}" alt="">
                     </div>
@@ -97,9 +100,26 @@ if(idPage && idPage.getAttribute("id-page") == "accept-friend"){
                         </button>
                     </div>
                 </div>`;
-            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
-            console.log(elementToTalAcceptFriend);
-            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
+            }
+
         }
     })
+    //
+    
+    // Handle SEVER RESPONE AFTER CANCEL SEND REQUEST
+    socket.on("SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST",(response) => {
+        const myId = document.querySelector("p[user_id]").getAttribute("user_id");
+        if (response.sendTo == myId) {
+            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
+            const listCardFriend = document.querySelector(".listCardFriend");
+
+            if (idPage.getAttribute("id-page") == "accept-friend") {
+                const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userID}"]`);
+                cardFriend.remove();
+            }
+        }
+    })
+    // End Handle SEVER RESPONE AFTER CANCEL SEND REQUEST
+
 }

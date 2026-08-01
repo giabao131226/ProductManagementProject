@@ -32,15 +32,15 @@ module.exports = (socket) => {
         }
 
         // Băn Socket về cho người nhận
-        const myDetail = await User.findOne({"_id": myID,"status": "active"}).select("avatar fullName");
-        const requestDetail = await User.findOne({"_id": rqFriendID,"status": "active"}).select("acceptFriends");
+        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName");
+        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
         const totalRequest = requestDetail.acceptFriends.length ?? 0;
         const respone = {
             "sendTo": rqFriendID,
             "totalAcceptFriend": totalRequest,
             "userDetail": myDetail
         }
-        socket.broadcast.emit("SEVER_RESPONE_AFTER_SEND_REQUEST",respone);
+        socket.broadcast.emit("SEVER_RESPONE_AFTER_SEND_REQUEST", respone);
     })
     // END HANDLE ADD Friend
 
@@ -61,49 +61,83 @@ module.exports = (socket) => {
             { "_id": rqFriendID },
             { $pull: { "acceptFriends": myID } }
         );
+
+        // Băn Socket về cho người nhận
+        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
+        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
+        const totalRequest = requestDetail.acceptFriends.length ?? 0;
+        const respone = {
+            "sendTo": rqFriendID,
+            "totalAcceptFriend": totalRequest,
+            "userID": myDetail._id.toString()
+        }
+        socket.broadcast.emit("SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST", respone);
+
+
     })
     // END HANDLE CANCEL ADD Friend
 
     // Handle Accept Request Friend
-    socket.on("CLIENT_ACCEPT_REQUEST_FRIEND",async (data) => {
+    socket.on("CLIENT_ACCEPT_REQUEST_FRIEND", async (data) => {
         const myID = data.myId;
         const rqFriendID = data.id;
 
         // Thêm rqFriendID vào friends của myID và xoá nó trong requestFriends
         const existRQ = await User.findOne({
             "_id": myID,
-            "friends": {$in: rqFriendID}
+            "friends": { $in: rqFriendID }
         });
-        if(!existRQ){
-            const resultRQ = await User.updateOne({"_id": myID},
-                {$push: {"friends": rqFriendID},
-                $pull: {"acceptFriends": rqFriendID}
-            });
+        if (!existRQ) {
+            const resultRQ = await User.updateOne({ "_id": myID },
+                {
+                    $push: { "friends": rqFriendID },
+                    $pull: { "acceptFriends": rqFriendID }
+                });
         }
 
         // Thêm myID vào friends của rqFriendID và xoá nó trong requestFriends
         const existACC = await User.findOne({
             "_id": rqFriendID,
-            "friends": {$in: myID}
+            "friends": { $in: myID }
         });
-        if(!existACC){
-            const resultACC = await User.updateOne({"_id": rqFriendID},
-                {$push: {"friends": myID},
-                $pull: {"acceptFriends": myID}
-            });
+        if (!existACC) {
+            const resultACC = await User.updateOne({ "_id": rqFriendID },
+                {
+                    $push: { "friends": myID },
+                    $pull: { "acceptFriends": myID }
+                });
         }
     })
     // End Handle Accept Request Friend
 
+    // Handle Reject Requets Friend
+    socket.on("CLIENT_REJECT_REQUEST_FRIEND", async (data) => {
+        const myID = data.myId;
+        const rqFriendID = data.id;
+
+        console.log(data);
+
+        // Xoá rqFriendID trong requestFriend của myID
+        const resultACC = await User.updateOne({"_id": myID},{
+            $pull: {"acceptFriends": rqFriendID}
+        })
+
+        // Xoá myID trong acceptFriends của rqFriendID
+        const resultRQ = await User.updateOne({"_id": rqFriendID},{
+            $pull: {"requestFriends": myID}
+        })
+    })
+    // End Handle Reject Requets Friend
+
     // Handle Unfriend
-    socket.on("CLIENT_SEND_REQUEST_UNFRIEND",async (data) => {
+    socket.on("CLIENT_SEND_REQUEST_UNFRIEND", async (data) => {
         const myID = data.myId;
         const rqFriendID = data.id;
 
         // Xoá rqFriendID trong friends của myID
-        const resultRQ = await User.updateOne({"_id": myID},{$pull: {"friends": rqFriendID}});
+        const resultRQ = await User.updateOne({ "_id": myID }, { $pull: { "friends": rqFriendID } });
         // Xoá myID trong friends của rqFriendID
-        const resultACC = await User.updateOne({"_id": rqFriendID},{$pull: {"friends": myID}});
+        const resultACC = await User.updateOne({ "_id": rqFriendID }, { $pull: { "friends": myID } });
     })
     // End Handle Unfriend
 }

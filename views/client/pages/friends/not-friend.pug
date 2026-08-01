@@ -2,6 +2,7 @@ extends ../../layouts/default
 
 block main
     link(rel = "stylesheet" href = "/css/client/friends.css")
+    p(id-page = "not-friend")
     .container-fluid.text-align-start
         .container 
             .py-2
@@ -11,7 +12,7 @@ block main
                 each item in users
                     .cardFriend.col-3.d-flex.items-center.gap-x-3
                         .vien
-                            img(src = users.avatar)
+                            img(src = item.avatar)
                         .d-flex.flex-column.gap-y-1 
                             span.font-bold.font-14 #{item.fullName}
                             button(btn-send-request-friend user-id = item._id).bg-blue.text-white.font-bold Kết Bạn
