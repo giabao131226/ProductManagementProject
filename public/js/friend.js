@@ -7,6 +7,27 @@ function emitFriendEvent(socket, event, target) {
     });
 }
 
+function updateNewToTalRequestFriend(totalAcceptFriend) {
+    const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+    elementToTalAcceptFriend.innerHTML = `${totalAcceptFriend}`;
+}
+
+function handleAcceptFriend(e) {
+    const cardFriend = document.querySelector(".cardFriend[user-id]");
+    cardFriend.remove();
+    const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
+    elementToTalAcceptFriend.innerHTML = (parseInt(elementToTalAcceptFriend.innerHTML) - 1);
+    emitFriendEvent(socket, "CLIENT_ACCEPT_REQUEST_FRIEND", e.target);
+}
+
+function handleRejectFriend(e) {
+    const userID = e.target.getAttribute("user-id");
+    const cardFriend = e.target.parentNode.closest(".cardFriend");
+    const listCard = cardFriend.closest(".listCardFriend");
+    listCard.removeChild(cardFriend);
+    emitFriendEvent(socket, "CLIENT_REJECT_REQUEST_FRIEND", e.target);
+}
+
 var socket = io();
 // handleRequestFriend
 const btnSendRequestFriends = document.querySelectorAll("button[btn-send-request-friend]");
@@ -36,13 +57,7 @@ if (btnCancelSendRequestFriend.length > 0) {
 const btnAcceptRequestFriend = document.querySelectorAll("button[btn-accept-request-friend]");
 if (btnAcceptRequestFriend.length > 0) {
     btnAcceptRequestFriend.forEach((item) => {
-        item.addEventListener("click", (e) => {
-            const cardFriend = document.querySelector(".cardFriend[user-id]");
-            cardFriend.remove();
-            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
-            elementToTalAcceptFriend.innerHTML = (parseInt(elementToTalAcceptFriend.innerHTML) - 1);
-            emitFriendEvent(socket, "CLIENT_ACCEPT_REQUEST_FRIEND", e.target);
-        })
+        item.addEventListener("click", handleAcceptFriend);
     })
 }
 
@@ -50,13 +65,7 @@ if (btnAcceptRequestFriend.length > 0) {
 const btnRejectRequestFriend = document.querySelectorAll("button[btn-reject-request-friend]");
 if (btnRejectRequestFriend.length > 0) {
     btnRejectRequestFriend.forEach((item) => {
-        item.addEventListener("click", (e) => {
-            const userID = e.target.getAttribute("user-id");
-            const cardFriend = e.target.parentNode.closest(".cardFriend");
-            const listCard = cardFriend.closest(".listCardFriend");
-            listCard.removeChild(cardFriend);
-            emitFriendEvent(socket, "CLIENT_REJECT_REQUEST_FRIEND", e.target);
-        })
+        item.addEventListener("click", handleRejectFriend);
     })
 }
 
@@ -71,17 +80,15 @@ if (btnUnfriends.length > 0) {
 }
 //
 
-
 const idPage = document.querySelector("p[id-page]");
 if (idPage) {
     // Handle 
     socket.on("SEVER_RESPONE_AFTER_SEND_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         if (response.sendTo == myId) {
-            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
-            elementToTalAcceptFriend.innerHTML = `${response.totalAcceptFriend}`;
+            updateNewToTalRequestFriend(response.totalAcceptFriend);
             const listCardFriend = document.querySelector(".listCardFriend");
-            
+
             if (idPage.getAttribute("id-page") == "accept-friend") {
                 listCardFriend.innerHTML += `<div class="cardFriend col-3 d-flex items-center gap-x-3" user-id = ${response.userDetail._id}>
                     <div class="vien">
@@ -91,11 +98,11 @@ if (idPage) {
                     <div class="d-flex flex-column gap-y-1">
                         <span class="font-bold font-14">${response.userDetail.fullName}</span>
 
-                        <button btn-accept-request-friend user-id="${response.userDetail._id}" class="bg-blue text-white font-bold">
+                        <button btn-accept-request-friend onclick = "handleAcceptFriend(event)" user-id="${response.userDetail._id}" class="bg-blue text-white font-bold">
                             Chấp nhận
                         </button>
 
-                        <button btn-reject-request-friend user-id="${response.userDetail._id}" class="bg-red text-white font-bold">
+                        <button btn-reject-request-friend onclick = "handleRejectFriend(event)" user-id="${response.userDetail._id}" class="bg-red text-white font-bold">
                             Từ chối
                         </button>
 
@@ -109,13 +116,12 @@ if (idPage) {
         }
     })
     //
-    
+
     // Handle SEVER RESPONE AFTER CANCEL SEND REQUEST
-    socket.on("SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST",(response) => {
+    socket.on("SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         if (response.sendTo == myId) {
-            const elementToTalAcceptFriend = document.querySelector(".friend-menu span[totalAcceptFriend]");
-            elementToTalAcceptFriend.innerHTML = `(${response.totalAcceptFriend})`;
+            updateNewToTalRequestFriend(response.totalAcceptFriend);
             const listCardFriend = document.querySelector(".listCardFriend");
 
             if (idPage.getAttribute("id-page") == "accept-friend") {
@@ -127,7 +133,7 @@ if (idPage) {
     // End Handle SEVER RESPONE AFTER CANCEL SEND REQUEST
 
     // Handle SEVER RESPONE AFTER ACCEPT REQUEST
-    socket.on("SEVER_RESPONE_AFTER_ACCEPT_REQUEST",(response) => {
+    socket.on("SEVER_RESPONE_AFTER_ACCEPT_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         const listCardFriend = document.querySelector(".listCardFriend");
         if (response.sendTo == myId && idPage.getAttribute("id-page") == "not-friend") {
@@ -138,12 +144,12 @@ if (idPage) {
     // Handle SEVER RESPONE AFTER ACCEPT REQUEST
 
     // Handle SEVER RESPONE AFTER REJECT REQUEST
-    socket.on("SEVER_RESPONE_AFTER_REJECT_REQUEST",(response) => {
+    socket.on("SEVER_RESPONE_AFTER_REJECT_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         const listCardFriend = document.querySelector(".listCardFriend");
         if (response.sendTo == myId && idPage.getAttribute("id-page") == "not-friend") {
             const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userDetail._id}"]`);
-            cardFriend.classList.remove("add");
+            if (cardFriend) cardFriend.classList.remove("add");
         }
     })
     // Handle SEVER RESPONE AFTER REJECT REQUEST
