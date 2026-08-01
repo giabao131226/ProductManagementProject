@@ -182,7 +182,7 @@ Product-Management
 Clone repository
 
 ```bash
-git clone https://github.com//Product-Management.git
+git clone https://github.com//Product-Management.git](https://github.com/giabao131226/ProductManagementProject.git
 ```
 
 Go to project
@@ -312,7 +312,6 @@ _Add screenshot here._
 - Product reviews
 - Product ratings
 - Wishlist
-- Shopping cart
 - Responsive admin dashboard
 - Dark mode
 - Push notifications
