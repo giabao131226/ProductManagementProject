@@ -158,6 +158,14 @@ module.exports = (socket) => {
         const resultRQ = await User.updateOne({ "_id": myID }, { $pull: { "friends": rqFriendID } });
         // Xoá myID trong friends của rqFriendID
         const resultACC = await User.updateOne({ "_id": rqFriendID }, { $pull: { "friends": myID } });
+        
+        // Băn Socket về cho người nhận
+        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
+        const respone = {
+            "sendTo": rqFriendID,
+            "userDetail": myDetail
+        }
+        socket.broadcast.emit("SEVER_RESPONE_AFTER_UNFRIEND", respone);
     })
     // End Handle Unfriend
 }

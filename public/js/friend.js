@@ -74,6 +74,11 @@ const btnUnfriends = document.querySelectorAll("button[btn-unfriend]");
 if (btnUnfriends.length > 0) {
     btnUnfriends.forEach((item) => {
         item.addEventListener("click", (e) => {
+            const parent = e.target.parentNode;
+            if(parent){
+                parent.classList.remove("friend");
+                parent.classList.add("unfriend");
+            }
             emitFriendEvent(socket, "CLIENT_SEND_REQUEST_UNFRIEND", e.target);
         })
     })
@@ -153,5 +158,17 @@ if (idPage) {
         }
     })
     // Handle SEVER RESPONE AFTER REJECT REQUEST
+
+    // Handle SEVER_RESPONE_AFTER_UNFRIEND
+    socket.on("SEVER_RESPONE_AFTER_UNFRIEND",(response) => {
+        const myId = document.querySelector("p[user_id]").getAttribute("user_id");
+        if(response.sendTo == myId && idPage.getAttribute("id-page") == "list-friend"){
+            const cardFriend = document.querySelector(`.cardFriend[user-id = '${response.userDetail._id}']`);
+            const child2 = cardFriend.children[1];
+            child2.classList.remove("friend");
+            child2.classList.add("unfriend");
+        }
+    })
+    // End Handle SEVER_RESPONE_AFTER_UNFRIEND
 
 }
