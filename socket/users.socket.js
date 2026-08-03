@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const severResponseFriend = require("../helper/serverResponseFriend");
 
 module.exports = (socket) => {
     // HANDLE ADD Friend
@@ -32,15 +33,7 @@ module.exports = (socket) => {
         }
 
         // Băn Socket về cho người nhận
-        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName");
-        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
-        const totalRequest = requestDetail.acceptFriends.length ?? 0;
-        const respone = {
-            "sendTo": rqFriendID,
-            "totalAcceptFriend": totalRequest,
-            "userDetail": myDetail
-        }
-        socket.broadcast.emit("SEVER_RESPONE_AFTER_SEND_REQUEST", respone);
+        severResponseFriend(socket,"SEVER_RESPONE_AFTER_SEND_REQUEST",myID,rqFriendID);
     })
     // END HANDLE ADD Friend
 
@@ -63,17 +56,7 @@ module.exports = (socket) => {
         );
 
         // Băn Socket về cho người nhận
-        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
-        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
-        const totalRequest = requestDetail.acceptFriends.length ?? 0;
-        const respone = {
-            "sendTo": rqFriendID,
-            "totalAcceptFriend": totalRequest,
-            "userID": myDetail._id.toString()
-        }
-        socket.broadcast.emit("SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST", respone);
-
-
+        severResponseFriend(socket,"SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST",myID,rqFriendID);
     })
     // END HANDLE CANCEL ADD Friend
 
@@ -109,15 +92,7 @@ module.exports = (socket) => {
         }
 
         // Băn Socket về cho người nhận
-        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
-        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
-        const totalRequest = requestDetail.acceptFriends.length ?? 0;
-        const respone = {
-            "sendTo": rqFriendID,
-            "totalAcceptFriend": totalRequest,
-            "userDetail": myDetail
-        }
-        socket.broadcast.emit("SEVER_RESPONE_AFTER_ACCEPT_REQUEST", respone);
+        severResponseFriend(socket,"SEVER_RESPONE_AFTER_ACCEPT_REQUEST",myID,rqFriendID);
     })
     // End Handle Accept Request Friend
 
@@ -137,15 +112,7 @@ module.exports = (socket) => {
         })
 
         // Băn Socket về cho người nhận
-        const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
-        const requestDetail = await User.findOne({ "_id": rqFriendID, "status": "active" }).select("acceptFriends");
-        const totalRequest = requestDetail.acceptFriends.length ?? 0;
-        const respone = {
-            "sendTo": rqFriendID,
-            "totalAcceptFriend": totalRequest,
-            "userDetail": myDetail
-        }
-        socket.broadcast.emit("SEVER_RESPONE_AFTER_REJECT_REQUEST", respone);
+        severResponseFriend(socket,"SEVER_RESPONE_AFTER_REJECT_REQUEST",myID,rqFriendID);
     })
     // End Handle Reject Requets Friend
 

@@ -77,7 +77,7 @@ if (btnUnfriends.length > 0) {
     btnUnfriends.forEach((item) => {
         item.addEventListener("click", (e) => {
             const cardFriend = e.target.parentNode.closest(".cardFriend");
-            if(cardFriend) cardFriend.classList.remove("add");
+            if (cardFriend) cardFriend.classList.remove("add");
             emitFriendEvent(socket, "CLIENT_SEND_REQUEST_UNFRIEND", e.target);
         })
     })
@@ -85,14 +85,14 @@ if (btnUnfriends.length > 0) {
 //
 
 if (idPage) {
-    // Handle 
+    const pageNow = idPage.getAttribute("id-page");
+    // Handle SEVER_RESPONE_AFTER_SEND_REQUEST
     socket.on("SEVER_RESPONE_AFTER_SEND_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         if (response.sendTo == myId) {
             updateNewToTalRequestFriend(response.totalAcceptFriend);
             const listCardFriend = document.querySelector(".listCardFriend");
-
-            if (idPage.getAttribute("id-page") == "accept-friend") {
+            if (pageNow == "accept-friend") {
                 listCardFriend.innerHTML += `<div class="cardFriend col-3 d-flex items-center gap-x-3" user-id = ${response.userDetail._id}>
                     <div class="vien">
                         <img src="${response.userDetail.avatar}" alt="">
@@ -114,11 +114,14 @@ if (idPage) {
                         </button>
                     </div>
                 </div>`;
+            } else if (pageNow == "not-friend") {
+                const cardFriend = document.querySelector(`.cardFriend[user-id = '${response.userDetail._id}']`);
+                if (cardFriend) cardFriend.remove();
             }
 
         }
     })
-    //
+    // End Handle SEVER_RESPONE_AFTER_SEND_REQUEST
 
     // Handle SEVER RESPONE AFTER CANCEL SEND REQUEST
     socket.on("SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST", (response) => {
@@ -126,10 +129,33 @@ if (idPage) {
         if (response.sendTo == myId) {
             updateNewToTalRequestFriend(response.totalAcceptFriend);
             const listCardFriend = document.querySelector(".listCardFriend");
-
-            if (idPage.getAttribute("id-page") == "accept-friend") {
-                const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userID}"]`);
+            if (pageNow == "accept-friend") {
+                const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userDetail._id}"]`);
                 cardFriend.remove();
+            } else if (pageNow == "not-friend") {
+                listCardFriend.innerHTML += `<div class="cardFriend col-3 d-flex items-center gap-x-3" user-id="${response.userDetail._id}">
+                    <div class="vien">
+                        <img src="${response.userDetail.avatar}" alt="${response.userDetail.fullName}">
+                    </div>
+
+                    <div class="d-flex flex-column gap-y-1">
+                        <span class="font-bold font-14">${response.userDetail.fullName}</span>
+
+                        <button
+                            btn-send-request-friend
+                            user-id="${response.userDetail._id}"
+                            class="bg-blue text-white font-bold">
+                            Kết Bạn
+                        </button>
+
+                        <button
+                            btn-unfriend
+                            user-id="${response.userDetail._id}"
+                            class="bg-blue text-white font-bold border-none">
+                            Huỷ Kết Bạn
+                        </button>
+                    </div>
+                </div>`;
             }
         }
     })
@@ -139,9 +165,9 @@ if (idPage) {
     socket.on("SEVER_RESPONE_AFTER_ACCEPT_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         const listCardFriend = document.querySelector(".listCardFriend");
-        if (response.sendTo == myId && idPage.getAttribute("id-page") == "not-friend") {
+        if (response.sendTo == myId && (pageNow== "not-friend" || pageNow == "request-friend")) {
             const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userDetail._id}"]`);
-            cardFriend.remove();
+            if(cardFriend) cardFriend.remove();
         }
     })
     // Handle SEVER RESPONE AFTER ACCEPT REQUEST
@@ -150,7 +176,7 @@ if (idPage) {
     socket.on("SEVER_RESPONE_AFTER_REJECT_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
         const listCardFriend = document.querySelector(".listCardFriend");
-        if (response.sendTo == myId && idPage.getAttribute("id-page") == "not-friend") {
+        if (response.sendTo == myId && (pageNow == "not-friend" || pageNow == "request-friend")) {
             const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userDetail._id}"]`);
             if (cardFriend) cardFriend.classList.remove("add");
         }
@@ -158,11 +184,11 @@ if (idPage) {
     // Handle SEVER RESPONE AFTER REJECT REQUEST
 
     // Handle SEVER_RESPONE_AFTER_UNFRIEND
-    socket.on("SEVER_RESPONE_AFTER_UNFRIEND",(response) => {
+    socket.on("SEVER_RESPONE_AFTER_UNFRIEND", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-        if(response.sendTo == myId && idPage.getAttribute("id-page") == "list-friend"){
+        if (response.sendTo == myId && pageNow == "list-friend") {
             const cardFriend = document.querySelector(`.cardFriend[user-id = '${response.userDetail._id}']`);
-            if(cardFriend) cardFriend.remove();
+            if (cardFriend) cardFriend.remove();
         }
     })
     // End Handle SEVER_RESPONE_AFTER_UNFRIEND
