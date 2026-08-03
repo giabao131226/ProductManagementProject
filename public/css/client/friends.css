@@ -1,22 +1,62 @@
 
-.cardFriend{
-    padding: 30px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+.listCardFriend{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+    gap: 20px;
 }
 
-.cardFriend .vien{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: black;
-    overflow: hidden;
+.cardFriend{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    transition: .2s;
 }
-.cardFriend .vien img{
-    width: 100px;
-    height: 100px;
+
+.cardFriend:hover{
+    box-shadow: 0 6px 20px rgba(0,0,0,.1);
+    transform: translateY(-2px);
+}
+
+.vien{
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.vien img{
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+}
+
+.info{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.name{
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.info button{
+    width: 100%;
+    height: 38px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.info button:hover{
+    opacity: .9;
 }
 
 .cardFriend.add [btn-send-request-friend]{
