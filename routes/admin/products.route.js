@@ -33,7 +33,6 @@ router.post("/create",authorization.autho("permissions-product-create"),
             if (req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 req.body.thumbnail = result.secure_url
-                console.log(result);
             }
             next();
         } catch (err) {

@@ -42,9 +42,11 @@ module.exports.chat = async (req, res) => {
         ["createdAt", "desc"]
     ]).limit(10).populate({
         path: "user_id",
-        select: "avatar fullName"
+        select: "avatar fullName _id"
     });
     chats.reverse();
+    console.log(chats);
+    console.log(user);
     return res.render("client/pages/chat/index.pug", {
         user: user,
         chats: chats

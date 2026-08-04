@@ -1,25 +1,44 @@
 
-var socket = io({
-    auth: {
-        "userId": document.querySelector("p[user_id]").getAttribute("user-id")
-    }
-});
+var socket = io();
 const bodyChat = document.querySelector(".chat-body");
 // bodyChat.scrollTop = bodyChat.scrollHeight;
 
+// Handle Send Message
 const formSendMessage = document.querySelector("[form-send-message]");
 if(formSendMessage){
     formSendMessage.addEventListener("submit",(e) => {
         e.preventDefault();
-        const input = e.target.querySelector("input");
+        const input = e.target.querySelector("input#message");
         const inputImage = e.target.querySelector("input[name='images']");
         if(input.value.trim() == "" && inputImage.files.length == 0) return;
         const msg = {
             "content": input.value,
             "images": [...inputImage.files]
         };
+        // Handle Add tin nhắn vừa gửi
+        bodyChat.innerHTML += `<div class="message">
+            <div class="right">
+                <div class="message-main">
+                    <div class="message-top">
+                        <div class="d-flex flex-column items-start">
+                            <div class="bubble">${input.value}</div>
+                        </div>
+                    </div>
+                    <div class = "message-bottom">
+                    ${inputImage.files.length > 0 ?
+                        Array.from(inputImage.files).map((item) => `<div class="image">
+                            <img src = "${URL.createObjectURL(item)}"></img>
+                        </div>`)
+                        : ""}
+                    </div>
+                </div>
+            </div>
+        </div>`
+        // 
         input.value = "";
-        socket.emit("CLIENT_SEND_MESSAGE",msg);
+        const messageImages = document.querySelector(".message-images");
+        messageImages.innerHTML = "";
+        // socket.emit("CLIENT_SEND_MESSAGE",msg);
     })
 }
 

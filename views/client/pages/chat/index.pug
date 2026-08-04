@@ -9,19 +9,75 @@ block main
 
       .chat-body#chatBody
         each chat in chats
-            .message(chat_id = chat["user_id"]._id userId = user._id)
-              div(class = user._id.toString() == chat["user_id"]._id.toString() ? "right" : "left")
-                - if(user._id.toString() != chat["user_id"]._id.toString()) 
-                  p.userName #{chat["user_id"].fullName}
-                  .d-flex.items-center.gap-x-1
-                    img.avatar(src = chat["user_id"].avatar)
-                    .bubble(class = chat.content ? "p-2" : "") #{chat.content}
-                  each url in chat.images
-                    img(src = "url" class = "image")
-                - else
-                  img.avatar(src = chat["user_id"].avatar)
-                  .bubble(class = chat.content ? "p-2" : "") #{chat.content}
-
+          .message
+            div(class = chat.user_id._id.toString() == user._id.toString() ? "right" : "left")
+              .message-main
+                .message-top
+                  - if(chat.user_id._id.toString() != user._id.toString())
+                    .avatar
+                      img(src = "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg")
+                  .d-flex.flex-column.items-start
+                    - if(chat.user_id._id.toString() != user._id.toString()) 
+                      span.font-bold #{chat.user_id.fullName}
+                    .bubble #{chat.content}
+                - if(chat.images.length > 0)
+                  .message-bottom
+                    each url in chat.images
+                      .image
+                        img(src = url)
+        .message
+          .left
+            .message-main
+              .message-top
+                .avatar
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3VktJ0YLo0ZxJKPkqj78Wsw2WB86Piq0M8x9y7g1gpQ&s=10")
+                .d-flex.flex-column.items-start
+                  span.font-bold Người gửi 01
+                  .bubble Người gửi đã gửi
+              .message-bottom
+                .image
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                .image
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                .image
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                .image
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                .image
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+        .message
+          .right
+            .message-main
+              .message-top
+                .d-flex.flex-column.items-start
+                  .bubble Người gửi đã gửi
+              .message-bottom
+                  .image
+                    img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                  .image
+                    img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                  .image
+                    img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                  .image
+                    img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+                  .image
+                    img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT53b-QUeyBwHTrlv3-xXPkaKx9luLKVfI62R0XXEAcTw&s=10")
+        .message
+          .right
+            .message-main
+              .message-top
+                .d-flex.flex-column.items-start
+                  .bubble Người gửi đã gửi
+        .message
+          .left
+            .message-main
+              .message-top
+                .avatar
+                  img(src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3VktJ0YLo0ZxJKPkqj78Wsw2WB86Piq0M8x9y7g1gpQ&s=10")
+                .d-flex.flex-column.items-start
+                  span.font-bold Người gửi 01
+                  .bubble Người gửi đã gửi
+                  
         span.chat-typing.d-none ... Người dùng đang nhập
       emoji-picker.ml-auto.bg-transparent.d-none
       .message-images.d-flex.flex-wrap.gap-x-3
