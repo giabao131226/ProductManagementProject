@@ -1,7 +1,8 @@
 
 var socket = io();
 const bodyChat = document.querySelector(".chat-body");
-// bodyChat.scrollTop = bodyChat.scrollHeight;
+const typing = bodyChat.querySelector(".chat-typing");
+bodyChat.scrollTop = bodyChat.scrollHeight;
 
 // Handle Send Message
 const formSendMessage = document.querySelector("[form-send-message]");
@@ -18,7 +19,7 @@ if (formSendMessage) {
             "myID": myID
         };
         // Handle Add tin nhắn vừa gửi
-        bodyChat.innerHTML += `<div class="message">
+        typing.insertAdjacentHTML("beforebegin",`<div class="message">
             <div class="right">
                 <div class="message-main">
                     <div class="message-top">
@@ -35,17 +36,18 @@ if (formSendMessage) {
                     </div>
                 </div>
             </div>
-        </div>`
+        </div>`)
         // 
         input.value = "";
         const messageImages = document.querySelector(".message-images");
         messageImages.innerHTML = "";
         socket.emit("CLIENT_SEND_MESSAGE", msg);
+        bodyChat.scrollTop = bodyChat.scrollHeight;
     })
 }
 
 socket.on("SERVER_RETURN_MESSAGE", (respone) => {
-    bodyChat.innerHTML += `<div class="message">
+    typing.insertAdjacentHTML( "beforebegin",`<div class="message">
     <div class="left">
         <div class="message-main">
             <div class="message-top">
@@ -68,7 +70,8 @@ socket.on("SERVER_RETURN_MESSAGE", (respone) => {
             </div>
         </div>
     </div>
-</div>`
+</div>`)
+    bodyChat.scrollTop = bodyChat.scrollHeight;
 })
 
 // Handle Typing
@@ -80,7 +83,6 @@ if (inputMessage) {
 }
 let timeOutHideTyping;
 socket.on("SERVER_SEND_ATT_TYPE_MESSAGE", (att) => {
-    const typing = bodyChat.querySelector(".chat-typing");
     if (att == "show") typing.classList.remove("d-none");
     clearTimeout(timeOutHideTyping);
     timeOutHideTyping = setTimeout(() => {

@@ -5,7 +5,7 @@ const Chat = require("../../models/chat.model");
 // [GET] "/chat"
 module.exports.chat = async (req, res) => {
     const user = res.locals.user;
-    const chats = await Chat.find({}).sort([
+    const chats = await Chat.find().sort([
         ["createdAt", "desc"]
     ]).limit(10).populate({
         path: "user_id",
