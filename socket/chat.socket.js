@@ -1,6 +1,8 @@
 const uploadImage = require("../helper/uploadImage");
+const Chat = require("../models/chat.model");
+const User = require("../models/user.model");
 
-module.exports = (socket, user) => {
+module.exports = (socket) => {
     socket.on("CLIENT_SEND_MESSAGE", async (msg) => {
         let images = [];
         if (msg.images.length > 0) {
@@ -13,17 +15,22 @@ module.exports = (socket, user) => {
         }
         const result = await Chat.create({
             content: msg.content,
-            user_id: user._id,
+            user_id: msg.myID,
             images: images
         });
+
+        const userDetail = await User.findOne({"_id": msg.myID,"status": "active"})
+            .select("_id fullName avatar");
         const respone = {
-            "user_id": user._id,
+            "userDetail": {
+                "_id": userDetail._id,
+                "fullName": userDetail.fullName,
+                "avatar": userDetail.avatar,
+            },
             "content": msg.content,
-            "userName": user.fullName,
-            "avatar": user.avatar,
             "images": images
         }
-        _io.emit("SERVER_RETURN_MESSAGE", respone);
+        socket.broadcast.emit("SERVER_RETURN_MESSAGE", respone);
     })
 
     socket.on("CLIENT_TYPE_MESSAGE", (att) => {
