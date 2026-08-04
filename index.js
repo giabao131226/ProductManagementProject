@@ -18,7 +18,7 @@ require("dotenv").config();
 database.connect();
 
 const app = express();
-const port = process.env.port;
+const port = process.env.port || 3000;
 
 // Socket IO
 const server = createServer(app);
