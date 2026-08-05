@@ -424,32 +424,72 @@ td{
 }
 
 .banner-animation{
-    position: relative;
+    width: 100%;
     height: 50px;
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+.banner-animation .element{
+    position: absolute;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-duration: 10s;
+    transform: translateX(100vw);
+    animation-name: loading;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 36px;
+    padding: 0 8px;
+
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .3px;
+
+    white-space: nowrap;
+
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    cursor: pointer;
+}
+
+.banner-animation .element:hover{
+    transition-duration: 2s;
+    padding: 0 16px;
 }
 
 .banner-animation .element-1{
-    position: absolute;
-    animation-name: loading;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-        animation-timing-function: linear ;
-
-    right: -10px;
+    animation-delay: 0s;
 }
 .banner-animation .element-2{
-    position: absolute;
-    animation-name: loading;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear ;
-    animation-delay: 0.8s;
-    right: -30px;
+    animation-delay: -2s;
+}
+.banner-animation .element-3{
+    animation-delay: -4s;
+}
+.banner-animation .element-4{
+    animation-delay: -6s;
+}
+.banner-animation .element-5{
+    animation-delay: -8s;
+}
+.banner-animation .element-6{
+    animation-delay: -10s;
 }
 @keyframes loading{
-    from{
-        transform: translateX(0);
-    }
     to{
         transform: translateX(-130vw);
     }

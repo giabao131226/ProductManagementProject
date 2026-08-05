@@ -2,3 +2,7 @@
 .text-header{
     color: white;
 }
+
+.search-box input{
+    width: 60%;
+}

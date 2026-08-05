@@ -3,6 +3,8 @@ extends ../../layouts/default
 block main
 
     link(rel = "stylesheet" href = "css/client/chat.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.css")
+
     .chat
       .chat-header
         h2 Chat Room
@@ -41,5 +43,7 @@ block main
         button#send(type = "submit") Gửi
     p.d-none(user_id = user._id)
 
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.js")
+    script(src = "js/viewer.js")
     script(type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js")      
     script(src = "js/chat.js")
