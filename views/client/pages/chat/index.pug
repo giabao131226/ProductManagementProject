@@ -17,7 +17,7 @@ block main
                 .message-top
                   - if(chat.user_id._id.toString() != user._id.toString())
                     .avatar
-                      img(src = "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg")
+                      img(src = (chat.user_id.avatar ? chat.user_id.avatar : "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg"))
                   .d-flex.flex-column.items-start
                     - if(chat.user_id._id.toString() != user._id.toString()) 
                       span.font-bold #{chat.user_id.fullName}
@@ -38,8 +38,9 @@ block main
         input(name = "images" type = "file" class = "d-none" multiple accept = "image/*")
         button.px-2.border-none.bg-transparent(btn-icon type = "button")
           i(class="fa-regular fa-face-smile font-20")
-        label.px-2.border-none.bg-transparent(btn-image type = "button" for = "image")
-          i(class="fa-regular fa-image font-20")
+        button.px-2.py-2.border-none.bg-transparent.cursor-pointer(btn-image type = "button")
+          label.m-0.cursor-pointer(for = "image")
+            i(class="fa-regular fa-image font-20")
         button#send(type = "submit") Gửi
     p.d-none(user_id = user._id)
 
