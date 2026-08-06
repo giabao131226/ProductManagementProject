@@ -72,7 +72,7 @@ module.exports.friends = async (req, res) => {
         const users = await User.find({
             "status": "active",
             "_id": { $in: user.friends }
-        }).select("_id fullName avatar");
+        }).select("_id fullName avatar online");
 
         return res.render("client/pages/friends/list-friend", {
             "users": users,

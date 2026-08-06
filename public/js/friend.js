@@ -229,13 +229,11 @@ if (idPage) {
 
 // Handle SEVER_SEND_DETAIL_CLIENT_ONLINE
 socket.on("SEVER_SEND_DETAIL_CLIENT_ONLINE",(response) => {
-    console.log(response);
     const myId = document.querySelector("p[user_id]").getAttribute("user_id");
     const index = response.sendTo.findIndex((item) => item == myId);
     if(index >= 0){
         const cardFriend = document.querySelector(`.cardFriend[user-id="${response.userID}"]`);
         const online = cardFriend.querySelector(".online");
-        console.log(online);
         online.classList.remove("bg-offline");
         online.classList.remove("bg-online");
         online.classList.add(response.online ? "bg-online" : "bg-offline");

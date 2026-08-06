@@ -7,3 +7,12 @@ function emitFriendEvent(socket, event, target) {
         id: rqFriendID
     });
 }
+
+
+module.exports.sendStatusOnline = async (user) => {
+    _io.emit("SEVER_SEND_DETAIL_CLIENT_ONLINE", {
+        "sendTo": user.friends,
+        "userID": user._id,
+        "online": !user.online
+    });
+}
