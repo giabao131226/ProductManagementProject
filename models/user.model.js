@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     deletedAt:{
         type: Date,
         default: null
+    },
+    online:{
+        type: "Boolean",
+        default: false
     }
 },{
     timestamps: true

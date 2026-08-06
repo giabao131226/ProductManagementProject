@@ -79,11 +79,22 @@ module.exports.loginPost = async (req,res) => {
             return res.redirect("/user/login");
         }
         const user = await User.findOne({"email": data.email,"password": md5(data.password)});
+
         if(!user){
             req.flash("error","Địa chỉ email hoặc mật khẩu không chính xác. Vui lòng kiếm tra lại");
             return res.redirect("/user/login");
         }
+
+        const resultUpdateOnline = await User.updateOne({"tokenUser": user.tokenUser},{"online": true});
         res.cookie("tokenUser",user.tokenUser);
+
+        // Gửi thông tin online về cho bạn người dùng đã đăng nhập
+        _io.emit("SEVER_SEND_DETAIL_CLIENT_ONLINE",{
+            "sendTo": user.friends,
+            "userID": user._id,
+            "online": !user.online
+        });
+
         return res.redirect("/");
     }catch(ex){
         console.log("Lỗi khi đăng nhập: "+ex);

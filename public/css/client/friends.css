@@ -14,6 +14,7 @@
     border-radius: 10px;
     background: #fff;
     transition: .2s;
+    position: relative;
 }
 
 .cardFriend:hover{
@@ -132,4 +133,23 @@
     color: #fff;
     font-size: 12px;
     font-weight: bold;
+}
+
+/* Online */
+.cardFriend .online{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+
+    position: absolute;
+    right: 5%;
+    top: 5%;
+}
+
+.bg-online{
+    background-color: rgb(79, 79, 244);
+}
+
+.bg-offline{
+    background-color: black;
 }

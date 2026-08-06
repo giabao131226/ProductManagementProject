@@ -11,6 +11,7 @@ block main
             .d-flex.items-center.gap-x-3
                 each item in users
                     .cardFriend.col-3.d-flex.items-center.gap-x-3.add(user-id = item._id)
+                        .online.bg-offline
                         .vien
                             img(src = item.avatar)
                         .d-flex.flex-column.gap-y-1
