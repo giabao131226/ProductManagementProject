@@ -224,7 +224,6 @@ if (idPage) {
         }
     })
     // End Handle SEVER_RESPONE_AFTER_UNFRIEND
-
 }
 
 // Handle SEVER_SEND_DETAIL_CLIENT_ONLINE

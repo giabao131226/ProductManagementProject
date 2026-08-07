@@ -69,9 +69,11 @@ module.exports.acceptFriends = async (req, res) => {
 module.exports.friends = async (req, res) => {
     try {
         const user = res.locals.user;
+        const friendIDs = user.friends.map((item) => item.user_id);
+
         const users = await User.find({
             "status": "active",
-            "_id": { $in: user.friends }
+            "_id": { $in: friendIDs }
         }).select("_id fullName avatar online");
 
         return res.render("client/pages/friends/list-friend", {

@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const severResponseFriend = require("../helper/serverResponseFriend");
+const RoomChat = require("../models/roomchat.model");
 
 module.exports = (socket) => {
     // HANDLE ADD Friend
@@ -33,7 +34,7 @@ module.exports = (socket) => {
         }
 
         // Băn Socket về cho người nhận
-        severResponseFriend(socket,"SEVER_RESPONE_AFTER_SEND_REQUEST",myID,rqFriendID);
+        severResponseFriend(socket, "SEVER_RESPONE_AFTER_SEND_REQUEST", myID, rqFriendID);
     })
     // END HANDLE ADD Friend
 
@@ -56,7 +57,7 @@ module.exports = (socket) => {
         );
 
         // Băn Socket về cho người nhận
-        severResponseFriend(socket,"SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST",myID,rqFriendID);
+        severResponseFriend(socket, "SEVER_RESPONE_AFTER_CANCEL_SEND_REQUEST", myID, rqFriendID);
     })
     // END HANDLE CANCEL ADD Friend
 
@@ -65,34 +66,60 @@ module.exports = (socket) => {
         const myID = data.myId;
         const rqFriendID = data.id;
 
-        // Thêm rqFriendID vào friends của myID và xoá nó trong requestFriends
-        const existRQ = await User.findOne({
-            "_id": myID,
-            "friends": { $in: rqFriendID }
-        });
-        if (!existRQ) {
-            const resultRQ = await User.updateOne({ "_id": myID },
-                {
-                    $push: { "friends": rqFriendID },
-                    $pull: { "acceptFriends": rqFriendID }
-                });
-        }
+        const [existRQ, existACC] = await Promise.all([
+            User.findOne({
+                "_id": myID,
+                "friends.user_id": rqFriendID
+            }),
+            User.findOne({
+                "_id": rqFriendID,
+                "friends.user_id": myID
+            })
+        ]);
 
-        // Thêm myID vào friends của rqFriendID và xoá nó trong requestFriends
-        const existACC = await User.findOne({
-            "_id": rqFriendID,
-            "friends": { $in: myID }
-        });
-        if (!existACC) {
-            const resultACC = await User.updateOne({ "_id": rqFriendID },
-                {
-                    $push: { "friends": myID },
-                    $pull: { "requestFriends": myID }
-                });
-        }
+        if (!existRQ && !existACC) {
+            const roomChat = await RoomChat.create({
+                "typeRoom": "friend",
+                "status": "active",
+                "users": [
+                    {
+                        "user_id": myID,
+                        "role": "SuperAdmin"
+                    },
+                    {
+                        "user_id": rqFriendID,
+                        "role": "SuperAdmin"
+                    },
+                ]
+            });
 
-        // Băn Socket về cho người nhận
-        severResponseFriend(socket,"SEVER_RESPONE_AFTER_ACCEPT_REQUEST",myID,rqFriendID);
+            const [resultRQ, resultACC] = await Promise.all([
+                User.updateOne({ "_id": myID },
+                    {
+                        $push: {
+                            "friends": {
+                                "user_id": rqFriendID,
+                                "room_chat_id": roomChat._id
+                            }
+                        },
+                        $pull: { "acceptFriends": rqFriendID }
+                    }),
+                User.updateOne({ "_id": rqFriendID },
+                    {
+                        $push: {
+                            "friends": {
+                                "user_id": myID,
+                                "room_chat_id": roomChat._id
+                            }
+                        },
+                        $pull: { "requestFriends": myID }
+                    })
+            ]);
+            console.log(resultRQ);
+            console.log(resultACC);
+            // Băn Socket về cho người nhận
+            severResponseFriend(socket, "SEVER_RESPONE_AFTER_ACCEPT_REQUEST", myID, rqFriendID);
+        }
     })
     // End Handle Accept Request Friend
 
@@ -102,17 +129,17 @@ module.exports = (socket) => {
         const rqFriendID = data.id;
 
         // Xoá rqFriendID trong requestFriend của myID
-        const resultACC = await User.updateOne({"_id": myID},{
-            $pull: {"acceptFriends": rqFriendID}
+        const resultACC = await User.updateOne({ "_id": myID }, {
+            $pull: { "acceptFriends": rqFriendID }
         })
 
         // Xoá myID trong acceptFriends của rqFriendID
-        const resultRQ = await User.updateOne({"_id": rqFriendID},{
-            $pull: {"requestFriends": myID}
+        const resultRQ = await User.updateOne({ "_id": rqFriendID }, {
+            $pull: { "requestFriends": myID }
         })
 
         // Băn Socket về cho người nhận
-        severResponseFriend(socket,"SEVER_RESPONE_AFTER_REJECT_REQUEST",myID,rqFriendID);
+        severResponseFriend(socket, "SEVER_RESPONE_AFTER_REJECT_REQUEST", myID, rqFriendID);
     })
     // End Handle Reject Requets Friend
 
@@ -125,7 +152,7 @@ module.exports = (socket) => {
         const resultRQ = await User.updateOne({ "_id": myID }, { $pull: { "friends": rqFriendID } });
         // Xoá myID trong friends của rqFriendID
         const resultACC = await User.updateOne({ "_id": rqFriendID }, { $pull: { "friends": myID } });
-        
+
         // Băn Socket về cho người nhận
         const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
         const respone = {

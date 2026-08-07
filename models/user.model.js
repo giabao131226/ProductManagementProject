@@ -5,7 +5,12 @@ const userSchema = new mongoose.Schema({
     fullName: String,
     email: String,
     password: String,
-    friends: Array,
+    friends: [
+        {
+            user_id: String,
+            room_chat_id: String
+        }
+    ],
     requestFriends: Array,
     acceptFriends: Array,
     tokenUser: {

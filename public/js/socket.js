@@ -1,8 +1,10 @@
 
 var socket = io();
 const bodyChat = document.querySelector(".chat-body");
-const typing = bodyChat.querySelector(".chat-typing");
-bodyChat.scrollTop = bodyChat.scrollHeight;
+const typing = bodyChat?.querySelector(".chat-typing");
+if(bodyChat){
+    bodyChat.scrollTop = bodyChat.scrollHeight;
+}
 
 // Handle Send Message
 const formSendMessage = document.querySelector("[form-send-message]");
