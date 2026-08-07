@@ -74,10 +74,15 @@ module.exports.friends = async (req, res) => {
         const users = await User.find({
             "status": "active",
             "_id": { $in: friendIDs }
-        }).select("_id fullName avatar online");
+        }).select("_id fullName avatar online").lean();
+
+        const listUser = users.map((item) => {
+            const index = user.friends.findIndex((friend) => friend.user_id == item._id);
+            return {...item,"room_chat_id": user.friends[index].room_chat_id};
+        })
 
         return res.render("client/pages/friends/list-friend", {
-            "users": users,
+            "users": listUser,
             "totalAcceptFriend": user.acceptFriends?.length ?? 0,
             "path": "friends"
         })

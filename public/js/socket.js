@@ -11,6 +11,7 @@ const formSendMessage = document.querySelector("[form-send-message]");
 if (formSendMessage) {
     formSendMessage.addEventListener("submit", (e) => {
         e.preventDefault();
+        const roomChatID = bodyChat.getAttribute("roomChatID");
         const input = e.target.querySelector("input#message");
         const inputImage = e.target.querySelector("input[name='images']");
         if (input.value.trim() == "" && inputImage.files.length == 0) return;
@@ -18,7 +19,8 @@ if (formSendMessage) {
         const msg = {
             "content": input.value,
             "images": [...inputImage.files],
-            "myID": myID
+            "myID": myID,
+            "room_chat_id": roomChatID
         };
         // Handle Add tin nhắn vừa gửi
         typing.insertAdjacentHTML("beforebegin",`<div class="message">

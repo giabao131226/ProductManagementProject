@@ -17,6 +17,8 @@ block main
                         .d-flex.flex-column.gap-y-1
                             span.font-bold.font-14 #{item.fullName}
                             button(btn-send-request-friend user-id = item._id).bg-blue.text-white.font-bold Kết Bạn
+                            a(href = `/chat/${item.room_chat_id}`) 
+                                button(btn-unfriend user-id = item._id).bg-blue.text-white.font-bold.border-none Nhắn tin
                             button(btn-unfriend user-id = item._id).bg-blue.text-white.font-bold.border-none Huỷ Kết Bạn
     
     p.d-none(user_id = user._id) Hello

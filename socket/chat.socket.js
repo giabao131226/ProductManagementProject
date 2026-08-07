@@ -16,7 +16,8 @@ module.exports = (socket) => {
         const result = await Chat.create({
             content: msg.content,
             user_id: msg.myID,
-            images: images
+            images: images,
+            room_chat_id: msg.room_chat_id
         });
 
         const userDetail = await User.findOne({"_id": msg.myID,"status": "active"})
