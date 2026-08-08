@@ -22,4 +22,8 @@ module.exports = (app) => {
     app.use("/user",userRouter)
     app.use("/chat",chatRouter)
     app.use("/users",usersRouter)
+
+    app.use((req,res) => {
+        return res.status(404).send("404 NOT FOUND");
+    })
 }
