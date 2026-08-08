@@ -4,15 +4,18 @@ const User = require("../../models/user.model");
 module.exports.notFriend = async (req, res) => {
     try {
         const user = res.locals.user;
+        const friendID = user.friends.map((item) => item.user_id);
+
         const users = await User.find({
             "status": "active",
             $and: [
                 { "_id": { $ne: user._id } },
-                { "_id": { $nin: user.friends } },
+                { "_id": { $nin: friendID } },
                 { "_id": { $nin: user.requestFriends } },
                 { "_id": { $nin: user.acceptFriends } }
             ]
         }).select("_id fullName avatar");
+        
         return res.render("client/pages/friends/not-friend", {
             "totalAcceptFriend": user.acceptFriends?.length ?? 0,
             "users": users,

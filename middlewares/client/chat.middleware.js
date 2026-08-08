@@ -1,4 +1,5 @@
 const RoomChat = require("../../models/roomchat.model");
+const mongoose = require("mongoose");
 
 module.exports.check = async (req,res,next) => {
     try{    
@@ -9,6 +10,8 @@ module.exports.check = async (req,res,next) => {
             "_id": roomChatID,
             "users.user_id": user._id
         });
+
+        console.log(roomChat);
 
         if(!roomChat){
             return res.send("404 not found");

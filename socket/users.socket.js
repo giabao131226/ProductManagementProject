@@ -149,9 +149,9 @@ module.exports = (socket) => {
         const rqFriendID = data.id;
 
         // Xoá rqFriendID trong friends của myID
-        const resultRQ = await User.updateOne({ "_id": myID }, { $pull: { "friends": rqFriendID } });
+        const resultRQ = await User.updateOne({ "_id": myID }, { $pull: { "friends": { "user_id": rqFriendID } } });
         // Xoá myID trong friends của rqFriendID
-        const resultACC = await User.updateOne({ "_id": rqFriendID }, { $pull: { "friends": myID } });
+        const resultACC = await User.updateOne({ "_id": rqFriendID }, { $pull: { "friends": { "user_id": myID } } });
 
         // Băn Socket về cho người nhận
         const myDetail = await User.findOne({ "_id": myID, "status": "active" }).select("avatar fullName _id");
