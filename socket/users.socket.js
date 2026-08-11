@@ -115,8 +115,6 @@ module.exports = (socket) => {
                         $pull: { "requestFriends": myID }
                     })
             ]);
-            console.log(resultRQ);
-            console.log(resultACC);
             // Băn Socket về cho người nhận
             severResponseFriend(socket, "SEVER_RESPONE_AFTER_ACCEPT_REQUEST", myID, rqFriendID);
         }

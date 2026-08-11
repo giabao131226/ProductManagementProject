@@ -75,16 +75,6 @@
     display: none;
 }
 
-/* .cardFriend .friend [btn-send-request-friend],[btn-cancel-request-friend]{
-    display: none;
-}
-.cardFriend .unfriend [btn-send-request-friend]{
-    display: block;
-}
-.cardFriend .unfriend [btn-unfriend]{
-    display: none;
-} */
-
 /* Thanh Điều Hướng */
 .friend-menu {
     display: flex;

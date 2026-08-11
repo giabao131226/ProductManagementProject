@@ -226,3 +226,150 @@ emoji-picker {
     display: flex;
     flex-direction: column;
 }
+
+
+/* Danh sách đoạn chat */
+
+
+.listCardChat{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+    gap: 20px;
+}
+
+.cardChat{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    transition: .2s;
+    position: relative;
+}
+
+.cardChat:hover{
+    box-shadow: 0 6px 20px rgba(0,0,0,.1);
+    transform: translateY(-2px);
+}
+
+.cardChat .vien{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.cardChat .vien img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardChat .info{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cardChat .name{
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.cardChat .info button{
+    width: 100%;
+    height: 38px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cardChat .info button:hover{
+    opacity: .9;
+}
+
+/* Room Chat */
+
+.createRoomChat{
+    background-color: white;
+    width: 600px;
+    padding: 10px 30px;
+    border-radius: 10px;
+}
+
+.createRoomChat .inputSearch{
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.createRoomChat .tool input{
+    border: none;
+    font-weight: bold;
+}
+.createRoomChat .tool input:focus{
+    outline: none;
+}
+
+.createRoomChat .vien{
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.createRoomChat .listFriend{
+    height: 200px;
+    overflow: auto;
+}
+
+.createRoomChat .cardFriend{
+    padding: 4px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.createRoomChat .cardFriend:hover{
+    background-color: rgb(224, 205, 205);
+}
+
+
+
+.createRoomChat .cardFriend .avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.createRoomChat .cardFriend .avatar img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.formCreateRoomChat.close{
+    display: none!important;
+}
+
+.formCreateRoomChat{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+
+   background: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+}
+
+.formCreateRoomChat form:first-child{
+    z-index: 100;
+}

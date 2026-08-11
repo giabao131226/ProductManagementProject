@@ -1,0 +1,50 @@
+
+mixin FormCreateRoomChat(friends)
+
+    .formCreateRoomChat.close
+        form(
+            form-create-room
+            action = "/chat/create-room"
+            method = "POST"
+            enctype = "multipart/form-data"
+            class = "createRoomChat d-flex flex-column")
+                .d-flex.items-center.justify-between
+                    span.font-bold.font-20 Tạo nhóm
+                    button(btn-close-form type = "button").border-none.font-bold.bg-white x
+
+                hr
+
+                .tool.rows.items-center.justify-between
+                    label(class = "vien" for = "roomChatAvatar")
+                        i(class="fa-solid fa-camera")
+                        input(name = "avatar" type = "file" id = "roomChatAvatar" class = "d-none")
+                    .inputSearch.d-flex.items-center.justify-between.bg-white.col-11
+                        input(name = "title" type = "text" placeholder = "Nhập tên nhóm")
+
+                hr
+                .tool.rows.items-center.justify-center
+                    .inputSearch.d-flex.items-center.justify-between.bg-white.col-11
+                        input(name = "fullName" type = "text")
+                        button.border-none.bg-white(btn-search type = "button")
+                            i(class="fa-solid fa-magnifying-glass")
+                hr
+
+                span.font-bold.font-20 Danh sách bạn bạn bè
+                .listFriend.d-flex.flex-column
+                    each friend in friends
+                        .cardFriend.rows.d-flex.gap-x-3
+                            input(type = "checkbox" name = "users" id = friend._id value = friend._id)
+                            label(for = friend._id ).d-flex.items-center.gap-x-3
+                                .avatar
+                                    img(src = (friend.avatar ? friend.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJ4DJVCvTB59cAmwG1q--V4erVxH9gX21pfDtqX5maHYssQJ_-LCv0r4&s=10"))
+                                span.font-bold.font-14 #{friend.fullName}
+                hr
+                .d-flex.justify-end
+                    button(btn-create-room type = "submit").bg-green.font-bold.border-none.p-2.text-white.radius Tạo nhóm
+        form(
+            form-create-room-search
+            class = "d-none"
+        )
+        input(name = "fullName" type = "text" hidden)
+
+    script(src = "/js/room-chat.js")
