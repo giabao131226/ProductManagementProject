@@ -2,7 +2,7 @@ const uploadImage = require("../helper/uploadImage");
 const Chat = require("../models/chat.model");
 const User = require("../models/user.model");
 
-module.exports = (socket) => {
+module.exports = (socket,roomChatID) => {
     socket.on("CLIENT_SEND_MESSAGE", async (msg) => {
         let images = [];
         if (msg.images.length > 0) {
@@ -31,10 +31,11 @@ module.exports = (socket) => {
             "content": msg.content,
             "images": images
         }
-        socket.broadcast.emit("SERVER_RETURN_MESSAGE", respone);
+        console.log(respone);
+        socket.to(roomChatID).emit("SERVER_RETURN_MESSAGE", respone);
     })
 
     socket.on("CLIENT_TYPE_MESSAGE", (att) => {
-        socket.broadcast.emit("SERVER_SEND_ATT_TYPE_MESSAGE", att);
+        socket.to(roomChatID).emit("SERVER_SEND_ATT_TYPE_MESSAGE", att);
     })
 }

@@ -20,7 +20,6 @@ router.post("/create-room",upload.single('avatar'),async (req,res,next) => {
     try{
         if(req.file){
             const result = await cloudinary.uploader.upload(req.file.path);
-            console.log(result);
             req.body.avatar = result.secure_url;
         }
         next();
@@ -28,6 +27,7 @@ router.post("/create-room",upload.single('avatar'),async (req,res,next) => {
         console.log("Lỗi up ảnh chat.route(create-room): "+ex);
     }
 },controller.createRoom);
+router.patch("/add-user/:roomChatID",controller.addUserToRoom);
 router.get("/:roomChatID",chatMiddleware.check,controller.chat);
 
 module.exports = router;

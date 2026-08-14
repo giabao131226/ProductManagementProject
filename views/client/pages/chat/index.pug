@@ -1,18 +1,23 @@
 extends ../../layouts/default
+include ../../mixins/formAddUserToRoomChat
 
 block main
 
     link(rel = "stylesheet" href = "/css/client/chat.css")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.css")
 
+    +FormAddUserToRoomChat(friends)
+
     .chat
       .chat-header
-        .d-flex.items-center-justify-between
+        .d-flex.items-center.justify-between
           .d-flex.items-center.gap-x-3
             .avatar
               img(src = (roomChatDetail.avatar ? roomChatDetail.avatar : "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg"))
             .title
               h3.m-0 #{roomChatDetail.title}
+          button(btn-add-user class = "bg-transparent text-white border-none") 
+            i(class="fa-solid fa-user-plus")
 
       .chat-body#chatBody(roomChatID = roomChatDetail._id)
         .py-2

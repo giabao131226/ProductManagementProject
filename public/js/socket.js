@@ -51,6 +51,7 @@ if (formSendMessage) {
 }
 
 socket.on("SERVER_RETURN_MESSAGE", (respone) => {
+    console.log(respone);
     typing.insertAdjacentHTML( "beforebegin",`<div class="message">
     <div class="left">
         <div class="message-main">

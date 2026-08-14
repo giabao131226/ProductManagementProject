@@ -1,0 +1,43 @@
+
+mixin FormAddUserToRoomChat(friends)
+
+    .formCreateRoomChat.close
+        form(
+            form-create-room
+            action = `/chat/add-user/${roomChatDetail._id}?_method=PATCH`
+            method = "POST"
+            class = "createRoomChat d-flex flex-column")
+                .d-flex.items-center.justify-between
+                    span.font-bold.font-20 Thêm thành viên
+                    button(btn-close-form type = "button").border-none.font-bold.bg-white x
+
+                hr
+                .tool.rows.items-center.justify-center
+                    .inputSearch.d-flex.items-center.justify-between.bg-white.col-11
+                        input(name = "fullName" type = "text")
+                        button.border-none.bg-white(btn-search type = "button")
+                            i(class="fa-solid fa-magnifying-glass")
+                hr
+
+                span.font-bold.font-20 Danh sách bạn bạn bè
+                .listFriend.d-flex.flex-column
+                    - if(friends && friends.length > 0)
+                        each friend in friends
+                            .cardFriend.rows.d-flex.gap-x-3
+                                input(type = "checkbox" name = "users" id = friend._id value = friend._id)
+                                label(for = friend._id ).d-flex.items-center.gap-x-3
+                                    .avatar
+                                        img(src = (friend.avatar ? friend.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJ4DJVCvTB59cAmwG1q--V4erVxH9gX21pfDtqX5maHYssQJ_-LCv0r4&s=10"))
+                                    span.font-bold.font-14 #{friend.fullName}
+                    - else
+                        p.font-bold.text-gray.text-align-center Hãy kết bạn thêm nhé
+                hr
+                .d-flex.justify-end
+                    button(btn-create-room type = "submit").bg-green.font-bold.border-none.p-2.text-white.radius Thêm
+        form(
+            form-create-room-search
+            class = "d-none"
+        )
+        input(name = "fullName" type = "text" hidden)
+
+    script(src = "/js/room-chat.js")

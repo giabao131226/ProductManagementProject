@@ -72,3 +72,12 @@ if(inputUploadImage){
     inputImageUpToServer.files = dt.files;
   })
 }
+
+// Handle thêm người dùng vào nhóm
+const btnAddUser = document.querySelector("[btn-add-user]");
+if(btnAddUser){
+  btnAddUser.addEventListener("click",(e) => {
+    const formAddUser = document.querySelector(".formCreateRoomChat");
+    formAddUser.classList.remove("close");
+  })
+}

@@ -10,15 +10,17 @@ block main
                 h2.m-0 Danh sách đoạn chat
                 button(btn-create-room-chat).bg-blue.text-white.font-bold.border-none.px-2 Tạo phòng
             .py-2
-            .d-flex.items-center.gap-x-3
+            .d-flex.items-center.gap-x-3.gap-y-3.flex-wrap
                 each room in roomChats
                     .cardChat.col-3.d-flex.items-center.gap-x-3
                         .vien
                             img(src = room.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJ4DJVCvTB59cAmwG1q--V4erVxH9gX21pfDtqX5maHYssQJ_-LCv0r4&s=10")
                         .d-flex.flex-column.gap-y-1
                             span.font-bold.font-14 #{room.title}
-                            a(href = `/chat/${room._id}`) 
-                                button.bg-blue.text-white.font-bold.border-none Nhắn tin
+                            .d-flex.items-center.gap-x-3
+                                a(href = `/chat/${room._id}`) 
+                                    button.bg-blue.text-white.font-bold.border-none Nhắn tin
+                                button.border-none.px-2 ...
 
             +FormCreateRoomChat(friends)
     p.d-none(user_id = user._id)

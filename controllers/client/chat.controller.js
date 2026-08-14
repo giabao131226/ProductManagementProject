@@ -1,6 +1,7 @@
 const Chat = require("../../models/chat.model");
 const User = require("../../models/user.model");
 const RoomChat = require("../../models/roomchat.model");
+const registerChat = require("../../socket/chat.socket");
 
 // [GET] "/chat"
 module.exports.index = async (req, res) => {
@@ -56,7 +57,11 @@ module.exports.chat = async (req, res) => {
     if (roomChatID) find.room_chat_id = roomChatID;
 
     const user = res.locals.user;
-
+    _io.on("connection",(socket) => {
+        socket.join(roomChatID);
+        registerChat(socket,roomChatID);
+    })
+    
     const roomChatDetail = await RoomChat.findOne({
         "_id": roomChatID
     }).lean();
@@ -71,7 +76,11 @@ module.exports.chat = async (req, res) => {
         roomChatDetail.avatar = userReceiveMessage.avatar;
     }
 
-    const chats = await Chat.find(find)
+    const listFriend = user.friends.map((item) => item.user_id);
+    const userInRoomChat = roomChatDetail.users.map((item) => item.user_id);
+
+    const [chats,friends] = await Promise.all([
+        await Chat.find(find)
         .sort([
             ["createdAt", "desc"]
         ])
@@ -79,13 +88,24 @@ module.exports.chat = async (req, res) => {
         .populate({
             path: "user_id",
             select: "avatar fullName _id"
-        });
+        }),
+        await User.find({
+            "_id": {
+                $ne: user._id,
+                $in: listFriend,
+                $nin: userInRoomChat
+            },
+            "status": "active",
+            "deleted": false
+        })
+    ])
     chats.reverse();
 
     return res.render("client/pages/chat/index.pug", {
         user: user,
         chats: chats,
-        roomChatDetail: roomChatDetail
+        roomChatDetail: roomChatDetail,
+        friends: friends
     });
 }
 
@@ -110,5 +130,33 @@ module.exports.createRoom = async (req,res) => {
         return res.redirect("/chat");
     }catch(ex){
         console.log("Lỗi controller createRoom: "+ex);
+    }
+}
+
+// [PATCH] "/chat/add-user/:roomChatID"
+module.exports.addUserToRoom = async (req,res) => {
+    try{
+        const user = res.locals.user;
+        const roomChatID = req.params.roomChatID;
+        if(typeof(req.body.users) == "string"){
+            const users = [req.body.users];
+            req.body.users = users;
+        }
+        req.body.users = req.body.users.map((item) => {
+            return {"user_id": item,"role": "Admin"};
+        });
+
+        const roomChatDetail = await RoomChat.findOne({
+            "_id": roomChatID
+        });
+
+        const users = roomChatDetail.users.map((item) => item.user_id);
+        const listUsers = req.body.users.filter((item) => users.findIndex((user_id) => user_id == item.user_id)<0);
+        roomChatDetail.users = roomChatDetail.users.concat(listUsers);
+        const result = await RoomChat.updateOne({"_id": roomChatID},{"users": roomChatDetail.users});
+        
+        return res.redirect(`/chat/${roomChatID}`);
+    }catch(ex){
+        console.log("Lỗi controller addUserToRoom: "+ex);
     }
 }
