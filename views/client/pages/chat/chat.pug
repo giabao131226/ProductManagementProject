@@ -10,7 +10,7 @@ block main
                 h2.m-0 Danh sách đoạn chat
                 button(btn-create-room-chat).bg-blue.text-white.font-bold.border-none.px-2 Tạo phòng
             .py-2
-            .d-flex.items-center.gap-x-3.gap-y-3.flex-wrap
+            .d-flex.items-center.gap-x-3.gap-y-3.flex-wrap.listCardChat
                 each room in roomChats
                     .cardChat.col-3.d-flex.items-center.gap-x-3
                         .vien
@@ -24,5 +24,5 @@ block main
 
             +FormCreateRoomChat(friends)
     p.d-none(user_id = user._id)
-
     script(src = "/socket.io/socket.io.js")
+    script(src = "js/roomchat.js")

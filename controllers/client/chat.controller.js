@@ -166,12 +166,10 @@ module.exports.addUserToRoom = async (req, res) => {
             const users = [req.body.users];
             req.body.users = users;
         }
-        req.body.users = req.body.users.map((item) => {
-            return {
-                "user_id": item,
-                "role": "Admin"
-            };
-        });
+        req.body.users = req.body.users.map((item) => ({
+            "user_id": item,
+            "role": "Admin"
+        }));
 
         const users = roomChatDetail.users.map((item) => item.user_id);
         const listUsers = req.body.users.filter((item) => users.findIndex((user_id) => user_id == item.user_id) < 0);
@@ -181,7 +179,16 @@ module.exports.addUserToRoom = async (req, res) => {
         }, {
             "users": roomChatDetail.users
         });
-
+        _io.on("connection",(socket) => {
+            socket.broadcast.emit("SERVER_SEND_DETAIL_ROOM_CHAT",{
+                "sendTo": listUsers.map((item) => item.user_id),
+                "roomChatDetail": {
+                    "_id": roomChatID,
+                    "avatar": roomChatDetail.avatar,
+                    "title": roomChatDetail.title
+                }
+            });
+        })
         return res.redirect(`/chat/${roomChatID}`);
     } catch (ex) {
         console.log("Lỗi controller addUserToRoom: " + ex);

@@ -10,7 +10,6 @@ if(formCreateRoomChat){
         formSearch.submit();
     })
 
-
     // handle tắt form
     const btnCloseForm = document.querySelector("[btn-close-form]");
     if(btnCloseForm){
@@ -26,17 +25,7 @@ if(formCreateRoomChat){
             formCreateRoomChat.parentNode.classList.remove("close");
         })
     }
-
-    // // handle tìm kiếm
-    // const btnSearch = formCreateRoomChat.querySelector("[btn-search]");
-    // if(btnSearch){
-    //     btnSearch.addEventListener("click",(e) => {
-    //         const formSearch = formCreateRoomChat.querySelector("[form-create-room-search]");
-    //         const inputFormSearch = formSearch.querySelector("input");
-
-    //         const inputPrevious = btnSearch.previousElementSibling;
-    //         console.log(inputPrevious);
-    //     })
-    // }
 }
+
+
 
