@@ -11,8 +11,6 @@ module.exports.check = async (req,res,next) => {
             "users.user_id": user._id
         });
 
-        console.log(roomChat);
-
         if(!roomChat){
             return res.send("404 not found");
         }

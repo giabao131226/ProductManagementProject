@@ -13,15 +13,16 @@ module.exports.index = async (req, res) => {
         const [roomChat, users] = await Promise.all([
             await RoomChat.find({
                 "deleted": false,
-                "users.user_id": user._id}).lean(), 
-            
+                "users.user_id": user._id
+            }).lean(),
+
             await User.find({
                 "_id": {
                     $ne: user._id,
                     $in: friendIds,
                 },
                 "status": "active",
-                "deleted":false
+                "deleted": false
             }).select("_id fullName avatar").lean()
         ]);
 
@@ -37,7 +38,7 @@ module.exports.index = async (req, res) => {
             }
             return room;
         }));
-        
+
         return res.render("client/pages/chat/chat", {
             "roomChats": roomChats,
             "friends": users
@@ -50,18 +51,28 @@ module.exports.index = async (req, res) => {
 // [GET] "/chat/:roomChatID"
 module.exports.chat = async (req, res) => {
     const roomChatID = req.params.roomChatID;
-
-    const find = {
-        "deleted": false
-    }
-    if (roomChatID) find.room_chat_id = roomChatID;
-
+    const findRoomChat = {"deleted": false};
     const user = res.locals.user;
-    _io.on("connection",(socket) => {
+    const find = {
+        "deleted": false,
+        "status": "active"
+    }
+    const fullName = req.query.fullName;
+
+    if (fullName){
+        find.fullName = {
+            $regex: fullName,
+            $options: "i"
+        }
+    }
+
+    if (roomChatID) findRoomChat.room_chat_id = roomChatID;
+
+    _io.on("connection", (socket) => {
         socket.join(roomChatID);
-        registerChat(socket,roomChatID);
+        registerChat(socket, roomChatID);
     })
-    
+
     const roomChatDetail = await RoomChat.findOne({
         "_id": roomChatID
     }).lean();
@@ -78,9 +89,15 @@ module.exports.chat = async (req, res) => {
 
     const listFriend = user.friends.map((item) => item.user_id);
     const userInRoomChat = roomChatDetail.users.map((item) => item.user_id);
+    
+    find._id = {
+        $ne: user._id,
+        $in: listFriend,
+        $nin: userInRoomChat
+    };
 
-    const [chats,friends] = await Promise.all([
-        await Chat.find(find)
+    const [chats, friends] = await Promise.all([
+        await Chat.find(findRoomChat)
         .sort([
             ["createdAt", "desc"]
         ])
@@ -89,16 +106,9 @@ module.exports.chat = async (req, res) => {
             path: "user_id",
             select: "avatar fullName _id"
         }),
-        await User.find({
-            "_id": {
-                $ne: user._id,
-                $in: listFriend,
-                $nin: userInRoomChat
-            },
-            "status": "active",
-            "deleted": false
-        })
-    ])
+        await User.find(find)
+    ]);
+
     chats.reverse();
 
     return res.render("client/pages/chat/index.pug", {
@@ -110,16 +120,19 @@ module.exports.chat = async (req, res) => {
 }
 
 // [POST] "/chat/create-room"
-module.exports.createRoom = async (req,res) => {
-    try{
+module.exports.createRoom = async (req, res) => {
+    try {
         const user = res.locals.user;
-        if(!req.body.users) req.body.users = [];
-        if(typeof(req.body.users) == "string"){
+        if (!req.body.users) req.body.users = [];
+        if (typeof (req.body.users) == "string") {
             const users = [req.body.users];
             req.body.users = users;
         }
         req.body.users = req.body.users.map((item) => {
-            return {"user_id": item,"role": "Admin"};
+            return {
+                "user_id": item,
+                "role": "Admin"
+            };
         });
         req.body.users.push({
             "user_id": user._id,
@@ -128,35 +141,49 @@ module.exports.createRoom = async (req,res) => {
 
         const result = await RoomChat.create(req.body);
         return res.redirect("/chat");
-    }catch(ex){
-        console.log("Lỗi controller createRoom: "+ex);
+    } catch (ex) {
+        console.log("Lỗi controller createRoom: " + ex);
     }
 }
 
 // [PATCH] "/chat/add-user/:roomChatID"
-module.exports.addUserToRoom = async (req,res) => {
-    try{
+module.exports.addUserToRoom = async (req, res) => {
+    try {
         const user = res.locals.user;
         const roomChatID = req.params.roomChatID;
-        if(typeof(req.body.users) == "string"){
-            const users = [req.body.users];
-            req.body.users = users;
-        }
-        req.body.users = req.body.users.map((item) => {
-            return {"user_id": item,"role": "Admin"};
-        });
 
         const roomChatDetail = await RoomChat.findOne({
             "_id": roomChatID
         });
+        const myRole = roomChatDetail.users.find((item) => item.user_id.toString() == user._id.toString()).role;
+
+        if(myRole != "SuperAdmin"){
+            req.flash("error","Chỉ có quản trị viên hoặc phó phòng mới có quyền thêm thành viên");
+            return res.redirect(`/chat/${roomChatID}`);
+        }
+
+        if (typeof (req.body.users) == "string") {
+            const users = [req.body.users];
+            req.body.users = users;
+        }
+        req.body.users = req.body.users.map((item) => {
+            return {
+                "user_id": item,
+                "role": "Admin"
+            };
+        });
 
         const users = roomChatDetail.users.map((item) => item.user_id);
-        const listUsers = req.body.users.filter((item) => users.findIndex((user_id) => user_id == item.user_id)<0);
+        const listUsers = req.body.users.filter((item) => users.findIndex((user_id) => user_id == item.user_id) < 0);
         roomChatDetail.users = roomChatDetail.users.concat(listUsers);
-        const result = await RoomChat.updateOne({"_id": roomChatID},{"users": roomChatDetail.users});
-        
+        const result = await RoomChat.updateOne({
+            "_id": roomChatID
+        }, {
+            "users": roomChatDetail.users
+        });
+
         return res.redirect(`/chat/${roomChatID}`);
-    }catch(ex){
-        console.log("Lỗi controller addUserToRoom: "+ex);
+    } catch (ex) {
+        console.log("Lỗi controller addUserToRoom: " + ex);
     }
 }

@@ -3,7 +3,7 @@ const formCreateRoomChat = document.querySelector("[form-create-room]");
 if(formCreateRoomChat){
     const btnSearch = formCreateRoomChat.querySelector(".tool [btn-search]");
     btnSearch.addEventListener("click",(e) => {
-        const input = e.target.parentNode.previousElementSibling;
+        const input = btnSearch.previousElementSibling;
         const formSearch = document.querySelector("[form-create-room-search]");
         const inputSearch = formSearch.querySelector("input");
         inputSearch.value = input.value;
@@ -26,5 +26,17 @@ if(formCreateRoomChat){
             formCreateRoomChat.parentNode.classList.remove("close");
         })
     }
+
+    // // handle tìm kiếm
+    // const btnSearch = formCreateRoomChat.querySelector("[btn-search]");
+    // if(btnSearch){
+    //     btnSearch.addEventListener("click",(e) => {
+    //         const formSearch = formCreateRoomChat.querySelector("[form-create-room-search]");
+    //         const inputFormSearch = formSearch.querySelector("input");
+
+    //         const inputPrevious = btnSearch.previousElementSibling;
+    //         console.log(inputPrevious);
+    //     })
+    // }
 }
 

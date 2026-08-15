@@ -1,5 +1,6 @@
 extends ../../layouts/default
 include ../../mixins/formAddUserToRoomChat
+include ../../mixins/alert
 
 block main
 
@@ -7,6 +8,7 @@ block main
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.css")
 
     +FormAddUserToRoomChat(friends)
+    +Alert(messages,5000)
 
     .chat
       .chat-header
