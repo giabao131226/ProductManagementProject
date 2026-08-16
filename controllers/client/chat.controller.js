@@ -2,6 +2,7 @@ const Chat = require("../../models/chat.model");
 const User = require("../../models/user.model");
 const RoomChat = require("../../models/roomchat.model");
 const registerChat = require("../../socket/chat.socket");
+const roomChatSocket = require("../../socket/roomchat.socket");
 
 // [GET] "/chat"
 module.exports.index = async (req, res) => {
@@ -51,7 +52,7 @@ module.exports.index = async (req, res) => {
 // [GET] "/chat/:roomChatID"
 module.exports.chat = async (req, res) => {
     const roomChatID = req.params.roomChatID;
-    const findRoomChat = {"deleted": false};
+    const findRoomChat = { "deleted": false };
     const user = res.locals.user;
     const find = {
         "deleted": false,
@@ -59,7 +60,7 @@ module.exports.chat = async (req, res) => {
     }
     const fullName = req.query.fullName;
 
-    if (fullName){
+    if (fullName) {
         find.fullName = {
             $regex: fullName,
             $options: "i"
@@ -89,7 +90,7 @@ module.exports.chat = async (req, res) => {
 
     const listFriend = user.friends.map((item) => item.user_id);
     const userInRoomChat = roomChatDetail.users.map((item) => item.user_id);
-    
+
     find._id = {
         $ne: user._id,
         $in: listFriend,
@@ -98,14 +99,14 @@ module.exports.chat = async (req, res) => {
 
     const [chats, friends] = await Promise.all([
         await Chat.find(findRoomChat)
-        .sort([
-            ["createdAt", "desc"]
-        ])
-        .limit(10)
-        .populate({
-            path: "user_id",
-            select: "avatar fullName _id"
-        }),
+            .sort([
+                ["createdAt", "desc"]
+            ])
+            .limit(10)
+            .populate({
+                path: "user_id",
+                select: "avatar fullName _id"
+            }),
         await User.find(find)
     ]);
 
@@ -140,6 +141,15 @@ module.exports.createRoom = async (req, res) => {
         });
 
         const result = await RoomChat.create(req.body);
+
+        const listUsers = result.users.filter((item) => item.user_id.toString() != user._id.toString());
+
+        roomChatSocket(listUsers.map((item) => item.user_id), {
+            "_id": result._id,
+            "avatar": result.avatar,
+            "title": result.title
+        });
+
         return res.redirect("/chat");
     } catch (ex) {
         console.log("Lỗi controller createRoom: " + ex);
@@ -157,8 +167,8 @@ module.exports.addUserToRoom = async (req, res) => {
         });
         const myRole = roomChatDetail.users.find((item) => item.user_id.toString() == user._id.toString()).role;
 
-        if(myRole != "SuperAdmin"){
-            req.flash("error","Chỉ có quản trị viên hoặc phó phòng mới có quyền thêm thành viên");
+        if (myRole != "SuperAdmin") {
+            req.flash("error", "Chỉ có quản trị viên hoặc phó phòng mới có quyền thêm thành viên");
             return res.redirect(`/chat/${roomChatID}`);
         }
 
@@ -179,16 +189,13 @@ module.exports.addUserToRoom = async (req, res) => {
         }, {
             "users": roomChatDetail.users
         });
-        _io.on("connection",(socket) => {
-            socket.broadcast.emit("SERVER_SEND_DETAIL_ROOM_CHAT",{
-                "sendTo": listUsers.map((item) => item.user_id),
-                "roomChatDetail": {
-                    "_id": roomChatID,
-                    "avatar": roomChatDetail.avatar,
-                    "title": roomChatDetail.title
-                }
-            });
-        })
+
+        roomChatSocket(listUsers.map((item) => item.user_id), {
+            "_id": roomChatID,
+            "avatar": roomChatDetail.avatar,
+            "title": roomChatDetail.title
+        });
+
         return res.redirect(`/chat/${roomChatID}`);
     } catch (ex) {
         console.log("Lỗi controller addUserToRoom: " + ex);
