@@ -1,10 +1,9 @@
 var socket = io();
 
-socket.on("SERVER_SEND_DETAIL_ROOM_CHAT",(response) => {
+socket.on("SERVER_SEND_DETAIL_ROOM_CHAT", (response) => {
     const myId = document.querySelector("[user_id]").getAttribute("user_id");
     const index = response.sendTo.findIndex((item) => item == myId);
-    console.log(index);
-    if(index >= 0){
+    if (index >= 0) {
         const listCardChat = document.querySelector(".listCardChat");
         console.log(response);
         listCardChat.innerHTML += `
@@ -31,3 +30,40 @@ socket.on("SERVER_SEND_DETAIL_ROOM_CHAT",(response) => {
         </div>`;
     }
 })
+
+// Hanlde option
+const btnOptions = document.querySelectorAll("[btn-option]");
+if (btnOptions.length > 0) {
+    btnOptions.forEach((item) => {
+        item.addEventListener("click", (e) => {
+            const dropDown = item.nextElementSibling;
+            if (dropDown) {
+                const status = dropDown.getAttribute("status");
+                if (status == "close") {
+                    dropDown.classList.remove("d-none");
+                    dropDown.classList.add("d-flex", "flex-column", "justify-center");
+                    dropDown.setAttribute("status", "open");
+                } else {
+                    dropDown.classList.remove("d-flex", "flex-column", "justify-center");
+                    dropDown.classList.add("d-none");
+                    dropDown.setAttribute("status", "close");
+                }
+            }
+        })
+    })
+}
+
+const btnCloses = document.querySelectorAll("[btn-close]");
+if (btnCloses.length > 0) {
+    btnCloses.forEach((item) => {
+        item.addEventListener("click", (e) => {
+            const dropDown = item.parentNode;
+            if (dropDown) {
+                const status = dropDown.getAttribute("status");
+                dropDown.classList.remove("d-flex", "flex-column", "justify-center");
+                dropDown.classList.add("d-none");
+                dropDown.setAttribute("status", "close");
+            }
+        })
+    })
+}

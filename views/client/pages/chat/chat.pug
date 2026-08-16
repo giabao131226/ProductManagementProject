@@ -17,10 +17,18 @@ block main
                             img(src = room.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJ4DJVCvTB59cAmwG1q--V4erVxH9gX21pfDtqX5maHYssQJ_-LCv0r4&s=10")
                         .d-flex.flex-column.gap-y-1
                             span.font-bold.font-14 #{room.title}
-                            .d-flex.items-center.gap-x-3
+                            .d-flex.items-center.gap-x-3.flex-wrap
                                 a(href = `/chat/${room._id}`) 
                                     button.bg-blue.text-white.font-bold.border-none Nhắn tin
-                                button.border-none.px-2 ...
+                                .relative
+                                    button.border-none.px-2(btn-option) ...
+                                    div(drop-down-option status = "close").dropDown.d-none
+                                        form(action = `/chat/delete/${room._id}?_method=DELETE` method = "POST")
+                                            button.col-12.px-0.py-0 Xoá
+                                        a(href = `edit/${room._id}`) 
+                                            button Chỉnh sửa
+                                        button(btn-close) Đóng
+                                        
 
             +FormCreateRoomChat(friends)
     p.d-none(user_id = user._id)

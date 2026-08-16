@@ -201,3 +201,14 @@ module.exports.addUserToRoom = async (req, res) => {
         console.log("Lỗi controller addUserToRoom: " + ex);
     }
 }
+
+// [DELETE] "/chat/delete/:roomChatID"
+module.exports.delete = async (req,res) => {
+    try{
+        const roomChatID = req.params.roomChatID;
+        const result = await RoomChat.updateOne({"_id": roomChatID},{"deleted": true});
+        return res.redirect("/chat");
+    }catch(ex){
+        console.log('Lỗi khi xoá phòng chat: '+ex);
+    }
+}

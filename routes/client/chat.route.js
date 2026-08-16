@@ -29,5 +29,6 @@ router.post("/create-room",upload.single('avatar'),async (req,res,next) => {
 },controller.createRoom);
 router.patch("/add-user/:roomChatID",controller.addUserToRoom);
 router.get("/:roomChatID",chatMiddleware.check,controller.chat);
+router.delete("/delete/:roomChatID",controller.delete);
 
 module.exports = router;
