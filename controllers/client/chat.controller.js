@@ -84,10 +84,11 @@ module.exports.chat = async (req, res) => {
         const userDetail = await User.findOne({"_id": item.user_id})
             .select("fullName avatar")
             .lean();
-        const index = listFriend.findIndex((item) => item == user._id);
+        const index = listFriend.findIndex((id) => id == item.user_id);
         if(item.user_id != user._id && index < 0) userDetail.friend = false;
         return {...item,"userDetail": userDetail};
     }));
+
     if (roomChatDetail.typeRoom == "friend") {
         const idUser = roomChatDetail.users.filter((item) => item.user_id.toString() != user._id.toString())[0];
         const userReceiveMessage = await User.findOne({

@@ -434,3 +434,14 @@ emoji-picker {
     border-radius: 50%;
     object-fit: cover;
 }
+
+.cardFriend.add [btn-send-request-friend]{
+    display: none;
+}
+.cardFriend [btn-cancel-request-friend]{
+    display: none;
+}
+
+.cardFriend.add [btn-cancel-request-friend]{
+    display: block;
+}

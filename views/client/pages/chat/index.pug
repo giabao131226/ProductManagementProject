@@ -79,8 +79,10 @@ block main
                         .d-flex.flex-column
                           span.font-bold #{item.user_id == user._id ? "Bạn" : item.userDetail.fullName}
                           span #{item.role == "SuperAdmin" ? "Quản trị viên" : ""}
-                      - if(item.user_id != user._id && item.userDetail.friend && item.userDetail.friend == false) 
-                        button Kết bạn
+                      - if(item.user_id != user._id && item.userDetail.friend == false) 
+                        .cardFriend
+                          button(btn-send-request-friend user-id = item.user_id).bg-blue.text-white.font-bold Kết Bạn
+                            button(btn-cancel-request-friend user-id = item.user_id).bg-gray.text-white.font-bold Huỷ
         
     p.d-none(user_id = user._id)
 
@@ -88,3 +90,5 @@ block main
     script(src = "/js/viewer.js")
     script(type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js")      
     script(src = "/js/chat.js")
+    script(src = "/socket.io/socket.io.js")
+    script(src = "/js/friend.js")
