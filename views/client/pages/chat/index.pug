@@ -9,7 +9,7 @@ block main
 
     +FormAddUserToRoomChat(friends)
     +Alert(messages,5000)
-
+    p(id-page = "chat")
     .container-fluid.text-align-start
       .d-flex.justify-center.items-start
         .khung-chat
@@ -80,7 +80,7 @@ block main
                           span.font-bold #{item.user_id == user._id ? "Bạn" : item.userDetail.fullName}
                           span #{item.role == "SuperAdmin" ? "Quản trị viên" : ""}
                       - if(item.user_id != user._id && item.userDetail.friend == false) 
-                        .cardFriend
+                        .cardFriend(user-id = item.user_id)
                           button(btn-send-request-friend user-id = item.user_id).bg-blue.text-white.font-bold Kết Bạn
                             button(btn-cancel-request-friend user-id = item.user_id).bg-gray.text-white.font-bold Huỷ
         
