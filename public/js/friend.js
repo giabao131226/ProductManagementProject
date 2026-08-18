@@ -172,9 +172,8 @@ if (idPage) {
     // Handle SEVER RESPONE AFTER ACCEPT REQUEST
     socket.on("SEVER_RESPONE_AFTER_ACCEPT_REQUEST", (response) => {
         const myId = document.querySelector("p[user_id]").getAttribute("user_id");
-        const listCardFriend = document.querySelector(".listCardFriend");
-        if (response.sendTo == myId && (pageNow == "not-friend" || pageNow == "request-friend")) {
-            const cardFriend = listCardFriend.querySelector(`.cardFriend[user-id = "${response.userDetail._id}"]`);
+        if (response.sendTo == myId && (pageNow == "not-friend" || pageNow == "request-friend" || pageNow == "chat")) {
+            const cardFriend = document.querySelector(`.cardFriend[user-id = "${response.userDetail._id}"]`);
             if (cardFriend) cardFriend.remove();
         }
     })
