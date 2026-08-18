@@ -219,16 +219,27 @@ if (idPage) {
                         </button>
                     </div>
                 </div>`;
+        } else if (response.sendTo == myId && pageNow == "chat") {
+            const row = document.querySelector(`.rows[user-id="${response.userDetail._id}"]`);
+            row.innerHTML += `<div class="cardFriend" user-id="${response.userDetail._id}">
+                <button btn-send-request-friend user-id="${response.userDetail._id}" class="bg-blue text-white font-bold">
+                    Kết Bạn
+                </button>
+
+                <button btn-cancel-request-friend user-id="${response.userDetail._id}" class="bg-gray text-white font-bold">
+                    Huỷ
+                </button>
+            </div>`;
         }
     })
     // End Handle SEVER_RESPONE_AFTER_UNFRIEND
 }
 
 // Handle SEVER_SEND_DETAIL_CLIENT_ONLINE
-socket.on("SEVER_SEND_DETAIL_CLIENT_ONLINE",(response) => {
+socket.on("SEVER_SEND_DETAIL_CLIENT_ONLINE", (response) => {
     const myId = document.querySelector("p[user_id]").getAttribute("user_id");
     const index = response.sendTo.findIndex((item) => item == myId);
-    if(index >= 0){
+    if (index >= 0) {
         const cardFriend = document.querySelector(`.cardFriend[user-id="${response.userID}"]`);
         const online = cardFriend.querySelector(".online");
         online.classList.remove("bg-offline");

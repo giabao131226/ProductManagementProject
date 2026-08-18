@@ -72,7 +72,7 @@ block main
                 hr
                 .d-flex.flex-column.gap-y-2
                   each item in roomChatDetail.users
-                    .rows.justify-between.items-center
+                    .rows.justify-between.items-center(user-id = item.user_id)
                       .d-flex.items-center.gap-x-3
                         .avatar
                           img(src = item.userDetail.avatar ?  item.userDetail.avatar : "https://tuanluupiano.com/wp-content/uploads/2026/01/avatar-facebook-mac-dinh-6.jpg")
