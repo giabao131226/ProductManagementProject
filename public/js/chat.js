@@ -81,3 +81,17 @@ if(btnAddUser){
     formAddUser.classList.remove("close");
   })
 }
+
+// Handle collpase
+const openCollapses = document.querySelectorAll("[open-collapse]");
+if(openCollapses.length > 0){
+  openCollapses.forEach((item) => {
+    item.addEventListener("click",(e) => {
+      const icon = item.querySelector("i");
+      const collapse = item.parentNode.querySelector(".collapse");
+
+      collapse.classList.toggle("show");
+      icon.classList.toggle("rotate");
+    })
+  })
+}

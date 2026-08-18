@@ -400,3 +400,37 @@ emoji-picker {
 .listCardChat .dropDown button[btn-close]{
     border-bottom: none;
 }
+
+/*  Collapse */
+
+.list-collapse .box-collapse{
+    background-color: white;
+    padding: 4px 8px;
+
+    transition-duration: 600ms;
+}
+.list-collapse .box-collapse .head{
+    display: flex;
+    justify-content: space-between;
+
+    cursor: pointer;
+}
+
+.list-collapse .box-collapse .head i{
+    transition-duration: 400ms;
+}
+.list-collapse .box-collapse .head i.rotate{
+    transform: rotate(90deg);
+}
+.list-collapse .box-collapse .collapse .avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.list-collapse .box-collapse .collapse .avatar img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}

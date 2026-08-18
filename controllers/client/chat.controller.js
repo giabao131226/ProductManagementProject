@@ -78,6 +78,16 @@ module.exports.chat = async (req, res) => {
         "_id": roomChatID
     }).lean();
 
+    const listFriend = user.friends.map((item) => item.user_id);
+
+    roomChatDetail.users = await Promise.all(roomChatDetail.users.map(async (item) => {
+        const userDetail = await User.findOne({"_id": item.user_id})
+            .select("fullName avatar")
+            .lean();
+        const index = listFriend.findIndex((item) => item == user._id);
+        if(item.user_id != user._id && index < 0) userDetail.friend = false;
+        return {...item,"userDetail": userDetail};
+    }));
     if (roomChatDetail.typeRoom == "friend") {
         const idUser = roomChatDetail.users.filter((item) => item.user_id.toString() != user._id.toString())[0];
         const userReceiveMessage = await User.findOne({
@@ -88,7 +98,6 @@ module.exports.chat = async (req, res) => {
         roomChatDetail.avatar = userReceiveMessage.avatar;
     }
 
-    const listFriend = user.friends.map((item) => item.user_id);
     const userInRoomChat = roomChatDetail.users.map((item) => item.user_id);
 
     find._id = {
@@ -206,6 +215,10 @@ module.exports.addUserToRoom = async (req, res) => {
 module.exports.delete = async (req,res) => {
     try{
         const roomChatID = req.params.roomChatID;
+        const user = res.locals.user;
+
+        const roomChatDetail = await RoomChat.findOne({"_id": roomChatID});
+
         const result = await RoomChat.updateOne({"_id": roomChatID},{"deleted": true});
         return res.redirect("/chat");
     }catch(ex){

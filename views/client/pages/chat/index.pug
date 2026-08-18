@@ -10,51 +10,78 @@ block main
     +FormAddUserToRoomChat(friends)
     +Alert(messages,5000)
 
-    .chat
-      .chat-header
-        .d-flex.items-center.justify-between
-          .d-flex.items-center.gap-x-3
-            .avatar
-              img(src = (roomChatDetail.avatar ? roomChatDetail.avatar : "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg"))
-            .title
-              h3.m-0 #{roomChatDetail.title}
-          button(btn-add-user class = "bg-transparent text-white border-none") 
-            i(class="fa-solid fa-user-plus")
+    .container-fluid.text-align-start
+      .d-flex.justify-center.items-start
+        .khung-chat
+          .chat
+            .chat-header
+              .d-flex.items-center.justify-between
+                .d-flex.items-center.gap-x-3
+                  .avatar
+                    img(src = (roomChatDetail.avatar ? roomChatDetail.avatar : "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg"))
+                  .title
+                    h3.m-0 #{roomChatDetail.title}
+                button(btn-add-user class = "bg-transparent text-white border-none") 
+                  i(class="fa-solid fa-user-plus")
 
-      .chat-body#chatBody(roomChatID = roomChatDetail._id)
-        .py-2
-        each chat in chats
-          .message
-            div(class = chat.user_id._id.toString() == user._id.toString() ? "right" : "left")
-              .message-main
-                .message-top
-                  - if(chat.user_id._id.toString() != user._id.toString())
-                    .avatar
-                      img(src = (chat.user_id.avatar ? chat.user_id.avatar : "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg"))
-                  .d-flex.flex-column.items-start
-                    - if(chat.user_id._id.toString() != user._id.toString()) 
-                      span.font-bold #{chat.user_id.fullName}
-                    .bubble #{chat.content}
-                - if(chat.images.length > 0)
-                  .message-bottom
-                    each url in chat.images
-                      .image
-                        img(src = url)
-                                          
-        span.chat-typing.bg-trasparent.d-none ... Người dùng đang nhập
-      emoji-picker.ml-auto.bg-transparent.d-none
-      .message-images.d-flex.flex-wrap.gap-x-3
+            .chat-body#chatBody(roomChatID = roomChatDetail._id)
+              .py-2
+              each chat in chats
+                .message
+                  div(class = chat.user_id._id.toString() == user._id.toString() ? "right" : "left")
+                    .message-main
+                      .message-top
+                        - if(chat.user_id._id.toString() != user._id.toString())
+                          .avatar
+                            img(src = (chat.user_id.avatar ? chat.user_id.avatar : "https://avatarhub.edu.vn/wp-content/uploads/2025/12/avatar-mac-dinh-cua-fb-4.jpg"))
+                        .d-flex.flex-column.items-start
+                          - if(chat.user_id._id.toString() != user._id.toString()) 
+                            span.font-bold #{chat.user_id.fullName}
+                          .bubble #{chat.content}
+                      - if(chat.images.length > 0)
+                        .message-bottom
+                          each url in chat.images
+                            .image
+                              img(src = url)
+                                                
+              span.chat-typing.bg-trasparent.d-none ... Người dùng đang nhập
+            emoji-picker.ml-auto.bg-transparent.d-none
+            .message-images.d-flex.flex-wrap.gap-x-3
 
-      input(id = "image" type = "file" class = "d-none" multiple accept = "image/*")
-      form(form-send-message enctype = "multipart/form-data").chat-footer
-        input#message(type="text" placeholder="Nhập tin nhắn...")
-        input(name = "images" type = "file" class = "d-none" multiple accept = "image/*")
-        button.px-2.border-none.bg-transparent(btn-icon type = "button")
-          i(class="fa-regular fa-face-smile font-20")
-        button.px-2.py-2.border-none.bg-transparent.cursor-pointer(btn-image type = "button")
-          label.m-0.cursor-pointer(for = "image")
-            i(class="fa-regular fa-image font-20")
-        button#send(type = "submit") Gửi
+            input(id = "image" type = "file" class = "d-none" multiple accept = "image/*")
+            form(form-send-message enctype = "multipart/form-data").chat-footer
+              input#message(type="text" placeholder="Nhập tin nhắn...")
+              input(name = "images" type = "file" class = "d-none" multiple accept = "image/*")
+              button.px-2.border-none.bg-transparent(btn-icon type = "button")
+                i(class="fa-regular fa-face-smile font-20")
+              button.px-2.py-2.border-none.bg-transparent.cursor-pointer(btn-image type = "button")
+                label.m-0.cursor-pointer(for = "image")
+                  i(class="fa-regular fa-image font-20")
+              button#send(type = "submit") Gửi
+        .chat-detail.col-4
+          p.font-20.font-bold.text-align-center.m-0.bg-white Thông tin nhóm
+          .list-collapse
+            .box-collapse
+              .head.py-2(open-collapse)
+                span.font-bold Thành viên nhóm
+                i(class="fa-solid fa-caret-right")
+              .collapse
+                .d-flex.gap-x-3.items-center
+                  i(class="fa-solid fa-users") 
+                  span.font-bold 4 thành viên
+                hr
+                .d-flex.flex-column.gap-y-2
+                  each item in roomChatDetail.users
+                    .rows.justify-between.items-center
+                      .d-flex.items-center.gap-x-3
+                        .avatar
+                          img(src = item.userDetail.avatar ?  item.userDetail.avatar : "https://tuanluupiano.com/wp-content/uploads/2026/01/avatar-facebook-mac-dinh-6.jpg")
+                        .d-flex.flex-column
+                          span.font-bold #{item.user_id == user._id ? "Bạn" : item.userDetail.fullName}
+                          span #{item.role == "SuperAdmin" ? "Quản trị viên" : ""}
+                      - if(item.user_id != user._id && item.userDetail.friend && item.userDetail.friend == false) 
+                        button Kết bạn
+        
     p.d-none(user_id = user._id)
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.js")
