@@ -6,6 +6,7 @@ const chatMiddleware = require("../../middlewares/client/chat.middleware");
 const cloudinary = require("cloudinary");
 const multer = require("multer");
 const upload = multer({"dest": "uploads/"});
+const auth = require("../../middlewares/client/auth.middleware");
 
 
 cloudinary.config({
@@ -15,8 +16,8 @@ cloudinary.config({
 });
 
 
-router.get("/",controller.index);
-router.post("/create-room",upload.single('avatar'),async (req,res,next) => {
+router.get("/",auth.auth,controller.index);
+router.post("/create-room",auth.auth,upload.single('avatar'),async (req,res,next) => {
     try{
         if(req.file){
             const result = await cloudinary.uploader.upload(req.file.path);
@@ -27,8 +28,8 @@ router.post("/create-room",upload.single('avatar'),async (req,res,next) => {
         console.log("Lỗi up ảnh chat.route(create-room): "+ex);
     }
 },controller.createRoom);
-router.patch("/add-user/:roomChatID",controller.addUserToRoom);
-router.get("/:roomChatID",chatMiddleware.check,controller.chat);
-router.delete("/delete/:roomChatID",controller.delete);
+router.patch("/add-user/:roomChatID",auth.auth,controller.addUserToRoom);
+router.get("/:roomChatID",auth.auth,chatMiddleware.check,controller.chat);
+router.delete("/delete/:roomChatID",auth.auth,controller.delete);
 
 module.exports = router;
